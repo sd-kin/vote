@@ -1,7 +1,3 @@
-# Version of ruby to use
-  ruby:
-    version:
-      2.2.3
 
 ## Customize deployment commands
 deployment:
