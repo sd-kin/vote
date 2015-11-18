@@ -4,4 +4,4 @@ deployment:
   staging:
     branch: master
     heroku:
-      appname: vote-compot
+      appname: vote-kompot
