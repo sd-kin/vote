@@ -1,9 +1,10 @@
- # Version of ruby to use
+# Version of ruby to use
   ruby:
     version:
       2.2.3p173
 
-      deployment:
+## Customize deployment commands
+deployment:
   staging:
     branch: master
     heroku:
