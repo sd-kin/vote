@@ -10,7 +10,7 @@ machine:
 deployment:
 production:
     branch: master
-    	commands:
+    commands:
       - heroku pg:backups  --app vote-kompot
       - git push git@heroku.com:vote-kompot.git $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app vote-kompot
@@ -18,7 +18,7 @@ production:
       appname: vote-kompot 
   staging:
     branch: staging
-    	commands:
+    commands:
       - heroku pg:backups  --app murmuring-ravine-5422
       - git push git@heroku.com:murmuring-ravine-5422.git $CIRCLE_SHA1:refs/heads/staging
       - heroku run rake db:migrate --app murmuring-ravine-5422
