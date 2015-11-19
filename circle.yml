@@ -16,7 +16,8 @@ production:
       - heroku run rake db:migrate --app vote-kompot
     heroku:
       appname: vote-kompot 
-  staging:
+
+staging:
     branch: staging
     commands:
       - heroku pg:backups  --app murmuring-ravine-5422
