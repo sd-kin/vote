@@ -23,4 +23,4 @@ production:
       - git push git@heroku.com:murmuring-ravine-5422.git $CIRCLE_SHA1:refs/heads/staging
       - heroku run rake db:migrate --app murmuring-ravine-5422
     heroku:
-      appname: murmuring-ravine-5422
+      appname: murmuring-ravine-5422   
