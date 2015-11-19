@@ -10,8 +10,6 @@ machine:
 deployment:
   production:
     branch: master
-    heroku:
-      appname: vote-kompot 
     commands:
       - heroku pg:backups  --app vote-kompot
       - git push git@heroku.com:vote-kompot.git $CIRCLE_SHA1:refs/heads/master
