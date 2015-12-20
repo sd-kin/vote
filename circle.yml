@@ -8,7 +8,9 @@ machine:
 
 ## Customize deployment commands
 deployment:
-  staging:
+  production:
     branch: master
-    heroku:
-      appname: vote-kompot
+    commands:
+      - heroku pg:backups  --app vote-kompot
+      - git push git@heroku.com:vote-kompot.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app vote-kompot
