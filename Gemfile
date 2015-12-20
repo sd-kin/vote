@@ -29,9 +29,9 @@ gem 'pg'
 #use vote-schuktze for schuktze algorithm
 gem 'vote-schulze'
 #use rollbar to catch errors on rollbar.com
-gem 'rollbar', '~> 2.4.0'
+gem 'rollbar'
 #use oj for JSON serialization
-gem 'oj', '~> 2.12.14'
+gem 'oj'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
