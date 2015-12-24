@@ -28,6 +28,10 @@ gem 'guard'
 gem 'pg'
 #use vote-schuktze for schuktze algorithm
 gem 'vote-schulze'
+#use rollbar to catch errors on rollbar.com
+gem 'rollbar'
+#use oj for JSON serialization
+gem 'oj'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
