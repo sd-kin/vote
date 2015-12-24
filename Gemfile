@@ -32,6 +32,8 @@ gem 'vote-schulze'
 gem 'rollbar'
 #use oj for JSON serialization
 gem 'oj'
+#use rspec_junit_formatter for automatic test metadata collection
+gem 'rspec_junit_formatter', '0.2.2'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
