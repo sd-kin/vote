@@ -43,7 +43,7 @@ group :development, :test do
   #use rspec_junit_formatter for automatic test metadata collection
   gem 'rspec_junit_formatter', '0.2.2'
   #use rspec for tests
-  gem 'rspec'
+  gem 'rspec-rails'
   #use guard for automate tests
   gem 'guard'
 end

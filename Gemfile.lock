@@ -145,10 +145,6 @@ GEM
       json (~> 1.4)
     rollbar (2.4.0)
       multi_json
-    rspec (3.4.0)
-      rspec-core (~> 3.4.0)
-      rspec-expectations (~> 3.4.0)
-      rspec-mocks (~> 3.4.0)
     rspec-core (3.4.0)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -156,6 +152,14 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-mocks (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-rails (3.4.0)
+      actionpack (>= 3.0, < 4.3)
+      activesupport (>= 3.0, < 4.3)
+      railties (>= 3.0, < 4.3)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.0)
     rspec_junit_formatter (0.2.2)
@@ -213,7 +217,7 @@ DEPENDENCIES
   rails (= 4.2.4)
   rails_12factor
   rollbar
-  rspec
+  rspec-rails
   rspec_junit_formatter (= 0.2.2)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
