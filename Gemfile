@@ -1,8 +1,8 @@
+ruby '2.3.0'
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+gem 'rails', '~> 4.2.4'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -20,17 +20,13 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-#use rspec for tests
-gem 'rspec'
-#use guard for automate tests
-gem 'guard'
-#use postgres as bd adapter
+# use postgres as bd adapter
 gem 'pg'
-#use vote-schuktze for schuktze algorithm
+# use vote-schuktze for schuktze algorithm
 gem 'vote-schulze'
-#use rollbar to catch errors on rollbar.com
+# use rollbar to catch errors on rollbar.com
 gem 'rollbar'
-#use oj for JSON serialization
+# use oj for JSON serialization
 gem 'oj'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -43,7 +39,17 @@ gem 'oj'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  gem 'pry-byebug'
+  # use rspec for tests
+  gem 'rspec-rails'
+  # use guard for automate tests
+  gem 'guard'
+  # use Rubocop to fix code style
+  gem 'rubocop'
+  # use guard-rubocop to run rubocop automatically
+  gem 'guard-rubocop'
+  # use capypara for acceptanse tests
+  gem 'capybara'
 end
 
 group :development do
@@ -51,8 +57,13 @@ group :development do
   gem 'web-console', '~> 2.0'
 end
 
-group :production do 
-  #use 12factor for easier running rails app
+group :test do
+  # generators instead of fixtures
+  gem 'factory_girl_rails', :require => false
+end
+
+group :production do
+  # use 12factor for easier running rails app
   gem 'rails_12factor'
 end
 
