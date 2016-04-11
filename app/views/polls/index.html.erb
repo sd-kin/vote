@@ -1,0 +1,10 @@
+<head>
+<p> Poll index page </p>
+</head>
+<body>
+	<% @polls.each do |poll| %>
+		<%= poll.title %>
+	<% end %>
+
+	test: <%= @poll %>
+</body>
