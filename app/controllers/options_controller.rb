@@ -1,10 +1,25 @@
 class OptionsController < ApplicationController
+  
+  def edit
+    respond_to do |format|
+      format.js { @option = Option.find(params[:id]) ; @poll = @option.poll }
+    end
+  end
+
 
   def create
   	@poll = Poll.find(poll_id)
     @option = @poll.options.build option_params
     @option.save 
     render 'polls/edit'
+  end
+
+  def update 
+    @option = Option.find(params[:id])
+    @option.update option_params
+    respond_to do |format|
+      format.js { @poll = Poll.find(poll_id) }
+    end
   end
 
   private
@@ -14,7 +29,11 @@ class OptionsController < ApplicationController
   end
 
   def poll_id
-    params.permit(:poll_id)[:poll_id]
+    params[:poll_id]
+  end
+
+  def option_id
+    params[:id]
   end
 
 end

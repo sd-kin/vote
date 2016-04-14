@@ -2,5 +2,6 @@
   <li>
     Title: <%= option.title %> <br>
     Description: <%= option.description %> <br>
+    <%= link_to 'Edit', edit_poll_option_path(poll, option), remote: true %>
   </li>
 </div>
