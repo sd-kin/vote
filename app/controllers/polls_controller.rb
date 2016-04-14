@@ -6,12 +6,16 @@ class PollsController < ApplicationController
     @polls = Poll.all
   end
 
+  def show
+
+  end
+
   def new
     @poll.options.build
   end
 
   def create
-    if @poll.save then redirect_to polls_path
+    if @poll.save then redirect_to edit_poll_path(@poll)
     else render :new
     end 
   end
@@ -28,4 +32,5 @@ class PollsController < ApplicationController
   def poll_params
     params.require(:poll).permit(:title)
   end
+
 end

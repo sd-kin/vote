@@ -1,0 +1,7 @@
+<%= @poll.title %>
+<ul>
+<% @poll.options.each do |option| %>
+  <li> Title: <%= option.title%> <br>
+       Description: <%= option.description%></li>
+<% end %>
+</ul>

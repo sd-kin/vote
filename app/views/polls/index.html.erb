@@ -1,10 +1,12 @@
 <head>
-<p> Poll index page </p>
+  <p> Poll index page </p>
 </head>
-<body>
-	<% @polls.each do |poll| %>
-		<%= poll.title %>
-	<% end %>
 
-	test: <%= @poll %>
+<body>
+<ul>
+  <% @polls.each do |poll| %>
+    <li><%= link_to "#{poll.title}", poll_path(poll)%></li>
+  <% end %>
+</ul>
+<%= link_to 'new poll', new_poll_path %>
 </body>
