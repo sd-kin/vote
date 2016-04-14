@@ -1,9 +1,9 @@
+<div id='title_block'>
 Title: <%= poll.title %>
+</div>
+
+<%= link_to 'edit', edit_poll_path( poll ), remote: true %>
+
 <ul>
-<% @poll.options.each do |poll| %>
-  <li>
-    Title: <%= poll.title %> <br>
-    Description: <%= poll.description %> <br>
-  </li>
-<% end %>
+<%= render @poll.options %>
 </ul>

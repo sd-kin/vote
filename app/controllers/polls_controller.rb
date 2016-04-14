@@ -14,8 +14,21 @@ class PollsController < ApplicationController
     @poll.options.build
   end
 
+  def edit
+    respond_to do |format|
+      format.js
+      format.html
+    end
+  end
+
   def create
     if @poll.save then redirect_to edit_poll_path(@poll)
+    else render :new
+    end 
+  end
+
+  def update
+    if @poll.update poll_params then redirect_to edit_poll_path(@poll)
     else render :new
     end 
   end
