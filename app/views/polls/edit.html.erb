@@ -1,3 +1,3 @@
 <h1> This is poll's edit page </h1>
-<%= @poll.title %>
+<%= render @poll %>
 <%= render partial: 'options/form', locals: {poll: @poll} %>

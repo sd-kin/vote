@@ -2,8 +2,8 @@ Title: <%= poll.title %>
 <ul>
 <% @poll.options.each do |poll| %>
   <li>
-  <%= poll.title %>
-  <%= poll.description %>
+    Title: <%= poll.title %> <br>
+    Description: <%= poll.description %> <br>
   </li>
 <% end %>
 </ul>
