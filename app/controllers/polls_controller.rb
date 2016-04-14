@@ -20,6 +20,11 @@ class PollsController < ApplicationController
     end 
   end
 
+  def destroy
+  	@poll.destroy
+  	redirect_to polls_path
+  end
+
   private
 
   def set_poll

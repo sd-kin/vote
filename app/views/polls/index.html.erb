@@ -5,7 +5,11 @@
 <body>
 <ul>
   <% @polls.each do |poll| %>
-    <li><%= link_to "#{poll.title}", poll_path(poll)%></li>
+    <li>
+      <%= link_to "#{poll.title}", poll_path(poll)%>
+      <%= link_to "edit poll", edit_poll_path(poll)%>
+      <%= link_to "delete poll", poll_path(poll), method: :delete %>
+    </li>
   <% end %>
 </ul>
 <%= link_to 'new poll', new_poll_path %>
