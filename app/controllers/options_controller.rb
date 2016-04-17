@@ -22,6 +22,12 @@ class OptionsController < ApplicationController
     end
   end
 
+  def destroy
+    @option = Option.find(params[:id])
+    @poll = Poll.find(poll_id)
+    @option.destroy
+  end
+
   private
   
   def option_params
