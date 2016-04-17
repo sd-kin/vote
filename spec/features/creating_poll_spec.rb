@@ -21,7 +21,7 @@ feature 'creating poll' do
 
   scenario 'create poll with two options' do
     visit new_poll_path
-    click_button 'Add option'
+    click_button 'Ок'
     fill_in 'poll_title', with: 'poll title'
     fill_in 'poll_options_attributes_0_title', with: 'option 1 title'
     fill_in 'poll_options_attributes_0_description', with: 'option 1 description'
