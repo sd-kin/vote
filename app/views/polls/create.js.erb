@@ -1,0 +1,5 @@
+ <% if @correct %>
+ window.location = '<%= edit_poll_path(@poll) %>';
+ <% else %>
+ $('#new_poll').html('<%= escape_javascript render "form" %>');
+ <% end %>

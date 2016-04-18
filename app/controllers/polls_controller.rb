@@ -22,8 +22,8 @@ class PollsController < ApplicationController
   end
 
   def create
-    if @poll.save then redirect_to edit_poll_path(@poll)
-    else render :new
+    if @poll.save then @correct = true #redirect_to edit_poll_path(@poll)
+    else @correct = false #render :new
     end 
   end
 
