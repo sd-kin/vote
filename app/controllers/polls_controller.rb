@@ -28,12 +28,12 @@ class PollsController < ApplicationController
   end
 
   def update
-   @poll.update poll_params
+    @poll.update poll_params
   end
 
   def destroy
-  	@poll.destroy
-  	redirect_to polls_path
+    @poll.destroy
+    redirect_to polls_path
   end
 
   private
