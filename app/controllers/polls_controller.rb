@@ -28,9 +28,7 @@ class PollsController < ApplicationController
   end
 
   def update
-    if @poll.update poll_params then redirect_to edit_poll_path(@poll)
-    else render :new
-    end 
+   @poll.update poll_params
   end
 
   def destroy
