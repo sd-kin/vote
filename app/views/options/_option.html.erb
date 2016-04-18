@@ -1,14 +1,6 @@
-<div id=<%= "option_#{option.id}" %>>
-  <% if @option && @option.errors.any? %>
-    <div>
-      <%= pluralize(@option.errors.count, 'error')%>  prohibited this poll from being saved 
-      <ul>
-      <% @option.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-    <% end %>
+<div id=<%= "option_#{option.id}" %>
+  <div id=<%= "option_#{option.id}_errors" %>
+  </div>
 
   <li>
     Title: <%= option.title %> <br>

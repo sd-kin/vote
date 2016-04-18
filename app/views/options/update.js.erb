@@ -1,1 +1,3 @@
-$('#poll_block').html('<%= escape_javascript render @poll %>');
+
+$('<%= "#option_#{@option.id}_errors" %>').html('<%= escape_javascript render "errors", option: @option %>');
+alert('<%= @option.errors.count %>');
