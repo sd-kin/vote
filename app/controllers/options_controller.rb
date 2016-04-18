@@ -11,7 +11,6 @@ class OptionsController < ApplicationController
   	@poll = Poll.find(poll_id)
     @option = @poll.options.build option_params
     @option.save 
-    render 'polls/edit'
   end
 
   def update 

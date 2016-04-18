@@ -3,6 +3,7 @@
 </head>
 
 <body>
+<div id='polls_list'>
 <ul>
   <% @polls.each do |poll| %>
     <li>
@@ -12,5 +13,6 @@
     </li>
   <% end %>
 </ul>
+</div>
 <%= link_to 'new poll', new_poll_path %>
 </body>

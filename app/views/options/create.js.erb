@@ -1,0 +1,2 @@
+$('#poll_block').html('<%= escape_javascript render @poll %>');
+$('#new_option').html('<%= escape_javascript render "form", poll: @poll %>');
