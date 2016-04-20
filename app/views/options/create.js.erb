@@ -1,2 +1,7 @@
-$('#poll_block').html('<%= escape_javascript render @poll %>');
-$('#new_option').html('<%= escape_javascript render "form", poll: @poll %>');
+<% if @option.errors.messages.any? %>
+  $('#new_option').html('<%= escape_javascript render "form", poll: @poll %>');
+  $('#new_option_errors').html('<%= escape_javascript render "errors", option: @option %>');
+<% else %>
+  $('#poll_block').html('<%= escape_javascript render @poll %>');
+  $('#new_option').html('<%= escape_javascript render "form", poll: @poll %>');
+<% end %>

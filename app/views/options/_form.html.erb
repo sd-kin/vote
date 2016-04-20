@@ -1,15 +1,5 @@
-<head>
-  <% if @option && @option.errors.any? %>
-    <div>
-      <%= pluralize(@option.errors.count, 'error')%>  prohibited this poll from being saved 
-      <ul>
-      <% @option.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-</head>
+<div id ='new_option_errors'>
+</div>
 
 </body>
   <%= form_for poll.options.build, url: poll_options_path(poll), html: {method: :post}, remote: true do |f| %>
