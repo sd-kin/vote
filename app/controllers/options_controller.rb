@@ -1,5 +1,10 @@
 class OptionsController < ApplicationController
   
+  def show
+    @option = Option.find(params[:id])
+    @poll = @option.poll
+  end
+
   def edit
     respond_to do |format|
       format.js { @option = Option.find(params[:id]) ; @poll = @option.poll }
