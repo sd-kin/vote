@@ -4,4 +4,5 @@
 <% else %>
   $('#poll_block').html('<%= escape_javascript render @poll %>');
   $('#new_option').html('<%= escape_javascript render "form", poll: @poll %>');
+  $('#new_option_errors').html('<%= escape_javascript render "errors", option: @option %>');
 <% end %>
