@@ -31,6 +31,7 @@ feature 'creating poll' do
     fill_in 'option_title', with: 'option 2 title'
     fill_in 'option_description', with: 'option 2 description'
     click_button 'Add'
+    wait_for_ajax
 
     expect(page).to have_content('option 1 title')
     expect(page).to have_content('option 2 title')
