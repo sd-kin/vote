@@ -5,11 +5,7 @@ RSpec.describe Poll, type: :model do
     expect(FactoryGirl.build(:poll)).to_not be_valid
   end
 
-  it 'shold not be valid without title but with option' do
-    expect(FactoryGirl.build(:poll, :with_title)).to_not be_valid
-  end
-
-  it 'should not be valid without options but with title' do
+  it 'should not be valid without title' do
     expect(FactoryGirl.build(:poll, :with_options)).to_not be_valid
   end
 

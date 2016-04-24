@@ -50,6 +50,8 @@ group :development, :test do
   gem 'guard-rubocop'
   # use capypara for acceptanse tests
   gem 'capybara'
+  # use capybara-webkit for test ajax requests
+  gem 'poltergeist'
 end
 
 group :development do

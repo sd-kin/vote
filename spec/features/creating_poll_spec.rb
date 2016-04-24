@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'creating poll' do
   scenario 'visit home page' do
     visit root_path
@@ -11,7 +13,7 @@ feature 'creating poll' do
     expect(page).to have_content('New poll page')
   end
 
-  scenario 'create poll' do
+  scenario 'create poll', js: true do
     visit new_poll_path
     fill_in 'poll_title', with: 'poll title'
     click_button 'Ok'
@@ -19,17 +21,21 @@ feature 'creating poll' do
     expect(page).to have_content('poll title')
   end
 
-  scenario 'create poll with two options' do
+  scenario 'create poll with two options', js: true  do
     visit new_poll_path
-    click_button 'Ок'
     fill_in 'poll_title', with: 'poll title'
-    fill_in 'poll_options_attributes_0_title', with: 'option 1 title'
-    fill_in 'poll_options_attributes_0_description', with: 'option 1 description'
-    fill_in 'poll_options_attributes_1_title', with: 'option 2 title'
-    fill_in 'poll_options_attributes_1_description', with: 'option 2 description'
-    click_button 'OK'
+    click_button 'Ok'
+    fill_in 'option_title', with: 'option 1 title'
+    fill_in 'option_description', with: 'option 1 description'
+    click_button 'Add'
+    fill_in 'option_title', with: 'option 2 title'
+    fill_in 'option_description', with: 'option 2 description'
+    click_button 'Add'
 
-    expect(page).to have_content('This is poll index page')
+    expect(page).to have_content('option 1 title')
+    expect(page).to have_content('option 2 title')
+    expect(page).to have_content('option 1 description')
+    expect(page).to have_content('option 2 description')
   end
 
   scenario 'can not create poll without title' do
