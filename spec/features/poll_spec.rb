@@ -1,24 +1,44 @@
 require 'rails_helper'
+require 'support/page_objects/poll_pages_objects'
+
+include PollPagesObjects
 
 feature 'when create poll' do
   scenario 'should visit home page' do
-    visit root_path
+    current_page = RootPage.new
+    current_page.visit_page
 
-    expect(page).to have_content('Hello world')
+    expect(current_page).to be_correct_page
   end
 
   scenario 'should visit create poll page' do
-    visit new_poll_path
+    current_page = NewPollPage.new
+    current_page.visit_page
 
-    expect(page).to have_content('New poll page')
+    expect(current_page).to be_correct_page
+  end
+
+  scenario 'should render form for title' do
+    current_page = NewPollPage.new
+    current_page.visit_page
+
+    expect(current_page).to have_form_for_title
   end
 
   scenario 'should create poll with title', js: true do
-    visit new_poll_path
-    fill_in 'poll_title', with: 'poll title'
-    click_button 'Ok'
+    current_page = NewPollPage.new
+    current_page.visit_page
+    current_page.create_poll
 
-    expect(page).to have_content('poll title')
+    expect(current_page).to have_correct_title
+  end
+
+  scenario 'should not create poll without title', js: true do
+    current_page = NewPollPage.new
+    current_page.visit_page
+    current_page.create_poll('')
+
+    expect(current_page).to have_validation_error
   end
 end
 
@@ -39,13 +59,6 @@ feature 'when create options for poll', js: true do
     expect(page).to have_content('option 2 title')
     expect(page).to have_content('option 1 description')
     expect(page).to have_content('option 2 description')
-  end
-
-  scenario 'should not create poll without title' do
-    visit new_poll_path
-    click_button 'Ok'
-
-    expect(page).to have_content("Title can't be blank")
   end
 
   scenario 'should not create poll without option title' do
