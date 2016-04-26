@@ -56,5 +56,26 @@ module PollPagesObjects
       fill_in 'option_description', with: description
       click_button 'Add'
     end
+
+    def has_form_for_option?
+      has_content?('Title') && has_content?('Description')
+    end
+
+    def has_validation_error?
+      has_content?("can't be blank")
+    end
+  end
+
+  class IndexPollPage<Page
+    def visit_page
+      NewPollPage.new.visit_page.create_poll('title for test index page')
+      visit polls_path
+      first(:link, 'title for test index page').click
+      self
+    end
+
+    def has_expected_title?
+      has_content?('title for test index page')
+    end
   end
 end
