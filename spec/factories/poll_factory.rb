@@ -8,6 +8,10 @@ FactoryGirl.define do
       title 'updated title'
     end
 
+    trait :with_empty_title do
+      title ''
+    end
+
     trait :with_options do
       options FactoryGirl.create_list(:valid_option, 3)
     end
