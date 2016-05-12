@@ -15,6 +15,10 @@
     Title: <%= poll.title %>
   </div>
 
+  <div id='status_block'>
+    Status: <%= poll.status %>
+  </div>
+
   <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
 
   <ul>
