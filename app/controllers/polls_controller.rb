@@ -15,10 +15,7 @@ class PollsController < ApplicationController
   end
 
   def edit
-    respond_to do |format|
-      format.js
-      format.html
-    end
+    
   end
 
   def create
