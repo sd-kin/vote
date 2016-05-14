@@ -54,8 +54,11 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  concern :statusable do
+    post 'make_ready', on: :member
+  end
 
-  resources :polls do
+  resources :polls, concerns: :statusable do
     resources :options
   end
 end

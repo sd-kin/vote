@@ -33,6 +33,10 @@ class PollsController < ApplicationController
     redirect_to polls_path
   end
 
+  def make_ready
+    @poll.ready!
+  end
+
   private
 
   def set_poll
@@ -45,5 +49,4 @@ class PollsController < ApplicationController
   def poll_params
     params.require(:poll).permit(:title)
   end
-
 end

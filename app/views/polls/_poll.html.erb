@@ -16,7 +16,7 @@
   </div>
 
   <div id='status_block'>
-    Status: <%= poll.status %>
+    <%= render 'status', poll: @poll %>
   </div>
 
   <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
