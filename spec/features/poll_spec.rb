@@ -29,6 +29,7 @@ feature 'when create poll' do
     current_page = NewPollPage.new
     current_page.visit_page
     current_page.create_poll
+    wait_for_ajax
 
     expect(current_page).to have_correct_title
   end
@@ -37,6 +38,7 @@ feature 'when create poll' do
     current_page = NewPollPage.new
     current_page.visit_page
     current_page.create_poll('')
+    wait_for_ajax
 
     expect(current_page).to have_validation_error
   end
@@ -46,6 +48,7 @@ feature 'when create options for poll', js: true do
   scenario 'should render form for new option' do 
     current_page = EditPollPage.new
     current_page.visit_page
+    wait_for_ajax
 
     expect(current_page).to have_form_for_option
   end
@@ -89,7 +92,49 @@ feature 'after create poll' do
   scenario 'should be accesible by index page', js: true do
     current_page = IndexPollPage.new
     current_page.visit_page
+    wait_for_ajax
 
     expect(current_page).to have_expected_title
+  end
+end
+
+feature 'when changing poll status' do 
+  scenario 'poll withoot options cant be ready', js: true do 
+    current_page = EditPollPage.new
+    current_page.visit_page
+    current_page.make_ready
+    wait_for_ajax
+
+    expect(current_page).to have_status_validation_error
+  end
+
+  scenario 'new poll has default status(draft)', js: true do 
+    current_page = EditPollPage.new
+    current_page.visit_page
+    wait_for_ajax
+
+    expect(current_page).to have_status
+  end
+
+  scenario 'poll with options can be ready', js: true do 
+    current_page = EditPollPage.new
+    current_page.visit_page
+    current_page.create_option
+    current_page.make_ready
+    wait_for_ajax
+
+    expect(current_page).to have_status('ready')
+  end
+
+  scenario 'ready poll return to draft when all options deleted', js: true do 
+    pending
+    current_page = EditPollPage.new
+    current_page.visit_page
+    current_page.create_option
+    current_page.make_ready
+    current_page.destroy_option
+    wait_for_ajax
+
+    expect(current_page).to have_status
   end
 end

@@ -57,12 +57,28 @@ module PollPagesObjects
       click_button 'Add'
     end
 
+    def destroy_option
+      find('a', text: 'Delete').click
+    end
+
+    def make_ready
+      click_button 'Make ready'
+    end
+
     def has_form_for_option?
       has_content?('Title') && has_content?('Description')
     end
 
     def has_validation_error?
       has_content?("can't be blank")
+    end
+
+    def has_status_validation_error?
+      has_content?("Status can't be")
+    end
+
+    def has_status?(status = 'draft')
+      has_content?(status)
     end
   end
 
