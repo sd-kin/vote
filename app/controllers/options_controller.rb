@@ -1,5 +1,7 @@
+# encoding: utf-8
+# frozen_string_literal: true
 class OptionsController < ApplicationController
-  
+
   def show
     @option = Option.find(params[:id])
   end
@@ -8,12 +10,11 @@ class OptionsController < ApplicationController
     @option = Option.find(params[:id])
   end
 
-
   def create
-    @option = Option.create option_params.merge({poll_id: poll_id})
+    @option = Option.create option_params.merge(poll_id: poll_id)
   end
 
-  def update 
+  def update
     @option = Option.find(params[:id])
     @option.update option_params
   end
@@ -24,7 +25,7 @@ class OptionsController < ApplicationController
   end
 
   private
-  
+
   def option_params
     params.require(:option).permit(:title, :description)
   end

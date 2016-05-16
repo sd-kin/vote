@@ -1,3 +1,5 @@
+# encoding: utf-8
+# frozen_string_literal: true
 class PollsController < ApplicationController
 
   before_filter :set_poll
@@ -7,7 +9,6 @@ class PollsController < ApplicationController
   end
 
   def show
-
   end
 
   def new
@@ -15,13 +16,10 @@ class PollsController < ApplicationController
   end
 
   def edit
-    
   end
 
   def create
-    if @poll.save then @correct = true #redirect_to edit_poll_path(@poll)
-    else @correct = false #render :new
-    end 
+    @correct = @poll.save
   end
 
   def update

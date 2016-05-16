@@ -1,3 +1,5 @@
+# encoding: utf-8
+# frozen_string_literal: true
 require 'rails_helper'
 require 'support/page_objects/poll_pages_objects'
 
@@ -44,8 +46,8 @@ feature 'when create poll' do
   end
 end
 
-feature 'when create options for poll', js: true do 
-  scenario 'should render form for new option' do 
+feature 'when create options for poll', js: true do
+  scenario 'should render form for new option' do
     current_page = EditPollPage.new
     current_page.visit_page
     wait_for_ajax
@@ -98,8 +100,8 @@ feature 'after create poll' do
   end
 end
 
-feature 'when changing poll status' do 
-  scenario 'poll withoot options cant be ready', js: true do 
+feature 'when changing poll status' do
+  scenario 'poll withoot options cant be ready', js: true do
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.make_ready
@@ -108,7 +110,7 @@ feature 'when changing poll status' do
     expect(current_page).to have_status_validation_error
   end
 
-  scenario 'new poll has default status(draft)', js: true do 
+  scenario 'new poll has default status(draft)', js: true do
     current_page = EditPollPage.new
     current_page.visit_page
     wait_for_ajax
@@ -116,7 +118,7 @@ feature 'when changing poll status' do
     expect(current_page).to have_status
   end
 
-  scenario 'poll with options can be ready', js: true do 
+  scenario 'poll with options can be ready', js: true do
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.create_option
@@ -126,7 +128,7 @@ feature 'when changing poll status' do
     expect(current_page).to have_status('ready')
   end
 
-  scenario 'ready poll return to draft when all options deleted', js: true do 
+  scenario 'ready poll return to draft when all options deleted', js: true do
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.create_option

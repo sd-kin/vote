@@ -1,12 +1,14 @@
+# encoding: utf-8
+# frozen_string_literal: true
 module PollPagesObjects
   class Page
     include Capybara::DSL
     include Rails.application.routes.url_helpers
 
-    default_url_options[:host] = ::Rails.application.routes.default_url_options[:host] || "localhost"
+    default_url_options[:host] = ::Rails.application.routes.default_url_options[:host] || 'localhost'
   end
 
-  class RootPage<Page
+  class RootPage < Page
     def visit_page
       visit root_path
       self
@@ -17,7 +19,7 @@ module PollPagesObjects
     end
   end
 
-  class NewPollPage<Page
+  class NewPollPage < Page
     def visit_page
       visit new_poll_path
       self
@@ -45,7 +47,7 @@ module PollPagesObjects
     end
   end
 
-  class EditPollPage<Page
+  class EditPollPage < Page
     def visit_page
       NewPollPage.new.visit_page.create_poll
       self
@@ -82,11 +84,11 @@ module PollPagesObjects
     end
   end
 
-  class IndexPollPage<Page
+  class IndexPollPage < Page
     def visit_page
-      NewPollPage.new.visit_page.create_poll('title for test index page')
+      NewPollPage.new.visit_page.create_poll('title for test index page ddddsddsds')
       visit polls_path
-      first(:link, 'title for test index page').click
+      first(:link, 'title for test index page ddddsddsds').click
       self
     end
 

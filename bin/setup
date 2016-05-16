@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby.exe
+# encoding: utf-8
+# frozen_string_literal: true
+# encoding: utf-8
 require 'pathname'
 
 # path to your application root.

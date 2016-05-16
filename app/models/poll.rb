@@ -1,3 +1,5 @@
+# encoding: utf-8
+# frozen_string_literal: true
 class Poll < ActiveRecord::Base
   has_many :options, dependent: :destroy
 

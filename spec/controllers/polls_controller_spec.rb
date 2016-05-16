@@ -1,3 +1,5 @@
+# encoding: utf-8
+# frozen_string_literal: true
 require 'rails_helper'
 
 RSpec.describe PollsController, type: :controller do
@@ -64,13 +66,13 @@ RSpec.describe PollsController, type: :controller do
           expect(xhr :post, :create, poll: poll_params).to be_succes
         end
         it 'should increase count of polls and do it' do
-          expect {xhr :post, :create, poll: poll_params}.to change { Poll.count }.by(1)
+          expect { xhr :post, :create, poll: poll_params }.to change { Poll.count }.by(1)
         end
       end
     end
 
     context 'when not valid attributes' do
-      let(:poll_params) { FactoryGirl.attributes_for(:poll, :with_empty_title) } 
+      let(:poll_params) { FactoryGirl.attributes_for(:poll, :with_empty_title) }
       it 'should be success' do
         expect(xhr :post, :create, poll: poll_params).to be_succes
       end
@@ -120,7 +122,7 @@ RSpec.describe PollsController, type: :controller do
     end
 
     context 'when not valid attributes' do
-      let(:not_valid_poll_params) { FactoryGirl.attributes_for(:poll, title: nil)}
+      let(:not_valid_poll_params) { FactoryGirl.attributes_for(:poll, title: nil) }
       let(:poll) { FactoryGirl.create(:valid_poll) }
       it 'should be success' do
         expect(xhr :put, :update, id: poll.id, poll: not_valid_poll_params).to be_success
