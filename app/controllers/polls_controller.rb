@@ -34,7 +34,7 @@ class PollsController < ApplicationController
   end
 
   def make_ready
-    @poll.ready!
+    @poll.make_ready
   end
 
   private

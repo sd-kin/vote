@@ -5,7 +5,7 @@ class Poll < ActiveRecord::Base
 
   after_touch :ensure_status_is_correct
 
-  def ready!
+  def make_ready
     if options.empty? then errors.add(:status, "can't be ready when poll have no options")
     else 
       self.status = 'ready'
