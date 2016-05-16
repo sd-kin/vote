@@ -13,8 +13,17 @@ class Poll < ActiveRecord::Base
     end
   end
 
+  def make_draft
+    self.status = 'draft'
+    save
+  end
+  
   def ready? 
     status == 'ready'
+  end
+
+  def draft?
+    status == 'draft'
   end
 
   private 

@@ -1,2 +1,3 @@
 Status: <%= poll.status %>
-<%= button_to 'Make ready', "/polls/#{params[:poll_id]||params[:id]}/make_ready", remote: true unless poll.ready? %>  
+<%= button_to 'Make ready', "/polls/#{params[:poll_id]||params[:id]}/make_ready", remote: true unless poll.ready? %> 
+<%= button_to 'Make draft', "/polls/#{params[:poll_id]||params[:id]}/make_draft", remote: true unless poll.draft? %>   

@@ -35,6 +35,12 @@ class PollsController < ApplicationController
 
   def make_ready
     @poll.make_ready
+    render 'change_status'
+  end
+
+  def make_draft
+    @poll.make_draft
+    render 'change_status'
   end
 
   private
