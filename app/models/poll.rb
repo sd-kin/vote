@@ -3,6 +3,8 @@ class Poll < ActiveRecord::Base
 
   validates :title, presence: true
 
+  after_touch :ensure_status_is_correct
+
   def ready!
     if options.empty? then errors.add(:status, "can't be ready when poll have no options")
     else 
@@ -13,5 +15,12 @@ class Poll < ActiveRecord::Base
 
   def ready? 
     status == 'ready'
+  end
+
+  private 
+
+  def ensure_status_is_correct
+    self.status = 'draft' if options.empty?
+    save
   end
 end
