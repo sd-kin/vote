@@ -1,7 +1,7 @@
 <div id ='new_option_errors'>
 </div>
 
-</body>
+<div id = 'new_option_form'>
   <%= form_for poll.options.build, url: poll_options_path(poll), html: {method: :post}, remote: true do |f| %>
     <%= f.label 'Title:'%>
     <%= f.text_field :title %> <br>
@@ -9,4 +9,4 @@
     <%= f.text_field :description %> <br>
     <%= f.submit 'Add' %>
   <% end %>
-<body>
+</div>
