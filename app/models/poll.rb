@@ -4,7 +4,7 @@ class Poll < ActiveRecord::Base
   validates :title, presence: true
 
   def ready!
-    if options.empty? then errors.add(:status, "Can't be ready without options")
+    if options.empty? then errors.add(:status, "can't be ready when poll have no options")
     else 
       self.status = 'ready'
       save
