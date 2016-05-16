@@ -44,11 +44,10 @@ class PollsController < ApplicationController
   private
 
   def set_poll
-  @poll = if params[:poll_id] then Poll.find(params[:poll_id])
-            elsif params[:id] then Poll.find(params[:id])
-            elsif params[:poll] then Poll.new(poll_params)
-            else Poll.new
-            end
+  @poll = if params[:id] then Poll.find(params[:id])
+             elsif params[:poll] then Poll.new(poll_params)
+             else Poll.new
+             end
   end
 
   def poll_params

@@ -20,8 +20,9 @@
   </div>
 
   <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
-
-  <ul>
-    <%= render poll.options %>
-  </ul>
+  <div id = "options_block">
+    <ul>
+      <%= render poll.options %>
+    </ul>
+  </div>
 </div>  
