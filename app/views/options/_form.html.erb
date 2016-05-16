@@ -2,7 +2,7 @@
 </div>
 
 <div id = 'new_option_form'>
-  <%= form_for poll.options.build, url: poll_options_path(poll), html: {method: :post}, remote: true do |f| %>
+  <%= form_for Option.new, url: poll_options_path(poll), html: {method: :post}, remote: true do |f| %>
     <%= f.label 'Title:'%>
     <%= f.text_field :title %> <br>
     <%= f.label 'Description:'%>

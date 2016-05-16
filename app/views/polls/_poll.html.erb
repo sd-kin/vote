@@ -1,10 +1,10 @@
 <div id = "poll_block">
 
-  <% if @poll.errors.any? %>
+  <% if poll.errors.any? %>
     <div>
-      <%= pluralize(@poll.errors.count, 'error')%>  prohibited this poll from being saved 
+      <%= pluralize(poll.errors.count, 'error')%>  prohibited this poll from being saved 
       <ul>
-      <% @poll.errors.full_messages.each do |msg| %>
+      <% poll.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>
@@ -16,12 +16,12 @@
   </div>
 
   <div id='status_block'>
-    <%= render 'polls/status', poll: @poll %>
+    <%= render 'polls/status', poll: poll %>
   </div>
 
   <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
 
   <ul>
-    <%= render @poll.options, poll: @poll %>
+    <%= render poll.options %>
   </ul>
 </div>  

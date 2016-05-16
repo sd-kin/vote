@@ -1,7 +1,7 @@
 <% if @option.errors.messages.any? %>
-$('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render "edit_form", option: @option, poll: @poll %>');
+$('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render "edit_form", option: @option %>');
 
 <% else %>
-$('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render @option, poll: @poll %>');
+$('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render @option %>');
 <% end %>
 $('<%= "#option_#{@option.id}_errors" %>').html('<%= escape_javascript render "errors", option: @option %>');

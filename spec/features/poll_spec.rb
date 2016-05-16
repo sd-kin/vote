@@ -127,7 +127,6 @@ feature 'when changing poll status' do
   end
 
   scenario 'ready poll return to draft when all options deleted', js: true do 
-    pending
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.create_option
