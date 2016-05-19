@@ -64,6 +64,7 @@ end
 group :test do
   # generators instead of fixtures
   gem 'factory_girl_rails', :require => false
+  gem 'database_cleaner'
 end
 
 group :production do
