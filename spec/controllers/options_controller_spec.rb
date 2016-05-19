@@ -9,10 +9,10 @@ RSpec.describe OptionsController, type: :controller do
 
   describe 'GET #show' do
     context 'when option exist' do
+
       it 'request should be succes' do 
         poll = FactoryGirl.create(:valid_poll)
-        option = poll.options.first
-        expect(xhr :get, :show, poll_id: poll, id: option).to be_succes
+        expect(xhr :get, :show, poll_id: poll, id: poll.options.first).to be_succes
       end
 
       it 'should get right poll' do 

@@ -15,11 +15,15 @@ FactoryGirl.define do
     end
 
     trait :with_options do
-      options FactoryGirl.create_list(:valid_option, 3)
+      after :create do |poll|
+        FactoryGirl.create_list(:valid_option, 3, poll: poll)
+      end
     end
 
     trait :with_updated_options do
-      options FactoryGirl.create_list(:valid_option, 4)
+      after :create do |poll|
+        FactoryGirl.create_list(:valid_option, 4, poll: poll)
+      end
     end
 
     factory :valid_poll, traits: [:with_title, :with_options]

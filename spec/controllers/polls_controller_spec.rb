@@ -65,7 +65,7 @@ RSpec.describe PollsController, type: :controller do
         it 'should be succes' do
           expect(xhr :post, :create, poll: poll_params).to be_succes
         end
-        it 'should increase count of polls and do it' do
+        it 'should increase count of polls' do
           expect { xhr :post, :create, poll: poll_params }.to change { Poll.count }.by(1)
         end
       end
