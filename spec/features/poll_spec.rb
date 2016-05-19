@@ -80,7 +80,7 @@ feature 'when create options for poll', js: true do
     expect(current_page).to have_validation_error
   end
 
-  scenario 'can not create poll without description' do
+  scenario 'should not create poll without description' do
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.create_option(title = 'option 1 title', description = '')

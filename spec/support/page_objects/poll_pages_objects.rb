@@ -86,9 +86,9 @@ module PollPagesObjects
 
   class IndexPollPage < Page
     def visit_page
-      NewPollPage.new.visit_page.create_poll('title for test index page ddddsddsds')
+      NewPollPage.new.visit_page.create_poll('title for test index page')
       visit polls_path
-      first(:link, 'title for test index page ddddsddsds').click
+      click_link('title for test index page')
       self
     end
 
