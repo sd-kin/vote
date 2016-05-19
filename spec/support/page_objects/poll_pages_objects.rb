@@ -84,7 +84,7 @@ module PollPagesObjects
     end
   end
 
-  class IndexPollPage < Page
+  class IndexPollsPage < Page
     def visit_page
       visit polls_path
       self
