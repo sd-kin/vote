@@ -65,6 +65,7 @@ group :test do
   # generators instead of fixtures
   gem 'factory_girl_rails', :require => false
   gem 'database_cleaner'
+  gem 'rspec_junit_formatter', '0.2.2'
 end
 
 group :production do
