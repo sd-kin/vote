@@ -86,14 +86,12 @@ module PollPagesObjects
 
   class IndexPollPage < Page
     def visit_page
-      NewPollPage.new.visit_page.create_poll('title for test index page')
       visit polls_path
-      click_link('title for test index page')
       self
     end
 
-    def has_expected_title?
-      has_content?('title for test index page')
+    def has_expected_title?(title = 'poll title')
+      has_content?(title)
     end
   end
 end
