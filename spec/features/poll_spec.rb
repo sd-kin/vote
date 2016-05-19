@@ -92,11 +92,19 @@ end
 
 feature 'after create poll' do
   scenario 'should be accesible by index page', js: true do
-    current_page = IndexPollPage.new
-    current_page.visit_page
-    wait_for_ajax
+    #current_page = IndexPollPage.new
+    #current_page.visit_page
+    #wait_for_ajax
 
-    expect(current_page).to have_expected_title
+    #expect(current_page).to have_expected_title
+    visit polls_path
+    click_link('new poll')
+    fill_in 'poll_title', with: 'blahblah'
+    click_button 'Ok'
+    expect(page).to have_content('blahblah')
+    visit polls_path
+    click_link('blahblah')
+    expect(page).to have_content('blahblah')
   end
 end
 
