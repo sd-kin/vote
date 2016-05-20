@@ -49,7 +49,10 @@ module PollPagesObjects
 
   class EditPollPage < Page
     def visit_page
-      NewPollPage.new.visit_page.create_poll
+      visit new_poll_path
+      fill_in 'poll_title', with: 'poll title'
+      click_button 'Ok'
+      
       self
     end
 

@@ -126,6 +126,7 @@ feature 'when changing poll status' do
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.create_option
+    wait_for_ajax
     current_page.make_ready
     wait_for_ajax
 
