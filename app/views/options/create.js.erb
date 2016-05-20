@@ -5,4 +5,5 @@
   $('#options_block').html('<%= escape_javascript render @option.poll.options %>');
   $('#new_option').html('<%= escape_javascript render "form", poll: @option.poll %>');
   $('#new_option_errors').html('<%= escape_javascript render "errors", option: @option %>');
+  $('#poll_errors_block').html('<%= escape_javascript render "polls/errors", poll: @option.poll %>');
 <% end %>

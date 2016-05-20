@@ -1,15 +1,8 @@
 <div id = "poll_block">
 
-  <% if poll.errors.any? %>
-    <div>
-      <%= pluralize(poll.errors.count, 'error')%>  prohibited this poll from being saved 
-      <ul>
-      <% poll.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <div id = 'poll_errors_block'>
+    <% render 'errors', poll: poll %>
+  </div>
   
   <div id='title_block'>
     Title: <%= poll.title %>
@@ -20,9 +13,9 @@
   </div>
 
   <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
-  <div id = "options_block">
-    <ul>
+  <ul>
+    <div id = "options_block">
       <%= render poll.options %>
-    </ul>
-  </div>
+    </div>
+  </ul>
 </div>  

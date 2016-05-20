@@ -1,1 +1,2 @@
- $('#poll_block').html('<%= escape_javascript render @poll %>');
+ $('#status_block').html('<%= escape_javascript render "status", poll: @poll %>');
+ $('#poll_errors_block').html('<%= escape_javascript render "errors", poll: @poll %>');
