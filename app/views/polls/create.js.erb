@@ -1,5 +1,6 @@
- <% if @correct %>
- window.location = '<%= edit_poll_path(@poll) %>';
- <% else %>
- $('#new_poll').html('<%= escape_javascript render "form" %>');
- <% end %>
+<% if @correct %>
+  window.location = '<%= edit_poll_path(@poll) %>';
+<% else %>
+  $('#poll_errors_block').html('<%= escape_javascript render "errors", poll: @poll %>');
+  $('#new_poll').html('<%= escape_javascript render "form" %>');
+<% end %>

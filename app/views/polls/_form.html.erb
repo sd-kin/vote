@@ -1,20 +1,5 @@
-<head>
-  <% if @poll.errors.any? %>
-    <div>
-      <%= pluralize(@poll.errors.count, 'error')%>  prohibited this poll from being saved 
-      <ul>
-      <% @poll.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-</head>
-
-<body>
-  <%= form_for @poll, remote: true do |f| %>
+<%= form_for @poll, remote: true do |f| %>
     <%= f.label 'Title:'%>
     <%= f.text_field :title %> <br>
     <%= f.submit 'Ok' %>
-  <% end %>
-</body>
+<% end %>

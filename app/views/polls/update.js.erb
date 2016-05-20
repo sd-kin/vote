@@ -1,5 +1,6 @@
 <% if @poll.errors.messages.any? %>
   $('#title_block').html( "<%= escape_javascript render 'form' %>");
+  $('#poll_errors_block').html('<%= escape_javascript render "polls/errors", poll: @poll %>');
 <% else %>
   $('#poll_block').html('<%= escape_javascript render @poll %>');
 <% end %>
