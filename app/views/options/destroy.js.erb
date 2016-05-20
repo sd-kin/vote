@@ -1,1 +1,2 @@
 $('#options_block').html('<%= escape_javascript render @option.poll.options %>');
+$('#status_block').html('<%= escape_javascript render "polls/status", poll: @option.poll %>');
