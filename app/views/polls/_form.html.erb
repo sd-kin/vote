@@ -3,3 +3,5 @@
     <%= f.text_field :title %> <br>
     <%= f.submit 'Ok' %>
 <% end %>
+<%= button_to 'Cancel', {action: :edit}, method: :get unless @poll.new_record? %>
+
