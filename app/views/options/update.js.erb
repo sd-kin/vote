@@ -1,6 +1,5 @@
 <% if @option.errors.messages.any? %>
 $('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render "edit_form", option: @option %>');
-
 <% else %>
 $('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render @option %>');
 <% end %>
