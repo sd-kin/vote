@@ -20,7 +20,7 @@ class PollsController < ApplicationController
   end
 
   def create
-    @poll = Poll.new( poll_params)
+    @poll = Poll.new(poll_params)
     @correct = @poll.save
   end
 

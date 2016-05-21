@@ -38,8 +38,8 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
-  
-  #begin copypaste from database_cleaner page
+
+  # begin copypaste from database_cleaner page
   config.before(:suite) do
     if config.use_transactional_fixtures?
       raise(<<-MSG)
@@ -54,7 +54,7 @@ RSpec.configure do |config|
       MSG
     end
     DatabaseCleaner.clean_with(:truncation)
-  end  
+  end
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
@@ -65,7 +65,7 @@ RSpec.configure do |config|
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
 
-    if !driver_shares_db_connection_with_specs
+    unless driver_shares_db_connection_with_specs
       # Driver is probably for an external browser with an app
       # under test that does *not* share a database connection with the
       # specs, so use truncation strategy.
