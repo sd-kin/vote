@@ -1,6 +1,6 @@
 # encoding: utf-8
 # frozen_string_literal: true
-ruby '2.3.0'
+ruby '2.3.1'
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
