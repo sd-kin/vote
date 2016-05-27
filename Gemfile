@@ -22,11 +22,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-<<<<<<< HEAD
 # use postgres as bd adapter
-=======
-#use postgres as bd adapter
->>>>>>> origin/master
 gem 'pg'
 # use vote-schuktze for schuktze algorithm
 gem 'vote-schulze'
@@ -45,7 +41,6 @@ gem 'oj'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-<<<<<<< HEAD
   gem 'pry-byebug'
   # use rspec for tests
   gem 'rspec-rails'
@@ -59,15 +54,8 @@ group :development, :test do
   gem 'capybara'
   # use capybara-webkit for test ajax requests
   gem 'poltergeist'
-=======
-  gem 'pry-rails'
-  #use rspec_junit_formatter for automatic test metadata collection
-  gem 'rspec_junit_formatter', '0.2.2'
-  #use rspec for tests
-  gem 'rspec-rails'
-  #use guard for automate tests
-  gem 'guard'
->>>>>>> origin/master
+  # use haml preprocessor for accurate views
+  gem 'haml'
 end
 
 group :development do
