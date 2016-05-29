@@ -11,7 +11,7 @@
 # Configuration parameters: AlignWith, SupportedStyles, AutoCorrect.
 # SupportedStyles: keyword, variable, start_of_line
 Lint/EndAlignment:
-  Enabled: false
+  Enabled: true
 
 # Offense count: 8
 Lint/UselessAssignment:
@@ -59,12 +59,6 @@ Style/Documentation:
     - 'config/application.rb'
     - 'db/migrate/20160512173735_add_status_to_polls.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/ElseAlignment:
-  Exclude:
-    - 'app/controllers/polls_controller.rb'
-
 # Offense count: 9
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -72,7 +66,6 @@ Style/ElseAlignment:
 Style/EmptyLinesAroundBlockBody:
   Exclude:
     - 'db/schema.rb'
-    - 'spec/controllers/options_controller_spec.rb'
 
 # Offense count: 3
 # Cop supports --auto-correct.
@@ -83,15 +76,6 @@ Style/EmptyLinesAroundClassBody:
     - 'app/controllers/options_controller.rb'
     - 'app/controllers/polls_controller.rb'
     - 'app/controllers/welcome_controller.rb'
-
-# Offense count: 5
-Style/EndOfLine:
-  Exclude:
-    - 'spec/factories/option_factory.rb'
-    - 'spec/factories/poll_factory.rb'
-    - 'spec/features/poll_spec.rb'
-    - 'spec/support/page_objects/poll_pages_objects.rb'
-    - 'spec/support/wait_for_ajax.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -108,21 +92,6 @@ Style/ExtraSpacing:
 Style/HashSyntax:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'config/initializers/rollbar.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: Width.
-Style/IndentationWidth:
-  Exclude:
-    - 'app/controllers/polls_controller.rb'
-    - 'app/controllers/welcome_controller.rb'
-
 # Offense count: 16
 Style/NestedParenthesizedCalls:
   Exclude:
@@ -134,31 +103,9 @@ Style/NestedParenthesizedCalls:
 Style/NumericLiterals:
   MinDigits: 15
 
-# Offense count: 8
-# Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist.
-# NamePrefix: is_, has_, have_
-# NamePrefixBlacklist: is_, has_, have_
-# NameWhitelist: is_a?
-Style/PredicateName:
-  Exclude:
-    - 'spec/support/page_objects/poll_pages_objects.rb'
-
 # Offense count: 21
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/Tab:
-  Exclude:
-    - 'app/controllers/welcome_controller.rb'
-
-# Offense count: 11
-# Cop supports --auto-correct.
-Style/TrailingWhitespace:
-  Exclude:
-    - 'app/models/poll.rb'
-    - 'spec/controllers/options_controller_spec.rb'

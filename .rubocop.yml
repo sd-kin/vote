@@ -19,7 +19,7 @@ Style/NestedParenthesizedCalls:
   Enabled: false
 
 Style/PredicateName:
-  NameWhiteList: has_
+  NameWhitelist: has_
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
