@@ -15,7 +15,7 @@ class PollsController < ApplicationController
   end
 
   def edit
-     @poll = Poll.find(params[:id])
+    @poll = Poll.find(params[:id])
   end
 
   def create

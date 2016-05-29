@@ -8,7 +8,7 @@ class Poll < ActiveRecord::Base
 
   def make_ready
     if options.empty? then errors.add(:status, "can't be ready when poll have no options")
-    else 
+    else
       self.status = 'ready'
       save
     end
@@ -18,8 +18,8 @@ class Poll < ActiveRecord::Base
     self.status = 'draft'
     save
   end
-  
-  def ready? 
+
+  def ready?
     status == 'ready'
   end
 
@@ -27,7 +27,7 @@ class Poll < ActiveRecord::Base
     status == 'draft'
   end
 
-  private 
+  private
 
   def ensure_status_is_correct
     self.status = 'draft' if options.empty?
