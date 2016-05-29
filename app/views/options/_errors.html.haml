@@ -1,5 +1,0 @@
--if option && option.errors.any?
-  #{pluralize(option.errors.count, 'error')} prohibited this poll from being saved 
-  %ul
-    -option.errors.full_messages.each do |msg|
-      %li= msg
