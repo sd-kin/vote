@@ -1,6 +1,6 @@
 <% unless @option.errors.messages.any? %>
-  $('#options_block').html('<%= escape_javascript render @option.poll.options %>');
-  $('#poll_errors_block').html('<%= escape_javascript render "polls/errors", poll: @option.poll %>');
+  $('#options').html('<%= escape_javascript render @option.poll.options %>');
+  $('#<%= dom_id(@option.poll, :errors_for) %>').html('<%= escape_javascript render "polls/errors", poll: @option.poll %>');
 <% end %>
-$('#new_option').html('<%= escape_javascript render "form", poll: @option.poll %>');
-$('#new_option_errors').html('<%= escape_javascript render "errors", option: @option %>');
+$('#<%= dom_id(Option.new) %>').html('<%= escape_javascript render "form", poll: @option.poll %>');
+$('#<%= dom_id(Option.new, :errors_for_new) %>').html('<%= escape_javascript render "errors", option: @option %>');

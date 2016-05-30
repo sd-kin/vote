@@ -1,4 +1,4 @@
-<div id=<%= "option_#{option.id}_errors" %>>
+<div id="<%= dom_id(option, :errors_for) %>">
 </div>
 
 <%= form_for option, url: poll_option_path(option.poll, option), html: {method: :put}, remote: true do |f| %>

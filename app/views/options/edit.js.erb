@@ -1,1 +1,1 @@
-$('<%= "#option_#{@option.id}" %>').html('<%= escape_javascript render "edit_form", option: @option %>');
+$('#<%= dom_id(@option) %>').html('<%= escape_javascript render "edit_form", option: @option %>');

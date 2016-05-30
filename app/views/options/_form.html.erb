@@ -1,7 +1,7 @@
-<div id ='new_option_errors'>
+<div id = "<%= dom_id(Option.new, :errors_for_new) %>">
 </div>
 
-<div id = 'new_option_form'>
+<div id = "<%= dom_id(Option.new) %>">
   <%= form_for Option.new, url: poll_options_path(poll), html: {method: :post}, remote: true do |f| %>
     <%= f.label 'Title:'%>
     <%= f.text_field :title %> <br>

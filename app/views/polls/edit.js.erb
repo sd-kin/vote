@@ -1,1 +1,2 @@
-$('#title_block').html( "<%= escape_javascript render 'form' %>");
+$("#<%= dom_id(@poll, :title_for) %>").html( "<%= escape_javascript render 'form' %>");
+
