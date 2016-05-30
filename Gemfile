@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 # use postgres as bd adapter
 gem 'pg'
-# use vote-schuktze for schuktze algorithm
+# use vote-schulze for schulze algorithm
 gem 'vote-schulze'
 # use rollbar to catch errors on rollbar.com
 gem 'rollbar'
