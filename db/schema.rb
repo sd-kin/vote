@@ -24,10 +24,11 @@ ActiveRecord::Schema.define(version: 20160530135739) do
     t.integer  "poll_id"
   end
 
-  create_table "poles", force: :cascade do |t|
+  create_table "polls", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.status   "status", default: 'draft'
   end
 
   # Could not dump table "polls" because of following StandardError
