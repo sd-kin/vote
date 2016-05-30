@@ -25,4 +25,4 @@ database:
   override:
     # load structure.sql instead of schema.rb because of rails can't dump pstgress enum type
     - cp config/database.yml.ci config/database.yml
-    - psql -U ubuntu circle_test < db/structure.sql
+    - bundle exec rake db:create db:structure:load
