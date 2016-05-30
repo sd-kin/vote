@@ -21,6 +21,6 @@ class Poll < ActiveRecord::Base
   private
 
   def ensure_status_is_correct
-    self.draft! if options.empty?
+    draft! if options.empty?
   end
 end
