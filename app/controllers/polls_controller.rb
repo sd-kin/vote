@@ -36,13 +36,13 @@ class PollsController < ApplicationController
 
   def make_ready
     @poll = Poll.find(params[:id])
-    @poll.make_ready
+    @poll.ready!
     render 'change_status'
   end
 
   def make_draft
     @poll = Poll.find(params[:id])
-    @poll.make_draft
+    @poll.draft!
     render 'change_status'
   end
 

@@ -20,19 +20,19 @@ RSpec.describe Poll, type: :model do
 
   it 'should change valid poll status to ready' do
     poll = FactoryGirl.create(:valid_poll)
-    poll.make_ready
+    poll.ready!
     expect(poll).to be_ready
   end
 
   it 'should not change non valid poll status to ready' do
     poll = FactoryGirl.create(:poll, :with_title)
-    poll.make_ready
+    poll.ready!
     expect(poll).not_to be_ready
   end
 
   it 'should change poll status from ready to draft when all options deleted' do
     poll = FactoryGirl.create(:valid_poll)
-    poll.make_ready
+    poll.ready!
     poll.options.destroy_all
     poll.touch
     expect(poll).not_to be_ready
