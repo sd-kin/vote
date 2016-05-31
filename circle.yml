@@ -4,7 +4,7 @@ machine:
   # Version of ruby to use
   ruby:
     version:
-     2.2.3
+     2.3.0
 
 ## Customize deployment commands
 deployment:
@@ -18,3 +18,11 @@ deployment:
 test:
   override:
     - RAILS_ENV=test bundle exec rspec -r rspec_junit_formatter --format RspecJunitFormatter -o $CIRCLE_TEST_REPORTS/rspec/junit.xml
+  post:
+    - bundle exec rubocop
+
+database:
+  override:
+    # load structure.sql instead of schema.rb because of rails can't dump pstgress enum type
+    - cp config/database.yml.ci config/database.yml
+    - bundle exec rake db:create db:migrate

@@ -1,0 +1,2 @@
+ $('#<%= dom_id(@poll, :status_for) %>').html('<%= escape_javascript render "status", poll: @poll %>');
+ $('#<%= dom_id(@poll, :errors_for) %>').html('<%= escape_javascript render "errors", poll: @poll %>');

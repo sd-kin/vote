@@ -1,0 +1,25 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+
+Style/Encoding:
+  Enabled: true
+
+Lint/UselessAssignment:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
+Style/PredicateName:
+  NameWhitelist: has_
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always

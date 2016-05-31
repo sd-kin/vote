@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -54,4 +55,14 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  concern :statusable do
+    member do
+      post 'make_ready'
+      post 'make_draft'
+    end
+  end
+
+  resources :polls, concerns: :statusable do
+    resources :options
+  end
 end

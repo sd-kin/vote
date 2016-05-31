@@ -1,0 +1,21 @@
+<div id = "<%= dom_id(poll) %>">
+
+  <div id = "<%= dom_id(poll, :errors_for) %>">
+    <% render 'errors', poll: poll %>
+  </div>
+  
+  <div id = "<%= dom_id(poll, :title_for) %>">
+    Title: <%= poll.title %>
+  </div>
+
+  <div id = "<%= dom_id(poll, :status_for) %>">
+    <%= render 'polls/status', poll: poll %>
+  </div>
+
+  <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
+  <ul>
+    <div id = "options">
+      <%= render poll.options %>
+    </div>
+  </ul>
+</div>  

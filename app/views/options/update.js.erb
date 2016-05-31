@@ -1,0 +1,6 @@
+<% if @option.errors.messages.any? %>
+$('#<%= dom_id(@option) %>').html('<%= escape_javascript render "edit_form", option: @option %>');
+<% else %>
+$('#<%= dom_id(@option) %>').html('<%= escape_javascript render @option %>');
+<% end %>
+$('#<%= dom_id(@option, :errors_for) %>').html('<%= escape_javascript render "errors", option: @option %>');

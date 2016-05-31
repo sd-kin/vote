@@ -1,0 +1,6 @@
+<% if @poll.errors.messages.any? %>
+  $('#<%= dom_id(@poll, :title_for) %>').html( "<%= escape_javascript render 'form' %>");
+  $('#<%= dom_id(@poll, :errors_for) %>').html('<%= escape_javascript render "polls/errors", poll: @poll %>');
+<% else %>
+  $('#<%= dom_id(@poll) %>').html('<%= escape_javascript render @poll %>');
+<% end %>
