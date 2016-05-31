@@ -2,16 +2,11 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.3
--- Dumped by pg_dump version 9.5.3
-
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -29,12 +24,25 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE status AS ENUM (
+    'draft',
+    'ready',
+    'published',
+    'closed',
+    'deleted'
+);
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: options; Type: TABLE; Schema: public; Owner: -
+-- Name: options; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE options (
@@ -67,7 +75,7 @@ ALTER SEQUENCE options_id_seq OWNED BY options.id;
 
 
 --
--- Name: polls; Type: TABLE; Schema: public; Owner: -
+-- Name: polls; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE polls (
@@ -75,7 +83,7 @@ CREATE TABLE polls (
     title character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status character varying DEFAULT 'draft'::character varying NOT NULL
+    status status DEFAULT 'draft'::status
 );
 
 
@@ -99,7 +107,7 @@ ALTER SEQUENCE polls_id_seq OWNED BY polls.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
@@ -122,7 +130,7 @@ ALTER TABLE ONLY polls ALTER COLUMN id SET DEFAULT nextval('polls_id_seq'::regcl
 
 
 --
--- Name: options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: options_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY options
@@ -130,7 +138,7 @@ ALTER TABLE ONLY options
 
 
 --
--- Name: polls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: polls_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY polls
@@ -138,7 +146,7 @@ ALTER TABLE ONLY polls
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
@@ -148,7 +156,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user",public;
 
 INSERT INTO schema_migrations (version) VALUES ('20151225233435');
 
@@ -156,5 +164,5 @@ INSERT INTO schema_migrations (version) VALUES ('20151227204113');
 
 INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
-INSERT INTO schema_migrations (version) VALUES ('20160512173735');
+INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
