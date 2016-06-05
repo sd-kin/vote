@@ -11,6 +11,7 @@ class Poll < ActiveRecord::Base
   has_many :options, dependent: :destroy
 
   serialize :vote_results, Array
+  serialize :current_state, Array
 
   validates :title, presence: true
 
