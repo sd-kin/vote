@@ -14,7 +14,7 @@ var ready = function() {
   makeChoise = function(){
                var poll_id=$('#options').data('poll-id');
                var choise_array =  $('.sortable').sortable('toArray');
-               $.post({url: '/polls/'+poll_id+'/make_choise', data: {choise_array} });
+               $.post({url: '/polls/'+poll_id+'/make_choise', data: { choise_array: choise_array } });
                          };
                        
                        };
