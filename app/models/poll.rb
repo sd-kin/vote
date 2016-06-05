@@ -18,7 +18,19 @@ class Poll < ActiveRecord::Base
   after_touch :ensure_status_is_correct
 
   def ready!
-    options.empty? ? errors.add(:status, "can't be ready when poll have no options") : super
+    if options.empty?
+      errors.add(:status, "can't be ready when poll have no options")
+    else
+      self.vote_results = []
+      self.current_state = []
+      super
+    end
+  end
+
+  def draft!
+    self.vote_results = []
+    self.current_state = []
+    super
   end
 
   private
