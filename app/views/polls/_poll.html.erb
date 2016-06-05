@@ -14,7 +14,7 @@
 
   <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
   <ul>
-    <div id = "options" class="sortable">
+    <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">
       <%= render poll.options %>
     </div>
   </ul>

@@ -34,6 +34,12 @@ class PollsController < ApplicationController
     redirect_to polls_path
   end
 
+  def make_choise
+    @poll = Poll.find(params[:id])
+    @poll.vote_results << params[:choise_array]
+    @poll.save
+  end
+
   def make_ready
     @poll = Poll.find(params[:id])
     @poll.ready!
