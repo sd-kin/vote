@@ -36,8 +36,8 @@ class PollsController < ApplicationController
 
   def make_choise
     @poll = Poll.find(params[:id])
-    @poll.vote_results << params[:choise_array]
-    @poll.save
+    @poll.save_preferences_as_weight params[:choise_array]
+    @poll.vote!
   end
 
   def make_ready

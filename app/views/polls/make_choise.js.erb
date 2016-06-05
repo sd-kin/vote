@@ -1,1 +1,1 @@
-$('#choise').html('<%= escape_javascript render text: @poll.vote_results.to_s %>');
+$('#choise').html('<%= escape_javascript render @poll.options_in_rank %>');
