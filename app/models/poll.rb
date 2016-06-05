@@ -10,6 +10,8 @@ class Poll < ActiveRecord::Base
 
   has_many :options, dependent: :destroy
 
+  serialize :vote_results, Array
+
   validates :title, presence: true
 
   after_touch :ensure_status_is_correct

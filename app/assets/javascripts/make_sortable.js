@@ -6,10 +6,8 @@ var ready = function() {
   $(function () {
     var parent = $('.sortable');
     var divs = parent.children();
-    while (divs.length) {
-        parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
-    }
-  });
+    while (divs.length) { parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]); }
+                });
 
   $('.sortable').sortable();
                        };
