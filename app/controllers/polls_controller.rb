@@ -5,6 +5,10 @@ class PollsController < ApplicationController
     @polls = Poll.all
   end
 
+  def ready_index
+    @polls = Poll.ready
+  end
+
   def show
     @poll = Poll.find(params[:id])
   end

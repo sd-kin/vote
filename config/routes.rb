@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
   resources :polls, concerns: :statusable do
     post 'make_choise', on: :member
+    get 'ready_index', on: :collection
     resources :options
   end
 end

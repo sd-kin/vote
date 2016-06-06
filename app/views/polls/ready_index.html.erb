@@ -1,0 +1,13 @@
+<h1> Polls ready to votation </h1>
+
+<body>
+<div id='polls'>
+<ul>
+  <% @polls.each do |poll| %>
+    <li>
+      <%= link_to "#{poll.title}", poll_path(poll)%>
+    </li>
+  <% end %>
+</ul>
+</div>
+</body>
