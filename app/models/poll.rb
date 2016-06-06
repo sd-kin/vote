@@ -48,9 +48,7 @@ class Poll < ActiveRecord::Base
   end
 
   def options_in_rank
-    res = []
-    current_state.map.with_index { |x, i| res[x] = options.ids[i] }
-    res.reverse!.map { |x| Option.find(x) }
+    current_state.each.with_index.inject(Hash.new {|h,k| h[k] = Array.new} ){|hash,(x, i)| hash[x] << options.ids[i]; hash}
   end
 
   private
