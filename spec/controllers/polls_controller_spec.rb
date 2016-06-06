@@ -3,7 +3,11 @@ require 'rails_helper'
 
 RSpec.describe PollsController, type: :controller do
   describe 'GET #index' do
-    let(:poll) { FactoryGirl.create(:valid_poll) }
+    before(:each) do
+      FactoryGirl.create(:valid_poll)
+      FactoryGirl.create(:valid_poll)
+      FactoryGirl.create(:valid_poll, :with_ready_status)
+    end
 
     it 'should succesful get index' do
       expect(get :index).to be_succes
@@ -16,6 +20,32 @@ RSpec.describe PollsController, type: :controller do
     it 'should render all polls' do
       get :index
       expect(assigns(:polls)).to eq(Poll.all)
+    end
+  end
+
+  describe 'GET #ready_index' do
+    before(:each) do
+      FactoryGirl.create(:valid_poll)
+      FactoryGirl.create(:valid_poll)
+      FactoryGirl.create(:valid_poll, :with_ready_status)
+    end
+
+    it 'should succesful get ready index' do
+      expect(get :ready_index).to be_succes
+    end
+
+    it 'should render ready index template' do
+      expect(get :ready_index).to render_template(:ready_index)
+    end
+
+    it 'should render ready polls' do
+      get :ready_index
+      expect(assigns(:polls)).to eq(Poll.ready)
+    end
+
+    it 'should not render all polls' do
+      get :ready_index
+      expect(assigns(:polls)).not_to eq(Poll.all)
     end
   end
 

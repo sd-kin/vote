@@ -13,6 +13,10 @@ FactoryGirl.define do
       title ''
     end
 
+    trait :with_ready_status do
+      status 'ready'
+    end
+
     trait :with_options do
       after :create do |poll|
         FactoryGirl.create_list(:valid_option, 3, poll: poll)
