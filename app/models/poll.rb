@@ -48,7 +48,7 @@ class Poll < ActiveRecord::Base
   end
 
   def options_in_rank
-    current_state.each.with_index.inject(Hash.new {|h,k| h[k] = Array.new} ){|hash,(x, i)| hash[x] << options.ids[i]; hash}
+    current_state.each.with_index.inject(Hash.new { |h, k| h[k] = [] }) { |hash, (x, i)| hash[x] << options.ids[i]; hash }
   end
 
   private

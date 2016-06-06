@@ -8,11 +8,7 @@
     Title: <%= poll.title %>
   </div>
 
-  <div id = "<%= dom_id(poll, :status_for) %>">
-    <%= render 'polls/status', poll: poll %>
-  </div>
-
-  <%= link_to 'edit', edit_poll_path( poll ), remote: true %>
+  <%= link_to 'edit', edit_poll_path( poll ), remote: true unless poll.ready?%>
   <ul>
     <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">
       <%= render poll.options %>
