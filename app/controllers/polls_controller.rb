@@ -10,7 +10,10 @@ class PollsController < ApplicationController
   end
 
   def show
-    @poll = Poll.find(params[:id])
+    id = params[:id]
+    @cookie_content = session[:voted_polls]
+    @poll = Poll.find(id)
+    @already_voted = @cookie_content&.include? id.to_s
   end
 
   def new
@@ -39,6 +42,7 @@ class PollsController < ApplicationController
   end
 
   def make_choise
+    session[:voted_polls] = params[:voted_polls]
     @poll = Poll.find(params[:id])
     @poll.save_preferences_as_weight params[:choise_array]
     @poll.vote!
