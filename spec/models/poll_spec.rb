@@ -51,7 +51,14 @@ RSpec.describe Poll, type: :model do
 
     it 'should save correct current state' do
       @poll.vote!
+
       expect(@poll.options_in_rank).to eq(Hash[[0, 1, 2].zip(@poll.options.ids.map { |x| [x] })])
+    end
+
+    it 'should increase count of saved results' do
+      preferences = @poll.options.ids.map { |id| 'option_' + id.to_s }.shuffle
+
+      expect { @poll.save_preferences_as_weight(preferences) }.to change { @poll.vote_results.count }.by(1)
     end
   end
 end

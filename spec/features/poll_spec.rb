@@ -143,3 +143,28 @@ feature 'when changing poll status' do
     expect(current_page).to have_status
   end
 end
+
+feature 'when cast a vote' do
+  scenario 'can acces vot by uniq url', js: true do
+    current_page = ShowPollPage.new
+    current_page.visit_page
+
+    expect(current_page).to have_expected_title
+  end
+
+  scenario 'can cast a vote and see that his choise accepted, but only once', js: true do
+    current_page = ShowPollPage.new
+    current_page.visit_page
+
+    expect(current_page).to have_button_for_vote
+
+    current_page.vote
+
+    expect(current_page).to have_accepted_message
+
+    visit poll_path(id: 1)
+
+    expect(current_page).to have_already_accepted_message
+    expect(current_page).to_not have_button_for_vote
+  end
+end

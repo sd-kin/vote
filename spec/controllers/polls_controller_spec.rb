@@ -64,6 +64,21 @@ RSpec.describe PollsController, type: :controller do
         get :show, id: poll.id
         expect(assigns(:poll)).to eq(poll)
       end
+
+      it 'should not mark non-voted poll as voted' do
+        xhr :get, :show, id: poll.id
+
+        expect(assigns(:already_voted)).to be false
+      end
+
+      it 'shold check if poll been already voted' do
+        preferences = poll.options.ids.map { |id| 'option_' + id.to_s }.reverse
+
+        xhr :post, :make_choise, id: poll.id, choise_array: preferences
+        xhr :get, :show, id: poll.id
+
+        expect(assigns(:already_voted)).to be true
+      end
     end
 
     context "when poll doesn't exist" do
@@ -169,11 +184,33 @@ RSpec.describe PollsController, type: :controller do
   describe 'GET #edit' do
     let(:poll) { FactoryGirl.create(:valid_poll) }
 
-    it 'should be success' do
+    it 'should be succes' do
       expect(get :edit, id: poll.id).to be_succes
     end
     it 'should render template edit' do
       expect(get :edit, id: poll.id).to render_template(:edit)
+    end
+  end
+
+  describe 'POST #make_choise' do
+    before(:each) { @poll = FactoryGirl.create(:valid_poll) }
+    let(:preferences) { @poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
+
+    it 'should be succes' do
+      expect(xhr :post, :make_choise, id: @poll.id, choise_array: preferences).to be_succes
+    end
+
+    it 'should save vote results if vote cast in first time' do
+      xhr :post, :make_choise, id: @poll.id, choise_array: preferences
+
+      expect { @poll.reload }.to change { @poll.vote_results.count }.by(1)
+    end
+
+    it 'should save vote results only once' do
+      xhr :post, :make_choise, id: @poll.id, choise_array: preferences
+      xhr :post, :make_choise, id: @poll.id, choise_array: preferences
+
+      expect { @poll.reload }.to change { @poll.vote_results.count }.by(1)
     end
   end
 end

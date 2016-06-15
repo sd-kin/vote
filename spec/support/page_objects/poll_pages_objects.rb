@@ -96,4 +96,34 @@ module PollPagesObjects
       has_content?(title)
     end
   end
+
+  class ShowPollPage < Page
+    def visit_page
+      current_page = EditPollPage.new
+      current_page.visit_page
+      current_page.create_option
+      visit poll_path(id: 1)
+      self
+    end
+
+    def has_expected_title?
+      has_content?('poll title')
+    end
+
+    def vote
+      click_button('make choise')
+    end
+
+    def has_accepted_message?
+      has_content?('choise accepted')
+    end
+
+    def has_already_accepted_message?
+      has_content?('already accepted')
+    end
+
+    def has_button_for_vote?
+      has_button?('make choise')
+    end
+  end
 end
