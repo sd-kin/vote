@@ -51,7 +51,7 @@ RSpec.describe Poll, type: :model do
 
     it 'should save correct current state' do
       @poll.vote!
-      expect(@poll.options_in_rank).to eq(Hash[[0,1,2].zip(@poll.options.ids.map{|x| [x]})])
+      expect(@poll.options_in_rank).to eq(Hash[[0, 1, 2].zip(@poll.options.ids.map { |x| [x] })])
     end
   end
 end
