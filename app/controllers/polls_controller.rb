@@ -39,7 +39,9 @@ class PollsController < ApplicationController
   end
 
   def make_choise
-    @poll = Poll.find(params[:id])
+    id = params[:id]
+    remember_id(id)
+    @poll = Poll.find(id)
     @poll.save_preferences_as_weight params[:choise_array]
     @poll.vote!
   end
@@ -60,5 +62,16 @@ class PollsController < ApplicationController
 
   def poll_params
     params.require(:poll).permit(:title)
+  end
+
+  def remember_id(id)
+    cookies[:voted_polls] ||= []
+    arr = ActiveSupport::JSON.decode(cookies[:voted_polls])
+    arr << id
+    cookies[:voted_polls] = ActiveSupport::JSON.encode(arr)
+  end
+
+  def remembered_ids
+    ActiveSupport::JSON.decode(cookies[:voted_polls]).map(&:to_i)
   end
 end
