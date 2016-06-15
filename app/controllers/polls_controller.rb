@@ -11,6 +11,7 @@ class PollsController < ApplicationController
 
   def show
     id = params[:id]
+    @already_voted = remembered_ids.include? id.to_i
     @poll = Poll.find(id)
   end
 
