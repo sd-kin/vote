@@ -1,6 +1,5 @@
 <%= render @poll %>
 <div id='choise'>
-  <%= button_to 'make choise', "javascript:makeChoise()" unless @already_voted %>
+  <%= button_to 'make choise', "javascript:makeChoise()" %>
 </div>
 <%= link_to 'back', :back %>
-cookie: <%= p @cookie_content.inspect %>
