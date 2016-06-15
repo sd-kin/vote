@@ -10,7 +10,8 @@ class PollsController < ApplicationController
   end
 
   def show
-    @poll = Poll.find(params[:id])
+    id = params[:id]
+    @poll = Poll.find(id)
   end
 
   def new
@@ -66,12 +67,12 @@ class PollsController < ApplicationController
 
   def remember_id(id)
     cookies[:voted_polls] ||= []
-    arr = ActiveSupport::JSON.decode(cookies[:voted_polls])
+    arr = JSON.parse(cookies[:voted_polls])
     arr << id
-    cookies[:voted_polls] = ActiveSupport::JSON.encode(arr)
+    cookies[:voted_polls] = JSON.generate(arr.uniq)
   end
 
   def remembered_ids
-    ActiveSupport::JSON.decode(cookies[:voted_polls]).map(&:to_i)
+    JSON.parse(cookies[:voted_polls]).map(&:to_i)
   end
 end
