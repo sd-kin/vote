@@ -5,7 +5,7 @@ class PollsController < ApplicationController
     @polls = Poll.all
   end
 
-  def ready_index
+  def ready
     @polls = Poll.ready
   end
 

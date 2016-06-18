@@ -23,7 +23,7 @@ RSpec.describe PollsController, type: :controller do
     end
   end
 
-  describe 'GET #ready_index' do
+  describe 'GET #ready' do
     before(:each) do
       FactoryGirl.create(:valid_poll)
       FactoryGirl.create(:valid_poll)
@@ -31,20 +31,20 @@ RSpec.describe PollsController, type: :controller do
     end
 
     it 'should succesful get ready index' do
-      expect(get :ready_index).to be_succes
+      expect(get :ready).to be_succes
     end
 
     it 'should render ready index template' do
-      expect(get :ready_index).to render_template(:ready_index)
+      expect(get :ready).to render_template(:ready)
     end
 
     it 'should render ready polls' do
-      get :ready_index
+      get :ready
       expect(assigns(:polls)).to eq(Poll.ready)
     end
 
     it 'should not render all polls' do
-      get :ready_index
+      get :ready
       expect(assigns(:polls)).not_to eq(Poll.all)
     end
   end
