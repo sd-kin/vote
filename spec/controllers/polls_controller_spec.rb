@@ -6,7 +6,7 @@ RSpec.describe PollsController, type: :controller do
     before(:each) do
       FactoryGirl.create(:valid_poll)
       FactoryGirl.create(:valid_poll)
-      FactoryGirl.create(:valid_poll, :with_ready_status)
+      FactoryGirl.create(:valid_poll, status: 'ready')
     end
 
     it 'should succesful get index' do
@@ -27,7 +27,7 @@ RSpec.describe PollsController, type: :controller do
     before(:each) do
       FactoryGirl.create(:valid_poll)
       FactoryGirl.create(:valid_poll)
-      FactoryGirl.create(:valid_poll, :with_ready_status)
+      FactoryGirl.create(:valid_poll, status: 'ready')
     end
 
     it 'should succesful get ready index' do
