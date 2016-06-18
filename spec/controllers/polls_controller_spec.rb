@@ -184,7 +184,7 @@ RSpec.describe PollsController, type: :controller do
   describe 'GET #edit' do
     let(:poll) { FactoryGirl.create(:valid_poll) }
 
-    it 'should be succes' do
+    it 'should be success' do
       expect(get :edit, id: poll.id).to be_succes
     end
     it 'should render template edit' do
@@ -193,36 +193,35 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #choose' do
-    before(:each) { @poll = FactoryGirl.create(:valid_poll) }
-    let(:preferences) { @poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
+    let(:poll) { FactoryGirl.create(:valid_poll) }
+    let(:preferences) { poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
 
     it 'should save preferences as weights' do
-      xhr :post, :choose, id: @poll.id, choices_array: preferences
+      xhr :post, :choose, id: poll.id, choices_array: preferences
 
       expect(assigns(:poll).vote_results.first).to eq([0, 1, 2])
     end
 
     it 'should be succes' do
-      expect(xhr :post, :choose, id: @poll.id, choices_array: preferences).to be_succes
+      expect(xhr :post, :choose, id: poll.id, choices_array: preferences).to be_succes
     end
 
     it 'should save vote results if vote cast in first time' do
-      xhr :post, :choose, id: @poll.id, choices_array: preferences
+      xhr :post, :choose, id: poll.id, choices_array: preferences
 
-      expect { @poll.reload }.to change { @poll.vote_results.count }.by(1)
+      expect { poll.reload }.to change { poll.vote_results.count }.by(1)
     end
 
     it 'should save vote results only once' do
-      xhr :post, :choose, id: @poll.id, choices_array: preferences
-      xhr :post, :choose, id: @poll.id, choices_array: preferences
-
-      expect { @poll.reload }.to change { @poll.vote_results.count }.by(1)
+      expect do
+        2.times { xhr :post, :choose, id: poll.id, choices_array: preferences }
+      end.to change { poll.reload.vote_results.count }.by(1)
     end
 
     it 'should save correct current state' do
-      xhr :post, :choose, id: @poll.id, choices_array: preferences
+      xhr :post, :choose, id: poll.id, choices_array: preferences
 
-      expect(assigns(:poll).options_in_rank).to eq(Hash[[0, 1, 2].zip(@poll.options.ids.map { |x| [x] })])
+      expect(assigns(:poll).options_in_rank).to eq(Hash[[0, 1, 2].zip(poll.options.ids.map { |x| [x] })])
     end
   end
 end
