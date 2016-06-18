@@ -67,13 +67,13 @@ class PollsController < ApplicationController
   end
 
   def remember_id(id)
-    cookies[:voted_polls] ||= '[]'
-    arr = JSON.parse(cookies[:voted_polls])
+    cookies.signed.permanent[:voted_polls] ||= '[]'
+    arr = JSON.parse(cookies.signed[:voted_polls])
     arr << id
-    cookies[:voted_polls] = JSON.generate(arr.uniq)
+    cookies.signed[:voted_polls] = JSON.generate(arr.uniq)
   end
 
   def remembered_ids
-    JSON.parse(cookies[:voted_polls] || '[]').map(&:to_i)
+    JSON.parse(cookies.signed[:voted_polls] || '[]').map(&:to_i)
   end
 end
