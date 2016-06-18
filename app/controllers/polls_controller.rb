@@ -40,10 +40,10 @@ class PollsController < ApplicationController
     redirect_to polls_path
   end
 
-  def make_choise
+  def choose
     id = params[:id]
     @poll = Poll.find(id)
-    save_preferences_as_weight(@poll, params[:choise_array]) unless remembered_ids.include? id.to_i
+    save_preferences_as_weight(@poll, params[:choices_array]) unless remembered_ids.include? id.to_i
     remember_id(id)
     @poll.vote!
   end

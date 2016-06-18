@@ -111,11 +111,11 @@ module PollPagesObjects
     end
 
     def vote
-      click_button('make choise')
+      click_button('make choice')
     end
 
     def has_accepted_message?
-      has_content?('choise accepted')
+      has_content?('choice accepted')
     end
 
     def has_already_accepted_message?
@@ -123,7 +123,7 @@ module PollPagesObjects
     end
 
     def has_button_for_vote?
-      has_button?('make choise')
+      has_button?('make choice')
     end
   end
 end
