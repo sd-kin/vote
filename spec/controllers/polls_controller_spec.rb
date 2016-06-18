@@ -196,6 +196,12 @@ RSpec.describe PollsController, type: :controller do
     before(:each) { @poll = FactoryGirl.create(:valid_poll) }
     let(:preferences) { @poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
 
+    it 'should save preferences as weights' do
+      xhr :post, :make_choise, id: @poll.id, choise_array: preferences
+
+      expect(assigns(:poll).vote_results.first).to eq([0, 1, 2])
+    end
+
     it 'should be succes' do
       expect(xhr :post, :make_choise, id: @poll.id, choise_array: preferences).to be_succes
     end
@@ -211,6 +217,12 @@ RSpec.describe PollsController, type: :controller do
       xhr :post, :make_choise, id: @poll.id, choise_array: preferences
 
       expect { @poll.reload }.to change { @poll.vote_results.count }.by(1)
+    end
+
+    it 'should save correct current state' do
+      xhr :post, :make_choise, id: @poll.id, choise_array: preferences
+
+      expect(assigns(:poll).options_in_rank).to eq(Hash[[0, 1, 2].zip(@poll.options.ids.map { |x| [x] })])
     end
   end
 end

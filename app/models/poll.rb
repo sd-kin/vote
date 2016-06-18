@@ -41,12 +41,6 @@ class Poll < ActiveRecord::Base
     save
   end
 
-  def save_preferences_as_weight(arr)
-    arr = arr.map { |opt| opt.split('_').last.to_i }.reverse
-    vote_results << options.ids.map { |opt_id| arr.index opt_id }
-    save
-  end
-
   def options_in_rank
     current_state.each.with_index.each_with_object(Hash.new { |h, k| h[k] = [] }) { |(x, i), hash| hash[x] << options.ids[i] }
   end
