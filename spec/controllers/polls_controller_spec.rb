@@ -40,12 +40,12 @@ RSpec.describe PollsController, type: :controller do
 
     it 'should render ready polls' do
       get :ready
-      expect(assigns(:polls)).to eq(Poll.ready)
+      expect(assigns(:polls)).to match_array(Poll.ready)
     end
 
     it 'should not render all polls' do
       get :ready
-      expect(assigns(:polls)).not_to eq(Poll.all)
+      expect(assigns(:polls)).not_to match_array(Poll.all)
     end
   end
 
