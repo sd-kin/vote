@@ -29,16 +29,16 @@ feature 'when create poll' do
   scenario 'should create poll with title', js: true do
     current_page = NewPollPage.new
     current_page.visit_page
-    current_page.create_poll
+    current_page.create_poll(title: 'new poll title')
     wait_for_ajax
 
-    expect(current_page).to have_correct_title
+    expect(current_page.title).to eq('new poll title')
   end
 
   scenario 'should not create poll without title', js: true do
     current_page = NewPollPage.new
     current_page.visit_page
-    current_page.create_poll('')
+    current_page.create_poll(title: '')
     wait_for_ajax
 
     expect(current_page).to have_validation_error
@@ -93,13 +93,13 @@ feature 'after create poll' do
   scenario 'should be accesible by index page', js: true do
     current_page = NewPollPage.new
     current_page.visit_page
-    current_page.create_poll(title = 'test title')
+    current_page.create_poll(title: 'test title')
     wait_for_ajax
     current_page = IndexPollsPage.new
     current_page.visit_page
     click_link('test title')
 
-    expect(current_page).to have_expected_title(title = 'test title')
+    expect(current_page.title).to eq('test title')
   end
 end
 
@@ -144,15 +144,15 @@ feature 'when changing poll status' do
   end
 end
 
-feature 'when cast a vote' do
-  scenario 'can acces vot by uniq url', js: true do
+feature 'when cast a votee' do
+  scenario 'can access vote by unique url', js: true do
     current_page = ShowPollPage.new
     current_page.visit_page
 
-    expect(current_page).to have_expected_title
+    expect(current_page.title).to eq('poll title')
   end
 
-  scenario 'can cast a vote and see that his choise accepted, but only once', js: true do
+  scenario 'can cast a vote and see that his choice accepted, but only once', js: true do
     current_page = ShowPollPage.new
     current_page.visit_page
 
