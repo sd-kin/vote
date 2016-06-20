@@ -3,11 +3,9 @@ require 'rails_helper'
 
 RSpec.describe PollsController, type: :controller do
   describe 'GET #index' do
-    before(:each) do
-      FactoryGirl.create(:valid_poll)
-      FactoryGirl.create(:valid_poll)
-      FactoryGirl.create(:valid_poll, status: 'ready')
-    end
+    let!(:poll1) { FactoryGirl.create(:valid_poll) }
+    let!(:poll2) { FactoryGirl.create(:valid_poll) }
+    let!(:poll3) { FactoryGirl.create(:valid_poll, status: 'ready') }
 
     it 'should succesful get index' do
       expect(get :index).to be_succes
@@ -24,17 +22,15 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'GET #ready' do
-    before(:each) do
-      FactoryGirl.create(:valid_poll)
-      FactoryGirl.create(:valid_poll)
-      FactoryGirl.create(:valid_poll, status: 'ready')
-    end
+    let!(:poll1) { FactoryGirl.create(:valid_poll) }
+    let!(:poll2) { FactoryGirl.create(:valid_poll) }
+    let!(:poll3) { FactoryGirl.create(:valid_poll, status: 'ready') }
 
-    it 'should succesful get ready index' do
+    it 'should succesful get ready page' do
       expect(get :ready).to be_succes
     end
 
-    it 'should render ready index template' do
+    it 'should render ready template' do
       expect(get :ready).to render_template(:ready)
     end
 
