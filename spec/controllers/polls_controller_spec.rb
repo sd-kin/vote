@@ -2,46 +2,44 @@
 require 'rails_helper'
 
 RSpec.describe PollsController, type: :controller do
-  describe 'GET #index' do
+  context 'index actions' do
     let!(:poll1) { FactoryGirl.create(:valid_poll) }
     let!(:poll2) { FactoryGirl.create(:valid_poll) }
     let!(:poll3) { FactoryGirl.create(:valid_poll, status: 'ready') }
 
-    it 'should succesful get index' do
-      expect(get :index).to be_succes
+    describe 'GET #index' do
+      it 'should succesful get index' do
+        expect(get :index).to be_succes
+      end
+
+      it 'should render index template' do
+        expect(get :index).to render_template(:index)
+      end
+
+      it 'should render all polls' do
+        get :index
+        expect(assigns(:polls)).to eq(Poll.all)
+      end
     end
 
-    it 'should render index template' do
-      expect(get :index).to render_template(:index)
-    end
+    describe 'GET #ready' do
+      it 'should succesful get ready page' do
+        expect(get :ready).to be_succes
+      end
 
-    it 'should render all polls' do
-      get :index
-      expect(assigns(:polls)).to eq(Poll.all)
-    end
-  end
+      it 'should render ready template' do
+        expect(get :ready).to render_template(:ready)
+      end
 
-  describe 'GET #ready' do
-    let!(:poll1) { FactoryGirl.create(:valid_poll) }
-    let!(:poll2) { FactoryGirl.create(:valid_poll) }
-    let!(:poll3) { FactoryGirl.create(:valid_poll, status: 'ready') }
+      it 'should render ready polls' do
+        get :ready
+        expect(assigns(:polls)).to match_array(Poll.ready)
+      end
 
-    it 'should succesful get ready page' do
-      expect(get :ready).to be_succes
-    end
-
-    it 'should render ready template' do
-      expect(get :ready).to render_template(:ready)
-    end
-
-    it 'should render ready polls' do
-      get :ready
-      expect(assigns(:polls)).to match_array(Poll.ready)
-    end
-
-    it 'should not render all polls' do
-      get :ready
-      expect(assigns(:polls)).not_to match_array(Poll.all)
+      it 'should not render all polls' do
+        get :ready
+        expect(assigns(:polls)).not_to match_array(Poll.all)
+      end
     end
   end
 
