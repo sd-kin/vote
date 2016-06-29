@@ -43,9 +43,10 @@ class PollsController < ApplicationController
   def choose
     id = params[:id]
     @poll = Poll.find(id)
-    save_preferences_as_weight(@poll, params[:choices_array]) unless remembered_ids.include? id.to_i
-    remember_id(id)
-    @poll.vote!
+    unless remembered_ids.include? id.to_i
+      @poll.vote! preferences_as_weight(@poll, params[:choices_array])
+      remember_id(id)
+    end
   end
 
   def make_ready
@@ -77,9 +78,8 @@ class PollsController < ApplicationController
     JSON.parse(cookies.signed[:voted_polls] || '[]').map(&:to_i)
   end
 
-  def save_preferences_as_weight(poll, arr)
+  def preferences_as_weight(poll, arr)
     arr = arr.map { |opt| opt.split('_').last.to_i }.reverse
-    poll.vote_results << poll.options.ids.map { |opt_id| arr.index opt_id }
-    poll.save
+    poll.options.ids.map { |opt_id| arr.index opt_id }
   end
 end

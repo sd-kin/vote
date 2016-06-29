@@ -35,7 +35,8 @@ class Poll < ActiveRecord::Base
     super
   end
 
-  def vote!
+  def vote!(preferences)
+    vote_results << preferences
     vote = SchulzeBasic.do vote_results, vote_results.first.count
     self.current_state = vote.ranks
     save
