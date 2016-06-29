@@ -29,6 +29,8 @@ gem 'vote-schulze'
 gem 'rollbar'
 # use oj for JSON serialization
 gem 'oj'
+# use jquery ui to interact with frontend elements
+gem 'jquery-ui-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

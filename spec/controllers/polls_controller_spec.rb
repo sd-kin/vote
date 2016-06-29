@@ -2,20 +2,44 @@
 require 'rails_helper'
 
 RSpec.describe PollsController, type: :controller do
-  describe 'GET #index' do
-    let(:poll) { FactoryGirl.create(:valid_poll) }
+  context 'index actions' do
+    let!(:poll1) { FactoryGirl.create(:valid_poll) }
+    let!(:poll2) { FactoryGirl.create(:valid_poll) }
+    let!(:poll3) { FactoryGirl.create(:valid_poll, status: 'ready') }
 
-    it 'should succesful get index' do
-      expect(get :index).to be_succes
+    describe 'GET #index' do
+      it 'should succesful get index' do
+        expect(get :index).to be_succes
+      end
+
+      it 'should render index template' do
+        expect(get :index).to render_template(:index)
+      end
+
+      it 'should render all polls' do
+        get :index
+        expect(assigns(:polls)).to eq(Poll.all)
+      end
     end
 
-    it 'should render index template' do
-      expect(get :index).to render_template(:index)
-    end
+    describe 'GET #ready' do
+      it 'should succesful get ready page' do
+        expect(get :ready).to be_succes
+      end
 
-    it 'should render all polls' do
-      get :index
-      expect(assigns(:polls)).to eq(Poll.all)
+      it 'should render ready template' do
+        expect(get :ready).to render_template(:ready)
+      end
+
+      it 'should render ready polls' do
+        get :ready
+        expect(assigns(:polls)).to match_array(Poll.ready)
+      end
+
+      it 'should not render all polls' do
+        get :ready
+        expect(assigns(:polls)).not_to match_array(Poll.all)
+      end
     end
   end
 
@@ -33,6 +57,21 @@ RSpec.describe PollsController, type: :controller do
       it 'shold render poll' do
         get :show, id: poll.id
         expect(assigns(:poll)).to eq(poll)
+      end
+
+      it 'should not mark non-voted poll as voted' do
+        xhr :get, :show, id: poll.id
+
+        expect(assigns(:already_voted)).to be false
+      end
+
+      it 'shold check if poll been already voted' do
+        preferences = poll.options.ids.map { |id| 'option_' + id.to_s }.reverse
+
+        xhr :post, :choose, id: poll.id, choices_array: preferences
+        xhr :get, :show, id: poll.id
+
+        expect(assigns(:already_voted)).to be true
       end
     end
 
@@ -140,10 +179,43 @@ RSpec.describe PollsController, type: :controller do
     let(:poll) { FactoryGirl.create(:valid_poll) }
 
     it 'should be success' do
-      expect(get :edit, id: poll.id).to be_succes
+      expect(get :edit, id: poll.id).to be_success
     end
     it 'should render template edit' do
       expect(get :edit, id: poll.id).to render_template(:edit)
+    end
+  end
+
+  describe 'POST #choose' do
+    let(:poll) { FactoryGirl.create(:valid_poll) }
+    let(:preferences) { poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
+
+    it 'should save preferences as weights' do
+      xhr :post, :choose, id: poll.id, choices_array: preferences
+
+      expect(assigns(:poll).vote_results.first).to eq([0, 1, 2])
+    end
+
+    it 'should be succes' do
+      expect(xhr :post, :choose, id: poll.id, choices_array: preferences).to be_succes
+    end
+
+    it 'should save vote results if vote cast in first time' do
+      xhr :post, :choose, id: poll.id, choices_array: preferences
+
+      expect { poll.reload }.to change { poll.vote_results.count }.by(1)
+    end
+
+    it 'should save vote results only once' do
+      expect do
+        2.times { xhr :post, :choose, id: poll.id, choices_array: preferences }
+      end.to change { poll.reload.vote_results.count }.by(1)
+    end
+
+    it 'should save correct current state' do
+      xhr :post, :choose, id: poll.id, choices_array: preferences
+
+      expect(assigns(:poll).options_in_rank).to eq(Hash[[0, 1, 2].zip(poll.options.ids.map { |x| [x] })])
     end
   end
 end

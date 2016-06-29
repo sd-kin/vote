@@ -24,7 +24,7 @@ module PollPagesObjects
       self
     end
 
-    def create_poll(title = 'poll title')
+    def create_poll(title: 'poll title')
       fill_in 'poll_title', with: title
       click_button 'Ok'
     end
@@ -33,8 +33,8 @@ module PollPagesObjects
       has_content?('New poll page')
     end
 
-    def has_correct_title?(title = 'poll title')
-      has_content?(title)
+    def title
+      find(:xpath, '//div[contains (@id, "title_for_poll")]').text.gsub('Title: ', '')
     end
 
     def has_form_for_title?
@@ -47,9 +47,9 @@ module PollPagesObjects
   end
 
   class EditPollPage < Page
-    def visit_page
+    def visit_page(title: 'poll title')
       visit new_poll_path
-      fill_in 'poll_title', with: 'poll title'
+      fill_in 'poll_title', with: title
       click_button 'Ok'
 
       self
@@ -92,8 +92,38 @@ module PollPagesObjects
       self
     end
 
-    def has_expected_title?(title = 'poll title')
-      has_content?(title)
+    def title
+      find(:xpath, '//div[contains (@id, "title_for_poll")]').text.gsub('Title: ', '')
+    end
+  end
+
+  class ShowPollPage < Page
+    def visit_page(title: 'poll title')
+      current_page = EditPollPage.new
+      current_page.visit_page(title: title)
+      current_page.create_option
+      visit poll_path(id: 1)
+      self
+    end
+
+    def title
+      find(:xpath, '//div[contains (@id, "title_for_poll")]').text.gsub('Title: ', '')
+    end
+
+    def vote
+      click_button('make choice')
+    end
+
+    def has_accepted_message?
+      has_content?('choice accepted')
+    end
+
+    def has_already_accepted_message?
+      has_content?('already accepted')
+    end
+
+    def has_button_for_vote?
+      has_button?('make choice')
     end
   end
 end
