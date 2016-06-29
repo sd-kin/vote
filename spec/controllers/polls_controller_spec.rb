@@ -181,7 +181,7 @@ RSpec.describe PollsController, type: :controller do
     let(:poll) { FactoryGirl.create(:valid_poll) }
 
     it 'should be success' do
-      expect(get :edit, id: poll.id).to be_succes
+      expect(get :edit, id: poll.id).to be_success
     end
     it 'should render template edit' do
       expect(get :edit, id: poll.id).to render_template(:edit)
