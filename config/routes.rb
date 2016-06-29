@@ -63,7 +63,11 @@ Rails.application.routes.draw do
   end
 
   resources :polls, concerns: :statusable do
-    post 'choose', on: :member
+    member do 
+      post 'choose'
+      get  'result'
+    end
+
     get 'ready', on: :collection
     resources :options
   end

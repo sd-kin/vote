@@ -49,6 +49,10 @@ class PollsController < ApplicationController
     end
   end
 
+  def result
+    @poll = Poll.find( params[:id] )
+  end
+
   def make_ready
     @poll = Poll.find(params[:id])
     @poll.ready!
