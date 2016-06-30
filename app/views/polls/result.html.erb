@@ -2,5 +2,7 @@
 <% if @poll.current_state.empty? %>
   No one voted yet
 <% else %>
-  poll: <%= @poll.inspect %>
+  <% @poll.options.each.with_index do |option, i|%>
+    option <%= option.title %> weight is <%= @poll.current_state[i] %> <br>
+  <% end %>
 <% end %>
