@@ -144,7 +144,7 @@ feature 'when changing poll status' do
   end
 end
 
-feature 'when cast a votee' do
+feature 'when cast a vote' do
   scenario 'can access vote by unique url', js: true do
     current_page = ShowPollPage.new
     current_page.visit_page
@@ -157,14 +157,35 @@ feature 'when cast a votee' do
     current_page.visit_page
 
     expect(current_page).to have_button_for_vote
+    expect(current_page).not_to have_link_for_results
 
     current_page.vote
 
     expect(current_page).to have_accepted_message
+    expect(current_page).to have_link_for_results
+    expect(current_page).not_to have_button_for_vote
 
     visit poll_path(id: 1)
 
-    expect(current_page).to have_already_accepted_message
+    expect(current_page).to have_accepted_message
+    expect(current_page).to have_link_for_results
     expect(current_page).to_not have_button_for_vote
+  end
+end
+
+feature 'when want to see poll result' do
+  given(:poll) { FactoryGirl.create(:valid_poll) }
+
+  scenario 'cant do it before vote' do
+    visit result_poll_path(id: poll.id)
+    expect(page).to have_content('You can see results after you make your choice.')
+  end
+
+  scenario 'after voted current poll', js: true do
+    visit poll_path(id: poll.id)
+    click_button('make choice')
+    click_link('see results')
+
+    expect(page).to have_content('weight is')
   end
 end

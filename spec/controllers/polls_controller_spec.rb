@@ -218,4 +218,12 @@ RSpec.describe PollsController, type: :controller do
       expect(assigns(:poll).options_in_rank).to eq(Hash[[0, 1, 2].zip(poll.options.ids.map { |x| [x] })])
     end
   end
+
+  describe 'GET #result' do
+    let(:poll) { FactoryGirl.create(:valid_poll) }
+
+    it 'should success get result page' do
+      expect(get :result, id: poll.id).to be_succes
+    end
+  end
 end
