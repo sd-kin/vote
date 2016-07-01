@@ -46,11 +46,14 @@ class PollsController < ApplicationController
     unless remembered_ids.include? id.to_i
       @poll.vote! preferences_as_weight(@poll, params[:choices_array])
       remember_id(id)
+      @already_voted = true
     end
   end
 
   def result
-    @poll = Poll.find( params[:id] )
+    id = params[:id]
+    @poll = Poll.find(id)
+    @already_voted = remembered_ids.include? id.to_i
   end
 
   def make_ready

@@ -1,8 +1,10 @@
 <h1> Poll result </h1>
 <% if @poll.current_state.empty? %>
   No one voted yet
-<% else %>
+<% elsif @already_voted %>
   <% @poll.options.each.with_index do |option, i|%>
     option <%= option.title %> weight is <%= @poll.current_state[i] %> <br>
   <% end %>
+<% else %>
+  You can see results after you make your choice.
 <% end %>

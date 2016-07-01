@@ -1,8 +1,5 @@
 <%= render @poll %>
 <div id='choice'>
-  <% if @already_voted %>
-    <h2> Your choice already accepted </h2>
-  <% end %>
-  <%= button_to 'make choice', "javascript:makeChoice()" unless @already_voted %>
+  <%= render 'choice' %>
 </div>
 <%= link_to 'back', :back %>

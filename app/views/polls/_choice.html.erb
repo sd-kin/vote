@@ -1,0 +1,6 @@
+<% if @already_voted %>
+    <h2> Your choice already accepted </h2>
+    <%= link_to 'see results', result_poll_path %>
+<% else %>
+  <%= button_to 'make choice', "javascript:makeChoice()" %>
+<% end %>
