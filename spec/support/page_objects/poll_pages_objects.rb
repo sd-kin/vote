@@ -115,7 +115,7 @@ module PollPagesObjects
     end
 
     def has_accepted_message?
-      has_content?('choice accepted')
+      has_content?('choice has been accepted')
     end
 
     def has_button_for_vote?
