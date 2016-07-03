@@ -145,6 +145,8 @@ feature 'when changing poll status' do
 end
 
 feature 'when cast a vote' do
+  given(:poll) { FactoryGirl.create(:valid_poll) }
+
   scenario 'can access vote by unique url', js: true do
     current_page = ShowPollPage.new
     current_page.visit_page
@@ -153,23 +155,22 @@ feature 'when cast a vote' do
   end
 
   scenario 'can cast a vote and see that his choice accepted, but only once', js: true do
-    current_page = ShowPollPage.new
-    current_page.visit_page
+    visit poll_path(id: poll.id)
 
-    expect(current_page).to have_button_for_vote
-    expect(current_page).not_to have_link_for_results
+    expect(page).to have_button('make choice')
+    expect(page).not_to have_link('see results')
 
-    current_page.vote
+    click_button('make choice')
 
-    expect(current_page).to have_accepted_message
-    expect(current_page).to have_link_for_results
-    expect(current_page).not_to have_button_for_vote
+    expect(page).to have_content('choice has been accepted')
+    expect(page).to have_link('see results')
+    expect(page).not_to have_button('make choice')
 
-    visit poll_path(id: 1)
+    visit poll_path(id: poll.id)
 
-    expect(current_page).to have_accepted_message
-    expect(current_page).to have_link_for_results
-    expect(current_page).to_not have_button_for_vote
+    expect(page).to have_content('choice has been accepted')
+    expect(page).to have_link('see results')
+    expect(page).not_to have_button('make choice')
   end
 end
 
