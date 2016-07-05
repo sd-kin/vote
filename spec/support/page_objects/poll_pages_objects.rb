@@ -115,15 +115,15 @@ module PollPagesObjects
     end
 
     def has_accepted_message?
-      has_content?('choice accepted')
-    end
-
-    def has_already_accepted_message?
-      has_content?('already accepted')
+      has_content?('choice has been accepted')
     end
 
     def has_button_for_vote?
       has_button?('make choice')
+    end
+
+    def has_link_for_results?
+      has_link?('see results')
     end
   end
 end
