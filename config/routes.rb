@@ -71,4 +71,6 @@ Rails.application.routes.draw do
     get 'ready', on: :collection
     resources :options
   end
+
+  resources :users
 end
