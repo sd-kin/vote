@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'when create user' do
+    it 'should can create user with username and email' do
+      expect{FactoryGirl.create(:user)}.to change{User.count}.by(1)
+    end
+  end
 end
