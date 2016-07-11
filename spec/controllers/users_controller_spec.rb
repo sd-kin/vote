@@ -2,11 +2,11 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-  context 'GET#index' do
-    let!(:user1) { FactoryGirl.create(:user) }
-    let!(:user2) { FactoryGirl.create(:user) }
-    let!(:user3) { FactoryGirl.create(:user) }
+  let!(:user1) { FactoryGirl.create(:user) }
+  let!(:user2) { FactoryGirl.create(:user) }
+  let!(:user3) { FactoryGirl.create(:user) }
 
+  context 'GET#index' do
     subject { get :index }
 
     it 'should be success' do
@@ -50,6 +50,32 @@ RSpec.describe UsersController, type: :controller do
       it 'should render template new' do
         expect(subject).to render_template(:new)
       end
+    end
+  end
+
+  context 'GET#edit' do
+    subject { get :edit, id: user1.id }
+
+    it 'should be success' do
+      expect(subject).to be_success
+    end
+
+    it 'should not build new user' do
+      subject
+      expect(assigns(:user)).not_to be_a_new(User)
+    end
+  end
+
+  context 'GET#show' do
+    subject { get :show, id: user1.id }
+
+    it 'should be success' do
+      expect(subject).to be_success
+    end
+
+    it 'should get correct user' do
+      subject
+      expect(assigns(:user)).to eq(user1)
     end
   end
 end
