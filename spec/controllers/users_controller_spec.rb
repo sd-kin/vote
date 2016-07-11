@@ -7,24 +7,39 @@ RSpec.describe UsersController, type: :controller do
     let!(:user2) { FactoryGirl.create(:user) }
     let!(:user3) { FactoryGirl.create(:user) }
 
+    subject { get :index }
+
     it 'should be success' do
-      expect(get :index).to be_success
+      expect(subject).to be_success
     end
 
     it 'should get all users' do
-      get :index
+      subject
       expect(assigns(:users)).to match_array([user1, user2, user3])
     end
   end
 
   context 'GET#new' do
+    subject { get :new }
     it 'should be success' do
-      expect(get :new).to be_success
+      expect(subject).to be_success
     end
 
     it 'should build new user' do
-      get :new
+      subject
       expect(assigns(:user)).to be_a_new(User)
+    end
+  end
+
+  context 'POST#create' do
+    subject { post :create, user: FactoryGirl.attributes_for(:user) }
+
+    it 'should redirect to ready polls' do
+      expect(subject).to redirect_to(ready_polls_path)
+    end
+
+    it 'should create user' do
+      expect { subject }.to change { User.count }.by(1)
     end
   end
 end
