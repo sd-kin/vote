@@ -9,8 +9,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create user_params
-    redirect_to ready_polls_path
+    @user = User.new user_params
+    if @user.save
+      redirect_to ready_polls_path
+    else
+      render :new
+    end
   end
 
   private

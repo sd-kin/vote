@@ -32,14 +32,24 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'POST#create' do
-    subject { post :create, user: FactoryGirl.attributes_for(:user) }
+    context 'when success' do
+      subject { post :create, user: FactoryGirl.attributes_for(:user) }
 
-    it 'should redirect to ready polls' do
-      expect(subject).to redirect_to(ready_polls_path)
+      it 'should redirect to ready polls' do
+        expect(subject).to redirect_to(ready_polls_path)
+      end
+
+      it 'should create user' do
+        expect { subject }.to change { User.count }.by(1)
+      end
     end
 
-    it 'should create user' do
-      expect { subject }.to change { User.count }.by(1)
+    context 'when not success' do
+      subject { post :create, user: FactoryGirl.attributes_for(:user, username: '') }
+
+      it 'should render template new' do
+        expect(subject).to render_template(:new)
+      end
     end
   end
 end
