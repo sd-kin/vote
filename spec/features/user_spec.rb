@@ -30,3 +30,23 @@ feature 'when create user' do
     end
   end
 end
+
+feature 'when update user' do
+  given(:user) { FactoryGirl.create(:user) }
+
+  context 'and input incorrect' do
+    scenario 'should render error without username' do
+      visit edit_user_path user.id
+      fill_in 'user_username', with: ''
+      click_button 'Update User'
+      expect(page).to have_content('Username can\'t be blank')
+    end
+
+    scenario 'should render error without email' do
+      visit edit_user_path user.id
+      fill_in 'user_email', with: ''
+      click_button 'Update User'
+      expect(page).to have_content('Email can\'t be blank')
+    end
+  end
+end

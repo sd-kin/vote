@@ -78,4 +78,38 @@ RSpec.describe UsersController, type: :controller do
       expect(assigns(:user)).to eq(user1)
     end
   end
+
+  context 'PUT#update' do
+    context 'when input correct' do
+      it 'should redirect to show page' do
+        expect(put :update, id: user1.id, user: { username: user1.username, email: user1.email }).to redirect_to(user_path)
+      end
+
+      it 'should change only user username' do
+        put :update, id: user2.id, user: { username: 'newname', email: user2.email }
+        expect(assigns(:user).username).to eq("newname")
+      end
+
+      it 'should change user username' do
+        put :update, id: user2.id, user: { username: user2.username, email: 'new@mail' }
+        expect(assigns(:user).email).to eq("new@mail")
+      end
+
+      it 'should not change anything if nothing changed' do
+        put :update, id: user1.id, user: { username: user1.username, email: user1.email }
+        expect(assigns(:user)).to eq(user1)
+      end
+    end
+
+    context 'when input incorrect' do
+      it 'should render edit template' do
+        expect(put :update, id: user1.id, user: { username: '', email: user1.email }).to render_template(:edit)
+      end
+
+      it 'should not change anything ' do
+        put :update, id: user1.id, user: { username: '', email: user1.email }
+        expect(assigns(:user)).to eq(user1)
+      end
+    end
+  end
 end
