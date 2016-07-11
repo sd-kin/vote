@@ -1,4 +1,4 @@
-Users index page
+Users index page <br>
 <% @users.each do |user| %>
-  <%= user.username %>
+  <%= link_to user.username, user_path(user.id) %>
 <% end %>

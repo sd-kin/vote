@@ -112,4 +112,19 @@ RSpec.describe UsersController, type: :controller do
       end
     end
   end
+
+  context 'DELETE#destroy' do
+    it 'should redirect to users index' do
+      expect(delete :destroy, id: user1.id).to redirect_to(users_path)
+    end
+
+    it 'should decrease count of users' do
+      expect { delete :destroy, id: user2.id }.to change { User.count }.by(-1)
+    end
+
+    it 'should delete user' do
+      delete :destroy, id: user3.id
+      expect { get :show, id: user3.id }.to raise_exception(ActiveRecord::RecordNotFound)
+    end
+  end
 end
