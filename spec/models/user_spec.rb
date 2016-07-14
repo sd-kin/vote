@@ -14,5 +14,20 @@ RSpec.describe User, type: :model do
     it 'should not create user without email' do
       expect { FactoryGirl.create(:user, email: '') }.to raise_exception(ActiveRecord::RecordInvalid)
     end
+
+    it 'should create user only with unique email' do
+      FactoryGirl.create(:user, email: 'unique@email.test')
+      expect { FactoryGirl.create(:user, email: 'unique@email.test') }.to raise_exception(ActiveRecord::RecordInvalid)
+    end
+
+    it 'should have case-insensitive validation' do
+      FactoryGirl.create(:user, email: 'unique@email.test')
+      expect { FactoryGirl.create(:user, email: 'uNiQUe@eMail.test') }.to raise_exception(ActiveRecord::RecordInvalid)
+    end
+
+    it 'should store email in downcase' do
+      user = FactoryGirl.create(:user, email: 'uNiQUe@eMail.test')
+      expect(user.email).to eq('unique@email.test')
+    end
   end
 end

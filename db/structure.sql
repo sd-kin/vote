@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -52,7 +51,8 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer
+    poll_id integer,
+    row_order integer
 );
 
 
@@ -196,6 +196,13 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -216,9 +223,13 @@ INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
+INSERT INTO schema_migrations (version) VALUES ('20160603184925');
+
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605155750');
 
 INSERT INTO schema_migrations (version) VALUES ('20160709145804');
+
+INSERT INTO schema_migrations (version) VALUES ('20160714233816');
 
