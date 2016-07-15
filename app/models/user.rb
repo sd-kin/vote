@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class User < ActiveRecord::Base
+  has_secure_password
+
   validates :username, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 
