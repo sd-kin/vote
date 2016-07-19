@@ -5,6 +5,7 @@ AllCops:
     - 'vendor/**/*'
     - 'spec/fixtures/**/*'
     - 'tmp/**/*'
+  TargetRubyVersion: 2.3
 
 Style/Encoding:
   Enabled: true
