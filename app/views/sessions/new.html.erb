@@ -5,7 +5,7 @@ Log in page
   </div>
 <% end %>
 
-<%= form_for :session, url: sessions_path do |f| %>
+<%= form_for :session, url: login_path do |f| %>
   <%= f.label 'Email:' %>
   <%= f.email_field :email %><br>
   <%= f.label 'Password:' %>
