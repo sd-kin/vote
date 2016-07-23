@@ -33,14 +33,18 @@ RSpec.describe UsersController, type: :controller do
 
   context 'POST#create' do
     context 'when success' do
-      subject { post :create, user: FactoryGirl.attributes_for(:user) }
+      before(:each) { post :create, user: FactoryGirl.attributes_for(:user) }
 
       it 'should redirect to ready polls' do
-        expect(subject).to redirect_to(ready_polls_path)
+        is_expected.to redirect_to(ready_polls_path)
       end
 
-      it 'should create user' do
-        expect { subject }.to change { User.count }.by(1)
+      it 'should create user', :skip_before do
+        expect { post :create, user: FactoryGirl.attributes_for(:user) }.to change { User.count }.by(1)
+      end
+
+      it 'should log in user' do
+        expect(session[:user_id]).to eq(assigns(:user).id)
       end
     end
 
