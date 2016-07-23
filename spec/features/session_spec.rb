@@ -3,21 +3,25 @@ require 'rails_helper'
 
 # test reopening browser simulation
 feature 'when reopen browswer' do
-  it 'should lost logged in status' do
-    user = FactoryGirl.create(:user)
-    visit root_path
-    click_link 'log in'
-    fill_in 'session_email', with: user.email
-    fill_in 'session_password', with: user.password
-    click_button 'Log in'
+  context 'and user was logged in' do
+    before(:each) do
+      user = FactoryGirl.create(:user)
+      visit root_path
+      click_link 'log in'
+      fill_in 'session_email', with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+    end
 
-    expect(page).to have_link('log out')
+    scenario 'should stay logged in' do
+      expect(page).to have_link('log out')
 
-    expire_cookies
+      expire_cookies
 
-    visit root_path
+      visit root_path
 
-    expect(page).to have_link('log in')
+      expect(page).to have_link('log out')
+    end
   end
 end
 
