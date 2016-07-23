@@ -1,6 +1,26 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
+# test reopening browser simulation
+feature 'when reopen browswer' do
+  it 'should lost logged in status' do
+    user = FactoryGirl.create(:user)
+    visit root_path
+    click_link 'log in'
+    fill_in 'session_email', with: user.email
+    fill_in 'session_password', with: user.password
+    click_button 'Log in'
+
+    expect(page).to have_link('log out')
+
+    expire_cookies
+
+    visit root_path
+
+    expect(page).to have_link('log in')
+  end
+end
+
 feature 'when open log in page' do
   scenario 'should see login form' do
     visit login_path

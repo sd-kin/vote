@@ -21,10 +21,14 @@
 require 'factory_girl_rails'
 require 'capybara/poltergeist'
 require 'support/wait_for_ajax.rb'
+require 'support/expire_cookies.rb'
 Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
+  # include method waits untill all ajax request closed
   config.include WaitForAjax, type: :feature
+  # include browser closing simulation methods
+  config.include ExpireCookies, type: :feature
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
