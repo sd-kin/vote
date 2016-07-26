@@ -8,9 +8,17 @@ module ExpireCookies
     end
   end
 
+  def get_cookie(name)
+    cookies.select { |c| c.name == name }
+  end
+
   private
 
   def cookies
-    Capybara.current_session.driver.browser.current_session.instance_variable_get(:@rack_mock_session).cookie_jar.instance_variable_get(:@cookies)
+    cookiejar.instance_variable_get(:@cookies)
+  end
+
+  def cookiejar
+    Capybara.current_session.driver.browser.current_session.instance_variable_get(:@rack_mock_session).cookie_jar
   end
 end

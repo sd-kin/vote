@@ -30,4 +30,33 @@ RSpec.describe User, type: :model do
       expect(user.email).to eq('unique@email.test')
     end
   end
+
+  context 'when check remember token' do
+    it 'should return true if token correct' do
+      user = FactoryGirl.create(:user)
+      user.remember
+
+      expect(user.correct_token?(user.remember_token)).to be_truthy
+    end
+
+    it 'should return false if token incorrect' do
+      user = FactoryGirl.create(:user)
+      user.remember
+
+      expect(user.correct_token?(SecureRandom.urlsafe_base64)).to be_falsey
+    end
+
+    it 'should return false if user dont remembered' do
+      user = FactoryGirl.create(:user)
+
+      expect(user.correct_token?(user.remember_token)).to be_falsey
+    end
+
+    it 'should return false if token is nil' do
+      user = FactoryGirl.create(:user)
+      user.remember
+
+      expect(user.correct_token?(nil)).to be_falsey
+    end
+  end
 end

@@ -17,10 +17,19 @@ feature 'when reopen browswer' do
       expect(page).to have_link('log out')
 
       expire_cookies
-
       visit root_path
 
-      expect(page).to have_link('log out')
+      expect(page).to have_content('log out')
+    end
+
+    scenario 'should resist cookie hijacking' do
+      saved_cookie = get_cookie('user_id').first
+      click_link 'log out'
+      expire_cookies
+      cookies << saved_cookie
+      visit root_path
+
+      expect(page).to have_link('log in')
     end
   end
 end
