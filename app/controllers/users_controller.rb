@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class UsersController < ApplicationController
-  before_action :authenticate_user, only: [:edit, :update]
+  before_action :authorize_user, only: [:edit, :update]
 
   def index
     @users = User.all
@@ -46,11 +46,10 @@ class UsersController < ApplicationController
 
   private
 
-  def authenticate_user
-    unless logged_in?
-      flash[:error] = 'authentication needed'
-      redirect_to login_path
-    end
+  def authorize_user
+    return if logged_in?
+    flash[:error] = 'authentication needed'
+    redirect_to login_path
   end
 
   def user_params
