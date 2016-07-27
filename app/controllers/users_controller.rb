@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class UsersController < ApplicationController
+  before_action :authenticate_user, only: [:edit, :update]
+
   def index
     @users = User.all
   end
@@ -24,6 +26,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find params[:id]
+    redirect_to edit_user_path(current_user) unless @user == current_user
   end
 
   def update
@@ -37,11 +40,18 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find params[:id]
-    @user.destroy
+    @user.destroy if @user == current_user
     redirect_to users_path
   end
 
   private
+
+  def authenticate_user
+    unless logged_in?
+      flash[:error] = 'authentication needed'
+      redirect_to login_path
+    end
+  end
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation)

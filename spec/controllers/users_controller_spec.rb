@@ -56,14 +56,33 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'GET#edit' do
-    before(:each) { get :edit, id: user1.id }
-
     it 'should be success' do
+      session[:user_id] = user1.id
+      get :edit, id: user1.id
+
       expect(response).to be_success
     end
 
     it 'should not build new user' do
+      get :edit, id: user1.id
+
       expect(assigns(:user)).not_to be_a_new(User)
+    end
+
+    context 'when user not current user' do
+      it 'should redirect to login page if not logged in' do
+        session[:user_id] = nil
+        get :edit, id: user1.id
+
+        expect(response).to redirect_to login_path
+      end
+
+      it 'should reddirect to current user edit path' do
+        session[:user_id] = user2.id
+        get :edit, id: user1.id
+
+        expect(response).to redirect_to edit_user_path(user2)
+      end
     end
   end
 
@@ -82,20 +101,24 @@ RSpec.describe UsersController, type: :controller do
   context 'PUT#update' do
     context 'when input correct' do
       it 'should redirect to show page' do
+        session[:user_id] = user1.id
         expect(put :update, id: user1.id, user: { username: user1.username, email: user1.email }).to redirect_to(user_path)
       end
 
       it 'should change only user username' do
+        session[:user_id] = user2.id
         put :update, id: user2.id, user: { username: 'newname', email: user2.email }
         expect(assigns(:user).username).to eq("newname")
       end
 
       it 'should change user username' do
+        session[:user_id] = user2.id
         put :update, id: user2.id, user: { username: user2.username, email: 'new@mail' }
         expect(assigns(:user).email).to eq("new@mail")
       end
 
       it 'should not change anything if nothing changed' do
+        session[:user_id] = user1.id
         put :update, id: user1.id, user: { username: user1.username, email: user1.email }
         expect(assigns(:user)).to eq(user1)
       end
@@ -103,10 +126,12 @@ RSpec.describe UsersController, type: :controller do
 
     context 'when input incorrect' do
       it 'should render edit template' do
+        session[:user_id] = user1.id
         expect(put :update, id: user1.id, user: { username: '', email: user1.email }).to render_template(:edit)
       end
 
       it 'should not change anything ' do
+        session[:user_id] = user1.id
         put :update, id: user1.id, user: { username: '', email: user1.email }
         expect(assigns(:user)).to eq(user1)
       end
@@ -115,14 +140,22 @@ RSpec.describe UsersController, type: :controller do
 
   context 'DELETE#destroy' do
     it 'should redirect to users index' do
+      session[:user_id] = user1.id
       expect(delete :destroy, id: user1.id).to redirect_to(users_path)
     end
 
-    it 'should decrease count of users' do
+    it 'should decrease count of users if login as deleted user' do
+      session[:user_id] = user2.id
       expect { delete :destroy, id: user2.id }.to change { User.count }.by(-1)
     end
 
+    it 'should not decrease count of users unless login as deleted user' do
+      session[:user_id] = user1.id
+      expect { delete :destroy, id: user2.id }.to change { User.count }.by(0)
+    end
+
     it 'should delete user' do
+      session[:user_id] = user3.id
       delete :destroy, id: user3.id
       expect { get :show, id: user3.id }.to raise_exception(ActiveRecord::RecordNotFound)
     end

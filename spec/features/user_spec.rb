@@ -33,6 +33,15 @@ end
 
 feature 'when update user' do
   given(:user) { FactoryGirl.create(:user) }
+  before(:each) do
+      user = FactoryGirl.create(:user)
+      visit root_path
+      click_link 'log in'
+      fill_in 'session_email', with: user.email
+      fill_in 'session_password', with: user.password
+      check 'session_remember_me'
+      click_button 'Log in'
+    end
 
   context 'and input incorrect' do
     scenario 'should render error without username' do
