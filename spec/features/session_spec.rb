@@ -10,6 +10,7 @@ feature 'when reopen browswer' do
       click_link 'log in'
       fill_in 'session_email', with: user.email
       fill_in 'session_password', with: user.password
+      check 'session_remember_me'
       click_button 'Log in'
     end
 
@@ -74,5 +75,48 @@ feature 'after successfull login' do
     click_link 'log out'
     expect(page).to have_link('log in')
     expect(page).to have_no_link('log out')
+  end
+end
+
+feature 'remember me function' do
+  scenario 'shoul have checkbox on login page' do
+    visit login_path
+
+    expect(page).to have_css('input[type=checkbox]#session_remember_me')
+  end
+
+  context 'if checkbox checked' do
+    it 'should remember user' do
+      user = FactoryGirl.create(:user)
+      visit root_path
+      click_link 'log in'
+      fill_in 'session_email', with: user.email
+      fill_in 'session_password', with: user.password
+      check 'session_remember_me'
+      click_button 'Log in'
+
+      expire_cookies
+
+      visit root_path
+
+      expect(page).to have_link('log out')
+    end
+  end
+
+  context 'if checkbox not checked' do
+    it 'should not remember user' do
+      user = FactoryGirl.create(:user)
+      visit root_path
+      click_link 'log in'
+      fill_in 'session_email', with: user.email
+      fill_in 'session_password', with: user.password
+      click_button 'Log in'
+
+      expire_cookies
+
+      visit root_path
+
+      expect(page).to have_link('log in')
+    end
   end
 end

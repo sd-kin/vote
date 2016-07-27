@@ -10,5 +10,7 @@ Log in page
   <%= f.email_field :email %><br>
   <%= f.label 'Password:' %>
   <%= f.password_field :password %><br>
+  <%= f.label 'remember me' %>
+  <%= f.check_box :remember_me %>
   <%= f.submit 'Log in' %>
 <% end %>
