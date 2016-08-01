@@ -29,6 +29,10 @@ RSpec.describe User, type: :model do
       user = FactoryGirl.create(:user, email: 'uNiQUe@eMail.test')
       expect(user.email).to eq('unique@email.test')
     end
+
+    it 'should be not activated' do
+      expect(FactoryGirl.create(:user)).to_not be_activated
+    end
   end
 
   context 'when check remember token' do

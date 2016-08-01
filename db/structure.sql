@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -52,7 +51,8 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer
+    poll_id integer,
+    row_order integer
 );
 
 
@@ -129,7 +129,10 @@ CREATE TABLE users (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     password_digest character varying,
-    remember_digest character varying
+    remember_digest character varying,
+    activation_digest character varying,
+    activated boolean DEFAULT false,
+    activated_at timestamp without time zone
 );
 
 
@@ -225,6 +228,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
+INSERT INTO schema_migrations (version) VALUES ('20160603184925');
+
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605155750');
@@ -236,4 +241,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160714233816');
 INSERT INTO schema_migrations (version) VALUES ('20160715025202');
 
 INSERT INTO schema_migrations (version) VALUES ('20160726110000');
+
+INSERT INTO schema_migrations (version) VALUES ('20160801154134');
 
