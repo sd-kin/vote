@@ -33,6 +33,14 @@ RSpec.describe User, type: :model do
     it 'should be not activated' do
       expect(FactoryGirl.create(:user)).to_not be_activated
     end
+
+    it 'should have activation token' do
+      expect(FactoryGirl.create(:user).activation_token).to_not be_nil
+    end
+
+    it 'should have activation digest' do
+      expect(FactoryGirl.create(:user).activation_digest).to_not be_nil
+    end
   end
 
   context 'when check remember token' do
