@@ -34,7 +34,7 @@ module SessionsHelper
 
   def user_from_cookie
     user = User.find_by(id: cookies.signed[:user_id])
-    user&.correct_token?(cookies.signed[:remember_token]) ? user : nil
+    user&.correct_token?(:remember, cookies.signed[:remember_token]) ? user : nil
   end
 
   def user_from_session
