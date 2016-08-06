@@ -18,8 +18,8 @@ RSpec.describe UserMailer, type: :mailer do
   end
 
   describe "password_reset" do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:mail) { UserMailer.password_reset user }
+    let(:user) { FactoryGirl.create(:user, reset_token: SecureRandom.urlsafe_base64) }
+    let(:mail) { UserMailer.password_reset(user) }
 
     it "renders the headers" do
       expect(mail.subject).to eq("Password reset")

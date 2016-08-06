@@ -132,7 +132,9 @@ CREATE TABLE users (
     remember_digest character varying,
     activation_digest character varying,
     activated boolean DEFAULT false,
-    activated_at timestamp without time zone
+    activated_at timestamp without time zone,
+    reset_digest character varying,
+    reset_sent_at timestamp without time zone
 );
 
 
@@ -243,4 +245,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160715025202');
 INSERT INTO schema_migrations (version) VALUES ('20160726110000');
 
 INSERT INTO schema_migrations (version) VALUES ('20160801154134');
+
+INSERT INTO schema_migrations (version) VALUES ('20160805205610');
 
