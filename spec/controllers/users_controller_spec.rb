@@ -159,5 +159,14 @@ RSpec.describe UsersController, type: :controller do
       delete :destroy, id: user3.id
       expect { get :show, id: user3.id }.to raise_exception(ActiveRecord::RecordNotFound)
     end
+
+    it 'should simulate deleting error' do
+      user = FactoryGirl.create(:user)
+      session[:user_id] = user.id
+
+      expect(user).to receive(:destroy).and_return(false)
+      expect(User).to receive(:find).and_return(user)
+      expect(delete :destroy, id: user.id).to render_template(:show)
+    end
   end
 end

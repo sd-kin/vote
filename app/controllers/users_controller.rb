@@ -41,8 +41,11 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find params[:id]
-    @user.destroy if @user == current_user
-    redirect_to users_path
+    if @user == current_user && @user.destroy
+      redirect_to users_path
+    else
+      render :show
+    end
   end
 
   private
