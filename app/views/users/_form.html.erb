@@ -1,0 +1,13 @@
+<div id="<%= dom_id(@user) %>">
+  <%= form_for @user do |f| %>
+    <%= f.label 'Login:' %>
+    <%= f.text_field :username %> <br>
+    <%= f.label 'Email:' %>
+    <%= f.email_field :email %> <br>
+    <%= f.label 'Password' %>
+    <%= f.password_field :password %> <br>
+    <%= f.label 'confirm password' %>
+    <%= f.password_field :password_confirmation %> <br>
+    <%= f.submit %>
+  <% end %>
+</div>

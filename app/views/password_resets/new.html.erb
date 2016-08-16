@@ -1,0 +1,14 @@
+<h1>Password Resets</h1>
+<% unless flash.nil? %>
+  <div id='notifications'>
+    <% flash.each do |k,msg| %>
+      <%= msg %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_for :password_reset, url: password_resets_path do |f| %>
+  <%= f.label 'Email:' %>
+  <%= f.email_field :email %>
+  <%= f.submit 'Submit' %>
+<% end %>

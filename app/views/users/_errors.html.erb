@@ -1,0 +1,10 @@
+<% if @user.errors.any? %>
+    <div id="errors">
+      <%= pluralize(@user.errors.count, 'error')%>  prohibited this poll from being saved 
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+<% end %>
