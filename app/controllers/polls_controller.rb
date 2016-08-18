@@ -25,7 +25,7 @@ class PollsController < ApplicationController
   end
 
   def create
-    @poll = Poll.new(poll_params)
+    @poll = Poll.new(poll_params.merge(user_id: current_user.id))
     @correct = @poll.save
   end
 

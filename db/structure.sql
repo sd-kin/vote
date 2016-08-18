@@ -86,7 +86,8 @@ CREATE TABLE polls (
     updated_at timestamp without time zone NOT NULL,
     status status DEFAULT 'draft'::status,
     vote_results text,
-    current_state character varying
+    current_state character varying,
+    user_id integer
 );
 
 
@@ -203,6 +204,13 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_polls_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_polls_on_user_id ON polls USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -214,6 +222,14 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: fk_rails_16e77efa22; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY polls
+    ADD CONSTRAINT fk_rails_16e77efa22 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -247,4 +263,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160726110000');
 INSERT INTO schema_migrations (version) VALUES ('20160801154134');
 
 INSERT INTO schema_migrations (version) VALUES ('20160805205610');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818012805');
 

@@ -11,6 +11,7 @@ class Poll < ActiveRecord::Base
   }
 
   has_many :options, dependent: :destroy
+  belongs_to :user
 
   serialize :vote_results, Array
   serialize :current_state, Array

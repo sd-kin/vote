@@ -14,10 +14,6 @@ RSpec.describe Poll, type: :model do
     expect(FactoryGirl.build(:valid_poll)).to be_valid
   end
 
-  it 'should increase counter' do
-    expect { FactoryGirl.create(:valid_poll) }.to change { Poll.count }.by(1)
-  end
-
   it 'should change valid poll status to ready' do
     poll = FactoryGirl.create(:valid_poll)
     poll.ready!
@@ -36,5 +32,15 @@ RSpec.describe Poll, type: :model do
     poll.options.destroy_all
     poll.touch
     expect(poll).not_to be_ready
+  end
+
+  context 'when create poll' do
+    it 'should increase counter' do
+      expect { FactoryGirl.create(:valid_poll) }.to change { Poll.count }.by(1)
+    end
+
+    it 'should have owner id' do
+      expect(FactoryGirl.create(:valid_poll).user_id).to_not be_nil
+    end
   end
 end
