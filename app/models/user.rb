@@ -21,6 +21,18 @@ class User < ActiveRecord::Base
     SecureRandom.urlsafe_base64
   end
 
+  def self.create_anonimous
+    anonimous_token = SecureRandom.hex(8)
+    create username: anonimous_token, email: "#{anonimous_token}@stub",
+           password: anonimous_token, password_confirmation: anonimous_token,
+           anonimous: true
+  end
+
+  def register(user_params)
+    create_activation_digest
+    update(user_params.merge(anonimous: false))
+  end
+
   def correct_token?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?

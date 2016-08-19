@@ -37,20 +37,35 @@ RSpec.describe UsersController, type: :controller do
         is_expected.to redirect_to(ready_polls_path)
       end
 
-      it 'should create user', :skip_before do
-        expect { post :create, user: FactoryGirl.attributes_for(:user) }.to change { User.count }.by(1)
-      end
-
       it 'should log in user' do
         expect(session[:user_id]).to eq(assigns(:user).id)
       end
     end
 
     context 'when not success' do
-      before(:each) { post :create, user: FactoryGirl.attributes_for(:user, username: '') }
-
       it 'should render template new' do
+        post :create, user: FactoryGirl.attributes_for(:user, username: '')
         is_expected.to render_template(:new)
+      end
+    end
+
+    context 'when anonimous user exists' do
+      let!(:user) { User.create_anonimous }
+      before(:each) { session[:user_id] = user.id }
+
+      it 'should not create user' do
+        expect { post :create, user: FactoryGirl.attributes_for(:user) }.to change { User.count }.by(0)
+      end
+
+      it 'should not change user id' do
+        post :create, user: FactoryGirl.attributes_for(:user)
+        expect(assigns(:user).id).to eq(user.id)
+      end
+    end
+
+    context 'when anonimous user does notexists' do
+      it 'should create user', :skip_before do
+        expect { post :create, user: FactoryGirl.attributes_for(:user) }.to change { User.count }.by(1)
       end
     end
   end

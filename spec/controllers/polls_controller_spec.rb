@@ -102,13 +102,13 @@ RSpec.describe PollsController, type: :controller do
 
       context 'and user logged in' do
         subject { xhr :post, :create, poll: poll_params }
-        before(:each) {session[:user_id] = FactoryGirl.create(:user).id}
+        before(:each) { session[:user_id] = FactoryGirl.create(:user).id }
 
         context 'and poll saving' do
           it { is_expected.to be_succes }
 
           it 'should increase count of polls' do
-            expect{ xhr :post, :create, poll: poll_params }.to change { Poll.count }.by(1)
+            expect { xhr :post, :create, poll: poll_params }.to change { Poll.count }.by(1)
           end
         end
       end

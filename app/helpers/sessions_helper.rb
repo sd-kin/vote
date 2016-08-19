@@ -24,10 +24,11 @@ module SessionsHelper
 
   def current_user
     @current_user ||= session[:user_id] ? user_from_session : user_from_cookie
+    @current_user ||= create_anonimous
   end
 
   def logged_in?
-    !current_user.nil?
+    !(current_user.nil? || current_user.anonimous?)
   end
 
   private
@@ -39,5 +40,9 @@ module SessionsHelper
 
   def user_from_session
     User.find_by(id: session[:user_id])
+  end
+
+  def create_anonimous
+    User.create_anonimous
   end
 end

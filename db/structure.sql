@@ -51,8 +51,7 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer,
-    row_order integer
+    poll_id integer
 );
 
 
@@ -135,7 +134,8 @@ CREATE TABLE users (
     activated boolean DEFAULT false,
     activated_at timestamp without time zone,
     reset_digest character varying,
-    reset_sent_at timestamp without time zone
+    reset_sent_at timestamp without time zone,
+    anonimous boolean DEFAULT false
 );
 
 
@@ -246,8 +246,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
-INSERT INTO schema_migrations (version) VALUES ('20160603184925');
-
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605155750');
@@ -265,4 +263,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160801154134');
 INSERT INTO schema_migrations (version) VALUES ('20160805205610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818012805');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818061937');
 
