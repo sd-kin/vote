@@ -43,6 +43,9 @@ module SessionsHelper
   end
 
   def create_anonimous
-    User.create_anonimous
+    user = User.create_anonimous
+    cookies.signed.permanent[:user_id] = user.id
+    log_in user
+    user
   end
 end
