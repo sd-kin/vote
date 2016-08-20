@@ -43,6 +43,10 @@ class Poll < ActiveRecord::Base
     save!
   end
 
+  def accessible_for?(user)
+    user_id == user.id
+  end
+
   def options_in_rank
     current_state.each.with_index.each_with_object(Hash.new { |h, k| h[k] = [] }) { |(x, i), hash| hash[x] << options.ids[i] }
   end

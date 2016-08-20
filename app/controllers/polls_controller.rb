@@ -58,7 +58,11 @@ class PollsController < ApplicationController
 
   def make_ready
     @poll = Poll.find(params[:id])
-    @poll.ready!
+    if @poll.accessible_for?(current_user)
+      @poll.ready!
+    else
+      @poll.errors.add(:access_denied, 'only owner can do that')
+    end
     render 'change_status'
   end
 
