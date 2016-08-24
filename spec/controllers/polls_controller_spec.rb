@@ -237,4 +237,56 @@ RSpec.describe PollsController, type: :controller do
       expect(get :result, id: poll.id).to be_succes
     end
   end
+
+  describe 'POST #make_ready' do
+    let(:poll) { FactoryGirl.create(:valid_poll) }
+    let(:user) { FactoryGirl.create(:user) }
+    before(:each) { poll.update_attribute(:user_id, user.id) }
+
+    context 'if user owns poll' do
+      before(:each) { session[:user_id] = user.id }
+      it 'change status to ready' do
+        expect { xhr :post, :make_ready, id: poll.id }.to change { poll.reload.status }.from('draft').to('ready')
+      end
+    end
+
+    context 'if user doesnt own poll' do
+      before(:each) { session[:user_id] = user.id + 1 }
+
+      it 'not change status from draft' do
+        expect { xhr :post, :make_ready, id: poll.id }.not_to change { poll.reload.status }
+      end
+
+      it 'increase errors count' do
+        xhr :post, :make_ready, id: poll.id
+        expect(assigns(:poll).errors.count).to eq(1)
+      end
+    end
+  end
+
+  describe 'POST #make_draft' do
+    let(:poll) { FactoryGirl.create(:valid_poll, status: 'ready') }
+    let(:user) { FactoryGirl.create(:user) }
+    before(:each) { poll.update_attribute(:user_id, user.id) }
+
+    context 'if user owns poll' do
+      before(:each) { session[:user_id] = user.id }
+      it 'change status to draft' do
+        expect { xhr :post, :make_draft, id: poll.id }.to change { poll.reload.status }.from('ready').to('draft')
+      end
+    end
+
+    context 'if user doesnt own poll' do
+      before(:each) { session[:user_id] = user.id + 1 }
+
+      it 'not change status from ready' do
+        expect { xhr :post, :make_draft, id: poll.id }.not_to change { poll.reload.status }
+      end
+
+      it 'increase errors count' do
+        xhr :post, :make_draft, id: poll.id
+        expect(assigns(:poll).errors.count).to eq(1)
+      end
+    end
+  end
 end
