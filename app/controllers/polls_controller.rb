@@ -10,6 +10,12 @@ class PollsController < ApplicationController
     @polls = Poll.ready
   end
 
+  def users
+    user = params[:user]
+    @polls = Poll.where(user_id: user)
+    render :ready
+  end
+
   def show
     id = params[:id]
     @already_voted = remembered_ids.include? id.to_i
