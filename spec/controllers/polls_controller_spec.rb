@@ -137,63 +137,157 @@ RSpec.describe PollsController, type: :controller do
 
   describe 'DELETE #destroy' do
     let(:poll) { FactoryGirl.create(:valid_poll) }
-    it 'should be success' do
-      delete :destroy, id: poll.id
+    let(:user) { FactoryGirl.create(:user) }
 
-      expect(response).to have_http_status(302)
+    context 'when user own poll' do
+      before(:each) do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id
+      end
+
+      it 'should be success' do
+        delete :destroy, id: poll.id
+
+        expect(response).to have_http_status(302)
+      end
+      it 'should decrease count of polls' do
+        expect { delete :destroy, id: poll.id }.to change { Poll.count }.by(-1)
+      end
     end
-    it 'should decrease count of polls' do
-      poll = FactoryGirl.create(:valid_poll)
-      expect { delete :destroy, id: poll.id }.to change { Poll.count }.by(-1)
+
+    context 'when user dont own poll' do
+      before(:each) do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id + 1
+      end
+
+      it 'be success' do
+        delete :destroy, id: poll.id
+
+        expect(response).to have_http_status(302)
+      end
+      it 'not decrease count of polls' do
+        expect { delete :destroy, id: poll.id }.to_not change { Poll.count }
+      end
+
+      it 'have access denied error' do
+        delete :destroy, id: poll.id
+        expect(assigns(:poll).errors[:access_denied]).to eq(["only owner can do that"])
+      end
     end
   end
 
   describe 'PUT #update' do
-    context 'when valid attributes' do
-      let(:poll) { FactoryGirl.create(:valid_poll) }
-      let(:updated_poll_params) { FactoryGirl.attributes_for(:updated_poll) }
+    let(:poll) { FactoryGirl.create(:valid_poll) }
+    let(:user) { FactoryGirl.create(:user) }
 
-      it 'should be succes' do
-        expect(xhr :put, :update, id: poll.id, poll: updated_poll_params).to have_http_status(200)
+    context 'when user own poll' do
+      before(:each) do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id
       end
-      it 'should brocessed by update js template' do
-        expect(xhr :put, :update, id: poll.id, poll: updated_poll_params).to render_template(:update)
+
+      context 'and atributes valid' do
+        let(:updated_poll_params) { FactoryGirl.attributes_for(:updated_poll) }
+
+        it 'should be succes' do
+          expect(xhr :put, :update, id: poll.id, poll: updated_poll_params).to have_http_status(200)
+        end
+        it 'should brocessed by update js template' do
+          expect(xhr :put, :update, id: poll.id, poll: updated_poll_params).to render_template(:update)
+        end
+        it 'should change poll attributes' do
+          xhr :put, :update, id: poll.id, poll: updated_poll_params
+          poll.reload
+          expect(poll.title).to eq(updated_poll_params[:title])
+        end
+        it 'should not increase count of polls' do
+          poll = FactoryGirl.create(:valid_poll)
+          expect { xhr :put, :update, id: poll.id, poll: updated_poll_params }.to change { Poll.count }.by(0)
+        end
       end
-      it 'should change poll attributes' do
-        xhr :put, :update, id: poll.id, poll: updated_poll_params
-        poll.reload
-        expect(poll.title).to eq(updated_poll_params[:title])
+
+      context 'and attributes not valid' do
+        let(:not_valid_poll_params) { FactoryGirl.attributes_for(:poll, title: nil) }
+        it 'should be success' do
+          expect(xhr :put, :update, id: poll.id, poll: not_valid_poll_params).to be_success
+        end
+        it 'should processing by update js template' do
+          expect(xhr :put, :update, id: poll.id, poll: not_valid_poll_params).to render_template :update
+        end
+        it 'should have title validation message' do
+          xhr :put, :update, id: poll.id, poll: not_valid_poll_params
+          expect(assigns(:poll).errors[:title]).to eq(["can't be blank"])
+        end
+        it 'not change poll attributes' do
+          xhr :put, :update, id: poll.id, poll: not_valid_poll_params
+          poll.reload
+          expect(poll.title).not_to eq(not_valid_poll_params[:title])
+        end
       end
-      it 'should not increase count of polls' do
-        poll = FactoryGirl.create(:valid_poll)
-        expect { xhr :put, :update, id: poll.id, poll: updated_poll_params }.to change { Poll.count }.by(0)
+
+      context 'when user dont own poll' do
+        let(:poll_params) { FactoryGirl.attributes_for(:updated_poll) }
+        before(:each) do
+          poll.update_attribute(:user_id, user.id)
+          session[:user_id] = user.id + 1
+        end
+
+        it 'not change poll attributes' do
+          xhr :put, :update, id: poll.id, poll: poll_params
+          poll.reload
+          expect(poll.title).not_to eq(poll_params[:title])
+        end
+        it 'redirect to ready_polls_path' do
+          expect(xhr :put, :update, id: poll.id, poll: poll_params).to redirect_to ready_polls_path
+        end
+        it 'have acces denied message' do
+          xhr :put, :update, id: poll.id, poll: poll_params
+          expect(assigns(:poll).errors[:access_denied]).to eq(["only owner can do that"])
+        end
       end
     end
 
-    context 'when not valid attributes' do
-      let(:not_valid_poll_params) { FactoryGirl.attributes_for(:poll, title: nil) }
-      let(:poll) { FactoryGirl.create(:valid_poll) }
-      it 'should be success' do
-        expect(xhr :put, :update, id: poll.id, poll: not_valid_poll_params).to be_success
-      end
-      it 'should processing by update js template' do
-        expect(xhr :put, :update, id: poll.id, poll: not_valid_poll_params).to render_template :update
-      end
-      it 'should have title validation message' do
-        xhr :put, :update, id: poll.id, poll: not_valid_poll_params
-        expect(assigns(:poll).errors[:title]).to eq(["can't be blank"])
+    context 'when user dont own poll' do
+      before(:each) do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id + 1
       end
     end
   end
 
   describe 'GET #edit' do
     let(:poll) { FactoryGirl.create(:valid_poll) }
+    let(:user) { FactoryGirl.create(:user) }
 
-    it 'should be success' do
-      expect(get :edit, id: poll.id).to be_success
+    context 'when user own poll' do
+      before(:each) do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id
+      end
+
+      it 'render template edit' do
+        expect(get :edit, id: poll.id).to render_template(:edit)
+      end
+
+      it 'should be success' do
+        expect(get :edit, id: poll.id).to be_success
+      end
     end
-    it 'should render template edit' do
-      expect(get :edit, id: poll.id).to render_template(:edit)
+
+    context 'when user doesnt own poll' do
+      it 'render template edit' do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id + 1
+        expect(get :edit, id: poll.id).to redirect_to ready_polls_path
+      end
+
+      it 'render template edit' do
+        poll.update_attribute(:user_id, user.id)
+        session[:user_id] = user.id + 1
+        get :edit, id: poll.id
+        expect(assigns(:poll).errors.count).to eq(1)
+      end
     end
   end
 

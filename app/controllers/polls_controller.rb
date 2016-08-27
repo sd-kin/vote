@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 class PollsController < ApplicationController
+  include Accessible
 
   def index
     @polls = Poll.all
@@ -22,6 +23,7 @@ class PollsController < ApplicationController
 
   def edit
     @poll = Poll.find(params[:id])
+    execute_if_accessible(subject: @poll)
   end
 
   def create
@@ -31,12 +33,12 @@ class PollsController < ApplicationController
 
   def update
     @poll = Poll.find(params[:id])
-    @poll.update poll_params
+    execute_if_accessible(subject: @poll) { |poll| poll.update poll_params }
   end
 
   def destroy
     @poll = Poll.find(params[:id])
-    @poll.destroy
+    execute_if_accessible(subject: @poll, redirect: false, &:destroy)
     redirect_to polls_path
   end
 
@@ -58,17 +60,13 @@ class PollsController < ApplicationController
 
   def make_ready
     @poll = Poll.find(params[:id])
-    @poll.accessible_for?(current_user) ? @poll.ready! : @poll.errors.add(:access_denied, 'only owner can do that')
+    execute_if_accessible(subject: @poll, redirect: false, &:ready!)
     render 'change_status'
   end
 
   def make_draft
     @poll = Poll.find(params[:id])
-    if @poll.accessible_for?(current_user)
-      @poll.draft!
-    else
-      @poll.errors.add(:access_denied, 'only owner can do that')
-    end
+    execute_if_accessible(subject: @poll, redirect: false, &:draft!)
     render 'change_status'
   end
 
