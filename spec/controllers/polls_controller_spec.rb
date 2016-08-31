@@ -172,7 +172,7 @@ RSpec.describe PollsController, type: :controller do
 
       it 'have access denied error' do
         delete :destroy, id: poll.id
-        expect(assigns(:poll).errors[:access_denied]).to eq(["only owner can do that"])
+        expect(flash[:error]).to eq("only owner can do that")
       end
     end
   end
@@ -243,15 +243,8 @@ RSpec.describe PollsController, type: :controller do
         end
         it 'have acces denied message' do
           xhr :put, :update, id: poll.id, poll: poll_params
-          expect(assigns(:poll).errors[:access_denied]).to eq(["only owner can do that"])
+          expect(flash[:error]).to eq("only owner can do that")
         end
-      end
-    end
-
-    context 'when user dont own poll' do
-      before(:each) do
-        poll.update_attribute(:user_id, user.id)
-        session[:user_id] = user.id + 1
       end
     end
   end
@@ -286,7 +279,7 @@ RSpec.describe PollsController, type: :controller do
         poll.update_attribute(:user_id, user.id)
         session[:user_id] = user.id + 1
         get :edit, id: poll.id
-        expect(assigns(:poll).errors.count).to eq(1)
+        expect(flash[:error]).to_not be_empty
       end
     end
   end
@@ -353,7 +346,7 @@ RSpec.describe PollsController, type: :controller do
 
       it 'increase errors count' do
         xhr :post, :make_ready, id: poll.id
-        expect(assigns(:poll).errors.count).to eq(1)
+        expect(flash[:error]).to_not be_empty
       end
     end
   end
@@ -379,7 +372,7 @@ RSpec.describe PollsController, type: :controller do
 
       it 'increase errors count' do
         xhr :post, :make_draft, id: poll.id
-        expect(assigns(:poll).errors.count).to eq(1)
+        expect(flash[:error]).to_not be_empty
       end
     end
   end

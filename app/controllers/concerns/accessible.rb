@@ -8,8 +8,14 @@ module Accessible
     if subject.accessible_for?(current_user)
       yield(subject) if block_given?
     else
-      subject.errors.add(:access_denied, 'only owner can do that')
-      redirect_to ready_polls_path if redirect
+      flash[:error] = 'only owner can do that'
+      redirect_to url_for_subject(subject) if redirect
     end
+  end
+
+  private
+
+  def url_for_subject(obj)
+    obj.is_a?(Poll) ? ready_polls_path : url_for(obj)
   end
 end

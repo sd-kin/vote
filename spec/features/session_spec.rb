@@ -51,7 +51,7 @@ feature 'when try to log in' do
       fill_in 'session_password', with: '1234567890'
       click_button 'Log in'
 
-      expect(page).to have_css('#log_in_error')
+      expect(page).to have_css('#flash_messages')
     end
   end
 end

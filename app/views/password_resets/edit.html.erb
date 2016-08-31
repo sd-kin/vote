@@ -1,11 +1,4 @@
 <h1>Password Resets</h1>
-<% unless flash.nil? %>
-  <div id='notifications'>
-    <% flash.each do |k,msg| %>
-      <%= msg %>
-    <% end %>
-  </div>
-<% end %>
 
 <%= form_for @user, url: password_reset_path(params[:id]) do |f| %>
   <%= hidden_field_tag :email, @user.email %>
