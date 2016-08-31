@@ -37,5 +37,19 @@ RSpec.describe OptionsController, type: :controller do
   end
 
   describe 'DESTROY #delete' do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:poll) { FactoryGirl.create(:valid_poll) }
+    let(:option) { poll.options.first }
+    subject { xhr :delete, :destroy, id: option, poll_id: poll }
+
+    context 'when user owns poll' do
+      before(:each) { session[:user_id] = user.id }
+
+      it {is_expected.to be_success}
+    end
+
+    context 'when user dont owns poll' do
+      before(:each) { session[:user_id] = user.id + 1 }
+    end
   end
 end

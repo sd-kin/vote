@@ -3,17 +3,11 @@ class PollsController < ApplicationController
   include Accessible
 
   def index
-    @polls = Poll.all
+    @polls = params[:user] ? Poll.where(user_id: params[:user]) : Poll.all
   end
 
   def ready
     @polls = Poll.ready
-  end
-
-  def users
-    user = params[:user]
-    @polls = Poll.where(user_id: user)
-    render :ready
   end
 
   def show
@@ -33,7 +27,7 @@ class PollsController < ApplicationController
   end
 
   def create
-    @poll = Poll.new(poll_params.merge(user_id: current_user.id))
+    @poll = current_user.polls.new(poll_params)
     @correct = @poll.save
   end
 

@@ -68,10 +68,7 @@ Rails.application.routes.draw do
       get  'result'
     end
 
-    collection do
-      get 'ready'
-      get 'users'
-    end
+    get 'ready', on: :collection
     resources :options
   end
 
