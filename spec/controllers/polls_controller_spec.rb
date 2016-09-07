@@ -9,7 +9,7 @@ RSpec.describe PollsController, type: :controller do
 
     describe 'GET #index' do
       it 'should succesful get index' do
-        expect(get :index).to be_succes
+        expect(get :index).to be_success
       end
 
       it 'should render index template' do
@@ -24,7 +24,7 @@ RSpec.describe PollsController, type: :controller do
 
     describe 'GET #ready' do
       it 'should succesful get ready page' do
-        expect(get :ready).to be_succes
+        expect(get :ready).to be_success
       end
 
       it 'should render ready template' do
@@ -46,8 +46,8 @@ RSpec.describe PollsController, type: :controller do
   describe 'GET #show' do
     let(:poll) { FactoryGirl.create(:valid_poll) }
     context 'when poll exists' do
-      it 'should have succes responce' do
-        expect(get :show, id: poll.id).to be_succes
+      it 'should have success responce' do
+        expect(get :show, id: poll.id).to be_success
       end
 
       it 'shold render show view' do
@@ -84,8 +84,8 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'GET #new' do
-    it 'shold be succes' do
-      expect(get :new).to be_succes
+    it 'shold be success' do
+      expect(get :new).to be_success
     end
     it 'should render template new' do
       expect(get :new).to render_template(:new)
@@ -105,7 +105,7 @@ RSpec.describe PollsController, type: :controller do
         before(:each) { session[:user_id] = FactoryGirl.create(:user).id }
 
         context 'and poll saving' do
-          it { is_expected.to be_succes }
+          it { is_expected.to be_success }
 
           it 'should increase count of polls' do
             expect { xhr :post, :create, poll: poll_params }.to change { Poll.count }.by(1)
@@ -115,7 +115,7 @@ RSpec.describe PollsController, type: :controller do
 
       context 'and user not logged in' do
         it 'should be success' do
-          expect(xhr :post, :create, poll: poll_params).to be_succes
+          expect(xhr :post, :create, poll: poll_params).to be_success
         end
       end
     end
@@ -123,7 +123,7 @@ RSpec.describe PollsController, type: :controller do
     context 'when not valid attributes' do
       let(:poll_params) { FactoryGirl.attributes_for(:poll, :with_empty_title) }
       it 'should be success' do
-        expect(xhr :post, :create, poll: poll_params).to be_succes
+        expect(xhr :post, :create, poll: poll_params).to be_success
       end
       it 'should processing by template create' do
         expect(xhr :post, :create, poll: poll_params).to render_template(:create)
@@ -190,7 +190,7 @@ RSpec.describe PollsController, type: :controller do
       context 'and atributes valid' do
         let(:updated_poll_params) { FactoryGirl.attributes_for(:updated_poll) }
 
-        it 'should be succes' do
+        it 'should be success' do
           expect(xhr :put, :update, id: poll.id, poll: updated_poll_params).to have_http_status(200)
         end
         it 'should brocessed by update js template' do
@@ -294,8 +294,8 @@ RSpec.describe PollsController, type: :controller do
       expect(assigns(:poll).vote_results.first).to eq([0, 1, 2])
     end
 
-    it 'should be succes' do
-      expect(xhr :post, :choose, id: poll.id, choices_array: preferences).to be_succes
+    it 'should be success' do
+      expect(xhr :post, :choose, id: poll.id, choices_array: preferences).to be_success
     end
 
     it 'should save vote results if vote cast in first time' do
@@ -321,7 +321,7 @@ RSpec.describe PollsController, type: :controller do
     let(:poll) { FactoryGirl.create(:valid_poll) }
 
     it 'should success get result page' do
-      expect(get :result, id: poll.id).to be_succes
+      expect(get :result, id: poll.id).to be_success
     end
   end
 
