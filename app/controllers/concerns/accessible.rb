@@ -9,13 +9,7 @@ module Accessible
       yield(subject) if block_given?
     else
       flash[:error] = 'only owner can do that'
-      redirect_to url_for_subject(subject) if redirect
+      redirect_to ready_polls_path if redirect
     end
-  end
-
-  private
-
-  def url_for_subject(obj)
-    obj.is_a?(Poll) ? ready_polls_path : url_for(obj)
   end
 end
