@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :polls, dependent: :destroy
 
-  validates :username, presence: true
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 
   before_save :normalize_email
