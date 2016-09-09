@@ -9,7 +9,7 @@ module Accessible
       yield(subject) if block_given?
     else
       flash[:error] = 'only owner can do that'
-      redirect_to ready_polls_path if redirect
+      redirect_to root_path if redirect
     end
   end
 end

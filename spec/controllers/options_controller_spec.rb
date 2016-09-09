@@ -40,7 +40,7 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to ready_polls_path }
+      it { is_expected.to redirect_to root_path }
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to ready_polls_path }
+      it { is_expected.to redirect_to root_path }
     end
   end
 
@@ -78,7 +78,7 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to ready_polls_path }
+      it { is_expected.to redirect_to root_path }
 
       it 'not change option title' do
         subject

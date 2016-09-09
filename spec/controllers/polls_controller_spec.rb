@@ -217,7 +217,7 @@ RSpec.describe PollsController, type: :controller do
           expect(users_poll.reload.title).not_to eq(poll_params[:title])
         end
 
-        it { is_expected.to redirect_to ready_polls_path }
+        it { is_expected.to redirect_to root_path }
 
         it 'have acces denied message' do
           subject
@@ -241,7 +241,7 @@ RSpec.describe PollsController, type: :controller do
     context 'when user doesnt own poll' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to ready_polls_path }
+      it { is_expected.to redirect_to root_path }
 
       it 'have error' do
         subject

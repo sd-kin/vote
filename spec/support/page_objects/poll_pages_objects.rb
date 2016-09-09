@@ -14,7 +14,7 @@ module PollPagesObjects
     end
 
     def correct_page?
-      has_content?('Hello world')
+      has_content?('Ready polls')
     end
   end
 
