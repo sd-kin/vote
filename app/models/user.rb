@@ -2,11 +2,16 @@
 class User < ActiveRecord::Base
   has_secure_password
 
+  has_one  :rating, as: :rateable, dependent: :destroy
+  has_many :rates, foreign_key: 'rater_id'
+  has_many :raters, through: :rating, source: :raters
+
   validates :username, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 
-  before_save :normalize_email
+  before_save   :normalize_email
   before_create :create_activation_digest
+  after_create  :create_rating
 
   attr_accessor :remember_token, :activation_token, :reset_token
 

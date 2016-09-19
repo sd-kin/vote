@@ -51,8 +51,7 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer,
-    row_order integer
+    poll_id integer
 );
 
 
@@ -86,7 +85,8 @@ CREATE TABLE polls (
     updated_at timestamp without time zone NOT NULL,
     status status DEFAULT 'draft'::status,
     vote_results text,
-    current_state character varying
+    current_state character varying,
+    user_id integer
 );
 
 
@@ -107,6 +107,71 @@ CREATE SEQUENCE polls_id_seq
 --
 
 ALTER SEQUENCE polls_id_seq OWNED BY polls.id;
+
+
+--
+-- Name: rates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE rates (
+    id integer NOT NULL,
+    rating_id integer,
+    rater_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: rates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE rates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: rates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE rates_id_seq OWNED BY rates.id;
+
+
+--
+-- Name: ratings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ratings (
+    id integer NOT NULL,
+    value integer DEFAULT 0,
+    rateable_id integer,
+    rateable_type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE ratings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE ratings_id_seq OWNED BY ratings.id;
 
 
 --
@@ -134,7 +199,8 @@ CREATE TABLE users (
     activated boolean DEFAULT false,
     activated_at timestamp without time zone,
     reset_digest character varying,
-    reset_sent_at timestamp without time zone
+    reset_sent_at timestamp without time zone,
+    anonimous boolean DEFAULT false
 );
 
 
@@ -175,6 +241,20 @@ ALTER TABLE ONLY polls ALTER COLUMN id SET DEFAULT nextval('polls_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY rates ALTER COLUMN id SET DEFAULT nextval('rates_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ratings ALTER COLUMN id SET DEFAULT nextval('ratings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -195,11 +275,41 @@ ALTER TABLE ONLY polls
 
 
 --
+-- Name: rates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY rates
+    ADD CONSTRAINT rates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY ratings
+    ADD CONSTRAINT ratings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_polls_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_polls_on_user_id ON polls USING btree (user_id);
+
+
+--
+-- Name: index_ratings_on_rateable_type_and_rateable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ratings_on_rateable_type_and_rateable_id ON ratings USING btree (rateable_type, rateable_id);
 
 
 --
@@ -217,6 +327,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_16e77efa22; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY polls
+    ADD CONSTRAINT fk_rails_16e77efa22 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -229,8 +347,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151227204113');
 INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
-
-INSERT INTO schema_migrations (version) VALUES ('20160603184925');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
@@ -247,4 +363,12 @@ INSERT INTO schema_migrations (version) VALUES ('20160726110000');
 INSERT INTO schema_migrations (version) VALUES ('20160801154134');
 
 INSERT INTO schema_migrations (version) VALUES ('20160805205610');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818012805');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818061937');
+
+INSERT INTO schema_migrations (version) VALUES ('20160918090302');
+
+INSERT INTO schema_migrations (version) VALUES ('20160919151155');
 
