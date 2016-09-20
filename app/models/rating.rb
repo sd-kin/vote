@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Rating < ActiveRecord::Base
   belongs_to :rateable, polymorphic: true, autosave: true
   has_many :rates
@@ -5,9 +6,11 @@ class Rating < ActiveRecord::Base
 
   def increase
     self.value += 1
+    save
   end
 
   def decrease
     self.value -= 1
+    save
   end
 end

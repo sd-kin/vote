@@ -43,11 +43,11 @@ RSpec.describe User, type: :model do
     end
 
     it 'should have rating = 0' do
-       expect(FactoryGirl.create(:user).rating.value).to eq(0)
+      expect(FactoryGirl.create(:user).rating.value).to eq(0)
     end
 
     it 'should have no raters' do
-       expect(FactoryGirl.create(:user).raters).to be_empty
+      expect(FactoryGirl.create(:user).raters).to be_empty
     end
   end
 
