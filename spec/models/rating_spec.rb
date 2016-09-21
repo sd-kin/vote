@@ -11,6 +11,11 @@ RSpec.describe Rating, type: :model do
         expect { rating.increase_by(user: user) }.to change { rating.value }.by(1)
       end
 
+      it 'increase rating only once' do
+        rating.increase_by(user: user)
+        expect { rating.increase_by(user: user) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
       it 'adds user to upvoters' do
         rating.increase_by(user: user)
         expect(rating.reload.upvoters).to include(user)
@@ -20,11 +25,29 @@ RSpec.describe Rating, type: :model do
         rating.increase_by(user: user)
         expect(rating.reload.downvoters).to_not include(user)
       end
+
+      it 'change rated status' do
+        expect(rating.increased_by?(user)).to be_falsey
+        rating.increase_by(user: user)
+        expect(rating.reload.increased_by?(user)).to be_truthy
+      end
+
+      it 'removes user from decreased' do
+        rating.decrease_by(user: user)
+        expect(rating.decreased_by?(user)).to be_truthy
+        rating.increase_by(user: user)
+        expect(rating.decreased_by?(user)).to be_falsey
+      end
     end
 
     context '#decrease' do
       it 'decrease rating by 1' do
         expect { rating.decrease_by(user: user) }.to change { rating.value }.by(-1)
+      end
+
+      it 'decrease rating only once' do
+        rating.decrease_by(user: user)
+        expect { rating.decrease_by(user: user) }.to raise_error(ActiveRecord::RecordInvalid)
       end
 
       it 'not add user to upvoters' do
@@ -35,6 +58,19 @@ RSpec.describe Rating, type: :model do
       it 'adds user to downvoters' do
         rating.decrease_by(user: user)
         expect(rating.reload.downvoters).to include(user)
+      end
+
+      it 'change rated status' do
+        expect(rating.decreased_by?(user)).to be_falsey
+        rating.decrease_by(user: user)
+        expect(rating.reload.decreased_by?(user)).to be_truthy
+      end
+
+      it 'removes user from increased' do
+        rating.increase_by(user: user)
+        expect(rating.increased_by?(user)).to be_truthy
+        rating.decrease_by(user: user)
+        expect(rating.increased_by?(user)).to be_falsey
       end
     end
   end

@@ -1,6 +1,6 @@
 <div id='rating'>
   Rating: 
-  <%= button_to '+', polymorphic_path( [:increase, object, :rating] ), remote: true %>
+  <%= button_to '+', polymorphic_path( [:increase, object, :rating] ), remote: true, disabled: object.rating.increased_by?(current_user) %>
   <%= object.rating.value %> <br>
-  <%= button_to '-', polymorphic_path( [:decrease, object, :rating] ), remote: true %>
+  <%= button_to '-', polymorphic_path( [:decrease, object, :rating] ), remote: true, disabled: object.rating.decreased_by?(current_user) %>
 </div>

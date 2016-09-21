@@ -7,14 +7,32 @@ class Rating < ActiveRecord::Base
   has_many :upvoters, through: :upvotes, source: :user, foreign_key: 'rater_id'
 
   def increase_by(user:)
-    self.value += 1
+    if decreased_by?(user)
+      self.value += 2
+      downvoters.delete(user)
+    else
+      self.value += 1
+    end
     upvoters << user
     save
   end
 
   def decrease_by(user:)
-    self.value -= 1
+    if increased_by?(user)
+      self.value -= 2
+      upvoters.delete(user)
+    else
+      self.value -= 1
+    end
     downvoters << user
     save
+  end
+
+  def decreased_by?(user)
+    downvoters.include?(user)
+  end
+
+  def increased_by?(user)
+    upvoters.include?(user)
   end
 end
