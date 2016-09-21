@@ -11,9 +11,9 @@ RSpec.describe UsersController, type: :controller do
 
     it { is_expected.to be_success }
 
-    it 'get all users' do
+    it 'get all named users' do
       subject
-      expect(assigns(:users)).to match_array([user, user2, anonimous_user])
+      expect(assigns(:users)).to match_array([user, user2])
     end
   end
 

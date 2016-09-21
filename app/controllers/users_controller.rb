@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :authorize_user, only: [:edit, :update]
 
   def index
-    @users = User.all
+    @users = User.named
   end
 
   def show

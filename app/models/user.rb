@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   before_save :normalize_email
   before_create :create_activation_digest
 
+  scope :named, -> { where(anonimous: false) }
+
   attr_accessor :remember_token, :activation_token, :reset_token
 
   def self.digest(string)
@@ -23,9 +25,9 @@ class User < ActiveRecord::Base
 
   def self.create_anonimous
     anonimous_token = SecureRandom.hex(8)
-    create username: anonimous_token, email: "#{anonimous_token}@stub",
-           password: anonimous_token, password_confirmation: anonimous_token,
-           anonimous: true
+    create! username: anonimous_token, email: "#{anonimous_token}@stub",
+            password: anonimous_token, password_confirmation: anonimous_token,
+            anonimous: true
   end
 
   def register(user_params)
