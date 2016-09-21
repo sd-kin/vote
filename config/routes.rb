@@ -77,6 +77,7 @@ Rails.application.routes.draw do
 
     get 'ready', on: :collection
     resources :options
+    resource :rating, only: [:increase, :decrease], concerns: :rateble
   end
 
   resources :users do

@@ -3,18 +3,19 @@ class RatingsController < ApplicationController
   before_action :set_user
 
   def increase
-    @user.rating.increase_by(user: current_user)
+    @ratable.rating.increase_by(user: current_user)
     render 'change_rating'
   end
 
   def decrease
-    @user.rating.decrease_by(user: current_user)
+    @ratable.rating.decrease_by(user: current_user)
     render 'change_rating'
   end
 
   private
 
   def set_user
-    @user = User.find params[:user_id]
+    resource, id = request.path.split('/')[1, 2]
+    @ratable = resource.singularize.classify.constantize.find(id)
   end
 end

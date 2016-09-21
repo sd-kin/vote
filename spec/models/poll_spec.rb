@@ -37,4 +37,8 @@ RSpec.describe Poll, type: :model do
     poll.touch
     expect(poll).not_to be_ready
   end
+
+  it 'have rating' do
+    expect(FactoryGirl.create(:valid_poll).rating.value).to eq(0)
+  end
 end

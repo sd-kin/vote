@@ -8,6 +8,8 @@
     Title: <%= poll.title %>
   </div>
 
+  <%= render 'shared/rating', object: poll %>
+
   <%= link_to 'edit', edit_poll_path( poll ), remote: true unless poll.ready?%>
   <ul>
     <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">
