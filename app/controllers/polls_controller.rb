@@ -23,7 +23,7 @@ class PollsController < ApplicationController
 
   def edit
     @poll = Poll.find(params[:id])
-    execute_if_accessible(subject: @poll)
+    check_accessability(@poll)
   end
 
   def create
@@ -33,12 +33,12 @@ class PollsController < ApplicationController
 
   def update
     @poll = Poll.find(params[:id])
-    execute_if_accessible(subject: @poll) { |poll| poll.update poll_params }
+    execute_if_accessible(@poll) { |poll| poll.update poll_params }
   end
 
   def destroy
     @poll = Poll.find(params[:id])
-    execute_if_accessible(subject: @poll, redirect: false, &:destroy)
+    execute_if_accessible(@poll, redirect: false, &:destroy)
     redirect_to polls_path
   end
 
@@ -60,13 +60,13 @@ class PollsController < ApplicationController
 
   def make_ready
     @poll = Poll.find(params[:id])
-    execute_if_accessible(subject: @poll, redirect: false, &:ready!)
+    execute_if_accessible(@poll, redirect: false, &:ready!)
     render 'change_status'
   end
 
   def make_draft
     @poll = Poll.find(params[:id])
-    execute_if_accessible(subject: @poll, redirect: false, &:draft!)
+    execute_if_accessible(@poll, redirect: false, &:draft!)
     render 'change_status'
   end
 

@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -40,6 +41,38 @@ CREATE TYPE status AS ENUM (
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: downvotes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE downvotes (
+    id integer NOT NULL,
+    rating_id integer,
+    rater_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: downvotes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE downvotes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: downvotes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE downvotes_id_seq OWNED BY downvotes.id;
+
 
 --
 -- Name: options; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -110,12 +143,77 @@ ALTER SEQUENCE polls_id_seq OWNED BY polls.id;
 
 
 --
+-- Name: ratings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ratings (
+    id integer NOT NULL,
+    value integer DEFAULT 0,
+    rateable_id integer,
+    rateable_type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE ratings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ratings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE ratings_id_seq OWNED BY ratings.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: upvotes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE upvotes (
+    id integer NOT NULL,
+    rating_id integer,
+    rater_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: upvotes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE upvotes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: upvotes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE upvotes_id_seq OWNED BY upvotes.id;
 
 
 --
@@ -162,6 +260,13 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY downvotes ALTER COLUMN id SET DEFAULT nextval('downvotes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY options ALTER COLUMN id SET DEFAULT nextval('options_id_seq'::regclass);
 
 
@@ -176,7 +281,29 @@ ALTER TABLE ONLY polls ALTER COLUMN id SET DEFAULT nextval('polls_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY ratings ALTER COLUMN id SET DEFAULT nextval('ratings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY upvotes ALTER COLUMN id SET DEFAULT nextval('upvotes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: downvotes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY downvotes
+    ADD CONSTRAINT downvotes_pkey PRIMARY KEY (id);
 
 
 --
@@ -196,6 +323,22 @@ ALTER TABLE ONLY polls
 
 
 --
+-- Name: ratings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY ratings
+    ADD CONSTRAINT ratings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: upvotes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY upvotes
+    ADD CONSTRAINT upvotes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -208,6 +351,13 @@ ALTER TABLE ONLY users
 --
 
 CREATE INDEX index_polls_on_user_id ON polls USING btree (user_id);
+
+
+--
+-- Name: index_ratings_on_rateable_type_and_rateable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ratings_on_rateable_type_and_rateable_id ON ratings USING btree (rateable_type, rateable_id);
 
 
 --
@@ -265,4 +415,12 @@ INSERT INTO schema_migrations (version) VALUES ('20160805205610');
 INSERT INTO schema_migrations (version) VALUES ('20160818012805');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818061937');
+
+INSERT INTO schema_migrations (version) VALUES ('20160918090302');
+
+INSERT INTO schema_migrations (version) VALUES ('20160919151155');
+
+INSERT INTO schema_migrations (version) VALUES ('20160921101715');
+
+INSERT INTO schema_migrations (version) VALUES ('20160921101732');
 

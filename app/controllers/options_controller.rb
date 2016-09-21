@@ -8,22 +8,22 @@ class OptionsController < ApplicationController
 
   def edit
     @option = Option.find(params[:id])
-    execute_if_accessible(subject: @option)
+    check_accessability(@option)
   end
 
   def create
     @option = poll.options.new option_params
-    execute_if_accessible(subject: @option, &:save)
+    execute_if_accessible(@option, &:save)
   end
 
   def update
     @option = Option.find(params[:id])
-    execute_if_accessible(subject: @option) { |option| option.update option_params }
+    execute_if_accessible(@option) { |option| option.update option_params }
   end
 
   def destroy
     @option = Option.find(params[:id])
-    execute_if_accessible(subject: @option, redirect: false, &:destroy)
+    execute_if_accessible(@option, redirect: false, &:destroy)
   end
 
   private
