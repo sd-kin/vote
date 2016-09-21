@@ -3,6 +3,8 @@ require 'rails_helper'
 
 RSpec.describe RatingsController, type: :controller do
   let!(:user) { FactoryGirl.create(:user) }
+  let(:logged_in_user) { FactoryGirl.create(:user) }
+  before(:each) { session[:user_id] = logged_in_user }
 
   context 'POST#increase' do
     it 'increase rating' do

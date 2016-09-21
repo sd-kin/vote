@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-class CreateRates < ActiveRecord::Migration
+class CreateDownvotes < ActiveRecord::Migration
   def change
-    create_table :rates do |t|
+    create_table :downvotes do |t|
       t.references :rating
-      t.integer    :rater_id
+      t.integer :rater_id
 
       t.timestamps null: false
     end

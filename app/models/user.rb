@@ -3,9 +3,10 @@ class User < ActiveRecord::Base
   has_secure_password
 
   has_one  :rating, as: :rateable, dependent: :destroy
-  has_many :rates, foreign_key: 'rater_id'
-  has_many :raters, through: :rating, source: :raters
-
+  has_many :downvotes, foreign_key: 'rater_id'
+  has_many :upvotes, foreign_key: 'rater_id'
+  has_many :downvoters, through: :rating, source: :downvoters
+  has_many :upvoters, through: :rating, source: :upvoters
   validates :username, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 

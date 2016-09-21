@@ -47,7 +47,9 @@ RSpec.describe User, type: :model do
     end
 
     it 'should have no raters' do
-      expect(FactoryGirl.create(:user).raters).to be_empty
+      user = FactoryGirl.create(:user)
+      expect(user.upvoters).to be_empty
+      expect(user.downvoters).to be_empty
     end
   end
 
