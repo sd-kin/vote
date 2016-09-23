@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     SecureRandom.urlsafe_base64
   end
 
-  def self.create_anonimous
+  def self.create_anonimous!
     anonimous_token = SecureRandom.hex(8)
     create! username: anonimous_token, email: "#{anonimous_token}@stub",
             password: anonimous_token, password_confirmation: anonimous_token,

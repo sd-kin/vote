@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
   let!(:user) { FactoryGirl.create(:user) }
   let!(:user2) { FactoryGirl.create(:user) }
-  let!(:anonimous_user) { User.create_anonimous }
+  let!(:anonimous_user) { User.create_anonimous! }
 
   context 'GET#index' do
     subject { get :index }

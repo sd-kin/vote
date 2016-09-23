@@ -74,17 +74,17 @@ RSpec.describe User, type: :model do
 
   context 'when create anonimous user' do
     it 'should increase users counter' do
-      expect { User.create_anonimous }.to change { User.count }.by(1)
+      expect { User.create_anonimous! }.to change { User.count }.by(1)
     end
 
     it 'should be anonimous' do
-      expect(User.create_anonimous).to be_anonimous
+      expect(User.create_anonimous!).to be_anonimous
     end
   end
 
   context 'when register anonimous user' do
     context 'and params correct' do
-      let!(:user) { User.create_anonimous }
+      let!(:user) { User.create_anonimous! }
       let(:user_params) { FactoryGirl.attributes_for(:user) }
 
       before(:each) do
@@ -110,7 +110,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'and params incorrect' do
-      let!(:user) { User.create_anonimous }
+      let!(:user) { User.create_anonimous! }
       let(:user_params) { FactoryGirl.attributes_for(:user, username: '') }
 
       before(:each) do
