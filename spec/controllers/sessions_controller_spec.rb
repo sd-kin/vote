@@ -2,6 +2,8 @@
 require 'rails_helper'
 
 RSpec.describe SessionsController, type: :controller do
+  let!(:user) { FactoryGirl.create(:user) }
+
   context 'GET#new' do
     it 'should be success' do
       expect(get :new).to be_success
@@ -10,7 +12,6 @@ RSpec.describe SessionsController, type: :controller do
 
   context 'POST#create' do
     context 'when input correct' do
-      let!(:user) { FactoryGirl.create(:user) }
       before(:each) { post :create, session: { email: user.email, password: user.password } }
 
       it 'should redirect to ready polls page' do
@@ -36,17 +37,15 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   context 'DELETE#desteoy' do
-    before(:each) do
-      user = FactoryGirl.create(:user)
-      post :create, session: { email: user.email, password: user.password }
-      delete :destroy
-    end
+    subject { delete :destroy }
+    before(:each) { post :create, session: { email: user.email, password: user.password } }
 
     it 'should redirect to root path' do
       is_expected.to redirect_to(root_path)
     end
 
     it 'should logout user' do
+      subject
       expect(session[:user_id]).to be_nil
     end
   end

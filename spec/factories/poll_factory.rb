@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 FactoryGirl.define do
   factory :poll do
+    user
+
     trait :with_title do
       title 'first poll'
     end

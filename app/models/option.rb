@@ -4,4 +4,8 @@ class Option < ActiveRecord::Base
 
   validates :title, presence: true
   validates :description, presence: true
+
+  def accessible_for?(user)
+    poll.user_id == user.id
+  end
 end

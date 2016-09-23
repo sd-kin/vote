@@ -14,6 +14,7 @@ class Poll < ActiveRecord::Base
   has_many :downvoters, through: :rating, source: :downvoters
   has_many :upvoters, through: :rating, source: :upvoters
   has_many :options, dependent: :destroy
+  belongs_to :user
 
   serialize :vote_results, Array
   serialize :current_state, Array
@@ -44,6 +45,10 @@ class Poll < ActiveRecord::Base
     vote = SchulzeBasic.do vote_results, vote_results.first.count
     self.current_state = vote.ranks
     save!
+  end
+
+  def accessible_for?(user)
+    user_id == user.id
   end
 
   def options_in_rank

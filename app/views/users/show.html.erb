@@ -4,5 +4,10 @@ Show user page
 <%= render 'shared/rating', object: @user %>
 Login: <%= @user.username %> <br>
 Email: <%= @user.email %> <br>
-<%= link_to 'Delete', user_path(@user.id), method: :delete %> <br>
-<%= link_to 'Edit', edit_user_path(@user.id) %>
+<% if @user == current_user %>
+  <%= link_to 'Delete', user_path(@user.id), method: :delete %> <br>
+  <%= link_to 'Edit', edit_user_path(@user.id) %>
+  <%= link_to 'My polls', polls_path(user: @user) %>
+<% else %>
+  <%= link_to 'Users polls', polls_path(user: @user) %>
+<% end %>
