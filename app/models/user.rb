@@ -2,11 +2,15 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  validates :username, presence: true
+  has_many :polls, dependent: :destroy
+
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 
   before_save :normalize_email
   before_create :create_activation_digest
+
+  scope :named, -> { where(anonimous: false) }
 
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -17,6 +21,18 @@ class User < ActiveRecord::Base
 
   def self.new_token
     SecureRandom.urlsafe_base64
+  end
+
+  def self.create_anonimous!
+    anonimous_token = SecureRandom.hex(8)
+    create! username: anonimous_token, email: "#{anonimous_token}@stub",
+            password: anonimous_token, password_confirmation: anonimous_token,
+            anonimous: true
+  end
+
+  def register(user_params)
+    create_activation_digest
+    update(user_params.merge(anonimous: false))
   end
 
   def correct_token?(attribute, token)

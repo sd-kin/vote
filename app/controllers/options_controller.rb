@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 class OptionsController < ApplicationController
+  include Accessible
 
   def show
     @option = Option.find(params[:id])
@@ -7,20 +8,22 @@ class OptionsController < ApplicationController
 
   def edit
     @option = Option.find(params[:id])
+    check_accessability(@option)
   end
 
   def create
-    @option = Option.create option_params.merge(poll_id: poll_id)
+    @option = poll.options.new option_params
+    execute_if_accessible(@option, &:save)
   end
 
   def update
     @option = Option.find(params[:id])
-    @option.update option_params
+    execute_if_accessible(@option) { |option| option.update option_params }
   end
 
   def destroy
     @option = Option.find(params[:id])
-    @option.destroy
+    execute_if_accessible(@option, redirect: false, &:destroy)
   end
 
   private
@@ -29,7 +32,7 @@ class OptionsController < ApplicationController
     params.require(:option).permit(:title, :description)
   end
 
-  def poll_id
-    params[:poll_id]
+  def poll
+    Poll.find(params[:poll_id])
   end
 end

@@ -71,4 +71,81 @@ RSpec.describe User, type: :model do
       expect(user.correct_token?(:remember, nil)).to be_falsey
     end
   end
+
+  context 'when create anonimous user' do
+    it 'should increase users counter' do
+      expect { User.create_anonimous! }.to change { User.count }.by(1)
+    end
+
+    it 'should be anonimous' do
+      expect(User.create_anonimous!).to be_anonimous
+    end
+  end
+
+  context 'when register anonimous user' do
+    context 'and params correct' do
+      let!(:user) { User.create_anonimous! }
+      let(:user_params) { FactoryGirl.attributes_for(:user) }
+
+      before(:each) do
+        user.register(user_params)
+        user.reload
+      end
+
+      it 'should not change users counter' do
+        expect { user.register(user_params) }.to change { User.count }.by(0)
+      end
+
+      it 'should change users username' do
+        expect(user.username).to eq(user_params[:username])
+      end
+
+      it 'should change users password' do
+        expect(BCrypt::Password.new(user.password_digest).is_password?(user_params[:password])).to be_truthy
+      end
+
+      it 'should make user not anonimous' do
+        expect(user.anonimous?).to be_falsey
+      end
+    end
+
+    context 'and params incorrect' do
+      let!(:user) { User.create_anonimous! }
+      let(:user_params) { FactoryGirl.attributes_for(:user, username: '') }
+
+      before(:each) do
+        user.register(user_params)
+        user.reload
+      end
+
+      it 'should not change users counter' do
+        expect { user.register(user_params) }.to change { User.count }.by(0)
+      end
+
+      it 'should not change users username' do
+        expect(user.username).not_to eq(user_params[:username])
+      end
+
+      it 'should not change users password' do
+        expect(BCrypt::Password.new(user.password_digest).is_password?(user_params[:password])).to be_falsey
+      end
+
+      it 'user should stay anonimous' do
+        expect(user.anonimous?).to be_truthy
+      end
+    end
+  end
+
+  context 'when register new user' do
+    let!(:user) { FactoryGirl.build(:user) }
+    let(:user_params) { FactoryGirl.attributes_for(:user) }
+
+    it 'should change users counter' do
+      expect { user.register(user_params) }.to change { User.count }.by(1)
+    end
+
+    it 'user should not be anonimous' do
+      expect(user.anonimous?).to be_falsey
+    end
+  end
 end

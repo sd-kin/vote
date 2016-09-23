@@ -2,20 +2,21 @@
 require 'rails_helper'
 
 RSpec.describe OptionsController, type: :controller do
+  let(:user) { FactoryGirl.create(:user) }
+  let(:poll) { FactoryGirl.create(:valid_poll, user_id: user.id) }
+  let(:option) { poll.options.first }
+
   describe 'GET #index' do
   end
 
   describe 'GET #show' do
     context 'when option exist' do
-      it 'request should be succes' do
-        poll = FactoryGirl.create(:valid_poll)
-        expect(xhr :get, :show, poll_id: poll, id: poll.options.first).to be_succes
-      end
+      subject { xhr :get, :show, poll_id: poll, id: option }
 
-      it 'should get right poll' do
-        poll = FactoryGirl.create(:valid_poll)
-        option = poll.options.first
-        xhr :get, :show, poll_id: poll, id: option
+      it { is_expected.to be_success }
+
+      it 'have correct option' do
+        subject
         expect(assigns(:option)).to eq(option)
       end
     end
@@ -28,14 +29,86 @@ RSpec.describe OptionsController, type: :controller do
   end
 
   describe 'GET #edit' do
+    subject { xhr :get, :edit, poll_id: poll, id: option }
+
+    context 'when owner does it' do
+      before(:each) { session[:user_id] = user.id }
+
+      it { is_expected.to be_success }
+    end
+
+    context 'when not owner does it' do
+      before(:each) { session[:user_id] = user.id + 1 }
+
+      it { is_expected.to redirect_to root_path }
+    end
   end
 
   describe 'PUT #create' do
+    subject { xhr :post, :create, poll_id: poll, option: FactoryGirl.attributes_for(:valid_option) }
+
+    context 'when owner does it' do
+      before(:each) { session[:user_id] = user.id }
+
+      it { is_expected.to be_success }
+    end
+
+    context 'when not owner does it' do
+      before(:each) { session[:user_id] = user.id + 1 }
+
+      it { is_expected.to redirect_to root_path }
+    end
   end
 
   describe 'PUT #update' do
+    subject { xhr :put, :update, poll_id: poll, id: option, option: FactoryGirl.attributes_for(:valid_option) }
+
+    context 'when owner does it' do
+      before(:each) { session[:user_id] = user.id }
+
+      it { is_expected.to be_success }
+
+      it 'change option title' do
+        subject
+
+        expect(assigns(:option).title).to_not eq(option.title)
+      end
+    end
+
+    context 'when not owner does it' do
+      before(:each) { session[:user_id] = user.id + 1 }
+
+      it { is_expected.to redirect_to root_path }
+
+      it 'not change option title' do
+        subject
+
+        expect(assigns(:option).title).to eq(option.title)
+      end
+    end
   end
 
   describe 'DESTROY #delete' do
+    subject { xhr :delete, :destroy, id: option, poll_id: poll }
+
+    context 'when owner does it' do
+      before(:each) { session[:user_id] = user.id }
+
+      it { is_expected.to be_success }
+
+      it 'decrease options count' do
+        expect { subject }.to change { poll.reload.options.count }.by(-1)
+      end
+    end
+
+    context 'when not owner does it' do
+      before(:each) { session[:user_id] = user.id + 1 }
+
+      it { is_expected.to be_success }
+
+      it 'not decrease options count' do
+        expect { subject }.to_not change { poll.reload.options.count }
+      end
+    end
   end
 end

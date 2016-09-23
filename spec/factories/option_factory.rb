@@ -2,11 +2,11 @@
 FactoryGirl.define do
   factory :option do
     trait :with_title do
-      title 'option'
+      sequence(:title) { |n| "#{n.ordinalize} option" }
     end
 
     trait :with_description do
-      description 'description'
+      sequence(:description) { |n| "This is #{n.ordinalize} option" }
     end
 
     factory :valid_option, traits: [:with_title, :with_description]

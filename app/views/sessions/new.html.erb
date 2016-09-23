@@ -1,9 +1,4 @@
 Log in page
-<% unless flash[:error].nil? %>
-  <div id='log_in_error'>
-    <%= flash[:error]%>
-  </div>
-<% end %>
 
 <%= form_for :session, url: login_path do |f| %>
   <%= f.label 'Email:' %><br>

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 class PollsController < ApplicationController
+  include Accessible
 
   def index
-    @polls = Poll.all
+    @polls = params[:user] ? Poll.where(user_id: params[:user]) : Poll.all
   end
 
   def ready
@@ -22,21 +23,22 @@ class PollsController < ApplicationController
 
   def edit
     @poll = Poll.find(params[:id])
+    check_accessability(@poll)
   end
 
   def create
-    @poll = Poll.new(poll_params)
+    @poll = current_user.polls.new(poll_params)
     @correct = @poll.save
   end
 
   def update
     @poll = Poll.find(params[:id])
-    @poll.update poll_params
+    execute_if_accessible(@poll) { |poll| poll.update poll_params }
   end
 
   def destroy
     @poll = Poll.find(params[:id])
-    @poll.destroy
+    execute_if_accessible(@poll, redirect: false, &:destroy)
     redirect_to polls_path
   end
 
@@ -58,13 +60,13 @@ class PollsController < ApplicationController
 
   def make_ready
     @poll = Poll.find(params[:id])
-    @poll.ready!
+    execute_if_accessible(@poll, redirect: false, &:ready!)
     render 'change_status'
   end
 
   def make_draft
     @poll = Poll.find(params[:id])
-    @poll.draft!
+    execute_if_accessible(@poll, redirect: false, &:draft!)
     render 'change_status'
   end
 
