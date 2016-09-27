@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   before_save   :normalize_email
   before_create :create_activation_digest
-  after_create  :create_rating
+  after_create  :create_rating # method added automatically by ActiveRecord becouse user has_one rating.
 
   scope :named, -> { where(anonimous: false) }
 
