@@ -11,6 +11,11 @@ RSpec.describe Rating, type: :model do
         expect { rating.increase_by(user: user) }.to change { rating.value }.by(1)
       end
 
+      it 'increase rating by 2 if downvoted before' do
+        rating.decrease_by(user: user)
+        expect { rating.increase_by(user: user) }.to change { rating.value }.by(2)
+      end
+
       it 'increase rating only once' do
         rating.increase_by(user: user)
         expect { rating.increase_by(user: user) }.to raise_error(ActiveRecord::RecordInvalid)
@@ -43,6 +48,11 @@ RSpec.describe Rating, type: :model do
     context '#decrease' do
       it 'decrease rating by 1' do
         expect { rating.decrease_by(user: user) }.to change { rating.value }.by(-1)
+      end
+
+      it 'decrease rating by 2 if upvoted before' do
+        rating.increase_by(user: user)
+        expect { rating.decrease_by(user: user) }.to change { rating.value }.by(-2)
       end
 
       it 'decrease rating only once' do
