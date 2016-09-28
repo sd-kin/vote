@@ -8,26 +8,30 @@ class Rating < ActiveRecord::Base
 
   def increase_by(user:)
     transaction do
+      upvoters << user
+
       if decreased_by?(user)
         cancel_transaction unless downvoters.delete(user)
         self.value += 2
       else
         self.value += 1
       end
-      upvoters << user
+
       save
     end
   end
 
   def decrease_by(user:)
     transaction do
+      downvoters << user
+
       if increased_by?(user)
         cancel_transaction unless upvoters.delete(user)
         self.value -= 2
       else
         self.value -= 1
       end
-      downvoters << user
+
       save
     end
   end
