@@ -62,13 +62,6 @@ Rails.application.routes.draw do
     end
   end
 
-  concern :rateble do
-    member do
-      post 'increase'
-      post 'decrease'
-    end
-  end
-
   resources :polls, concerns: :statusable do
     member do
       post 'choose'
@@ -77,13 +70,15 @@ Rails.application.routes.draw do
 
     get 'ready', on: :collection
     resources :options
-    resource :rating, only: [:increase, :decrease], concerns: :rateble
   end
 
-  resources :users do
-    resource :rating, only: [:increase, :decrease], concerns: :rateble
+  resources :users
+  resources :ratings, only: [:increase, :decrease] do
+    member do
+      post 'increase'
+      post 'decrease'
+    end
   end
-
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :update, :edit]
 
