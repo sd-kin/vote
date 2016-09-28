@@ -7,25 +7,29 @@ class Rating < ActiveRecord::Base
   has_many :upvoters, through: :upvotes, source: :user, foreign_key: 'rater_id'
 
   def increase_by(user:)
-    if decreased_by?(user)
-      self.value += 2
-      downvoters.delete(user)
-    else
-      self.value += 1
+    transaction do
+      if decreased_by?(user)
+        cancel_transaction unless downvoters.delete(user)
+        self.value += 2
+      else
+        self.value += 1
+      end
+      upvoters << user
+      save
     end
-    upvoters << user
-    save
   end
 
   def decrease_by(user:)
-    if increased_by?(user)
-      self.value -= 2
-      upvoters.delete(user)
-    else
-      self.value -= 1
+    transaction do
+      if increased_by?(user)
+        cancel_transaction unless upvoters.delete(user)
+        self.value -= 2
+      else
+        self.value -= 1
+      end
+      downvoters << user
+      save
     end
-    downvoters << user
-    save
   end
 
   def decreased_by?(user)
@@ -34,5 +38,12 @@ class Rating < ActiveRecord::Base
 
   def increased_by?(user)
     upvoters.include?(user)
+  end
+
+  private
+
+  def cancel_transaction
+    errors.add :base, 'previos choise can not be declined'
+    raise ActiveRecord::Rollback
   end
 end

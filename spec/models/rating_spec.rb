@@ -43,6 +43,13 @@ RSpec.describe Rating, type: :model do
         rating.increase_by(user: user)
         expect(rating.decreased_by?(user)).to be_falsey
       end
+
+      it 'not change status if cant delete from downvoters' do
+        allow(rating.downvoters).to receive(:delete).and_return(false)
+        rating.decrease_by(user: user)
+        expect { rating.increase_by(user: user) }.to_not change { rating.value }
+        expect { rating.increase_by(user: user) }.to change { rating.errors.count }
+      end
     end
 
     context '#decrease' do
@@ -81,6 +88,13 @@ RSpec.describe Rating, type: :model do
         expect(rating.increased_by?(user)).to be_truthy
         rating.decrease_by(user: user)
         expect(rating.increased_by?(user)).to be_falsey
+      end
+
+      it 'not change status if cant delete from upnvoters' do
+        allow(rating.upvoters).to receive(:delete).and_return(false)
+        rating.increase_by(user: user)
+        expect { rating.decrease_by(user: user) }.to_not change { rating.value }
+        expect { rating.decrease_by(user: user) }.to change { rating.errors.count }
       end
     end
   end
