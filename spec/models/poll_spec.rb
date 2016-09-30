@@ -2,6 +2,7 @@
 require 'rails_helper'
 
 RSpec.describe Poll, type: :model do
+  let(:poll){ FactoryGirl.create(:valid_poll) }
   it 'shold not be valid without title and options' do
     expect(FactoryGirl.build(:poll)).to_not be_valid
   end
@@ -15,7 +16,6 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'should change valid poll status to ready' do
-    poll = FactoryGirl.create(:valid_poll)
     poll.ready!
     expect(poll).to be_ready
   end
@@ -27,7 +27,6 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'should change poll status from ready to draft when all options deleted' do
-    poll = FactoryGirl.create(:valid_poll)
     poll.ready!
     poll.options.destroy_all
     poll.touch
@@ -42,5 +41,13 @@ RSpec.describe Poll, type: :model do
     it 'should have owner id' do
       expect(FactoryGirl.create(:valid_poll).user_id).to_not be_nil
     end
+  end
+
+  it 'should have default maximum number of voters' do
+     expect( poll.max_voters ).to eq( 100 )
+  end
+
+  it 'should be closed when reach maximum voters limit' do
+
   end
 end

@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -119,7 +118,8 @@ CREATE TABLE polls (
     status status DEFAULT 'draft'::status,
     vote_results text,
     current_state character varying,
-    user_id integer
+    user_id integer,
+    max_voters integer DEFAULT 100
 );
 
 
@@ -418,9 +418,9 @@ INSERT INTO schema_migrations (version) VALUES ('20160818061937');
 
 INSERT INTO schema_migrations (version) VALUES ('20160918090302');
 
-INSERT INTO schema_migrations (version) VALUES ('20160919151155');
-
 INSERT INTO schema_migrations (version) VALUES ('20160921101715');
 
 INSERT INTO schema_migrations (version) VALUES ('20160921101732');
+
+INSERT INTO schema_migrations (version) VALUES ('20160930151136');
 
