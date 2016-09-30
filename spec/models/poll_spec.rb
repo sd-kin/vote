@@ -4,6 +4,7 @@ require 'rails_helper'
 RSpec.describe Poll, type: :model do
   let(:poll) { FactoryGirl.create(:valid_poll) }
   let(:user) { FactoryGirl.create(:user) }
+  let(:user2) { FactoryGirl.create(:user) }
 
   it 'shold not be valid without title and options' do
     expect(FactoryGirl.build(:poll)).to_not be_valid
@@ -64,5 +65,11 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'should be closed when reach maximum voters limit' do
+    poll.max_voters = 2
+
+    poll.vote!(user: user, preferences: [0, 1, 2])
+    poll.vote!(user: user2, preferences: [2, 1, 0])
+
+    expect( poll ).to be_closed
   end
 end

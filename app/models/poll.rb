@@ -48,6 +48,7 @@ class Poll < ActiveRecord::Base
       vote_results << preferences
       vote = SchulzeBasic.do vote_results, vote_results.first.count
       self.current_state = vote.ranks
+      closed! if voters.count >= max_voters
       save!
     end
   end
