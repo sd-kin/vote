@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find params[:id]
+    @rating = @user.rating
   end
 
   def new
@@ -27,6 +28,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find params[:id]
+    @rating = @user.rating
     redirect_to edit_user_path(current_user) unless @user == current_user
   end
 

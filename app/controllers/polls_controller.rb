@@ -14,6 +14,7 @@ class PollsController < ApplicationController
     id = params[:id]
     @already_voted = remembered_ids.include? id.to_i
     @poll = Poll.find(id)
+    @rating = @poll.rating
   end
 
   def new
@@ -24,6 +25,7 @@ class PollsController < ApplicationController
   def edit
     @poll = Poll.find(params[:id])
     check_accessability(@poll)
+    @rating = @poll.rating
   end
 
   def create

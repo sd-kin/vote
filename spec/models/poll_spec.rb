@@ -35,6 +35,10 @@ RSpec.describe Poll, type: :model do
     expect(poll).not_to be_ready
   end
 
+  it 'should have rating' do
+    expect(FactoryGirl.create(:valid_poll).rating.value).to eq(0)
+  end
+
   context 'when create poll' do
     it 'should increase counter' do
       expect { FactoryGirl.create(:valid_poll) }.to change { Poll.count }.by(1)
