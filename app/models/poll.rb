@@ -10,6 +10,9 @@ class Poll < ActiveRecord::Base
     deleted:   'deleted'
   }
 
+  has_one  :rating, as: :rateable, dependent: :destroy
+  has_many :downvoters, through: :rating, source: :downvoters
+  has_many :upvoters, through: :rating, source: :upvoters
   has_many :options, dependent: :destroy
   belongs_to :user
 
@@ -19,6 +22,7 @@ class Poll < ActiveRecord::Base
   validates :title, presence: true
 
   after_touch :ensure_status_is_correct
+  after_create :create_rating
 
   def ready!
     if options.empty?

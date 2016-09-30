@@ -2,13 +2,19 @@
 class User < ActiveRecord::Base
   has_secure_password
 
+  has_one  :rating, as: :rateable, dependent: :destroy
+  has_many :downvotes, foreign_key: 'rater_id'
+  has_many :upvotes, foreign_key: 'rater_id'
+  has_many :downvoters, through: :rating, source: :downvoters
+  has_many :upvoters, through: :rating, source: :upvoters
   has_many :polls, dependent: :destroy
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
 
-  before_save :normalize_email
+  before_save   :normalize_email
   before_create :create_activation_digest
+  after_create  :create_rating # method added automatically by ActiveRecord becouse user has_one rating.
 
   scope :named, -> { where(anonimous: false) }
 

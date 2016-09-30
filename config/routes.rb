@@ -73,6 +73,12 @@ Rails.application.routes.draw do
   end
 
   resources :users
+  resources :ratings, only: [:increase, :decrease] do
+    member do
+      post 'increase'
+      post 'decrease'
+    end
+  end
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :update, :edit]
 

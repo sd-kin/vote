@@ -41,6 +41,16 @@ RSpec.describe User, type: :model do
     it 'should have activation digest' do
       expect(FactoryGirl.create(:user).activation_digest).to_not be_nil
     end
+
+    it 'should have rating = 0' do
+      expect(FactoryGirl.create(:user).rating.value).to eq(0)
+    end
+
+    it 'should have no raters' do
+      user = FactoryGirl.create(:user)
+      expect(user.upvoters).to be_empty
+      expect(user.downvoters).to be_empty
+    end
   end
 
   context 'when check remember token' do

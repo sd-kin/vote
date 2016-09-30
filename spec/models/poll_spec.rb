@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 RSpec.describe Poll, type: :model do
-  it 'shold not be valid without title and options' do
+  it 'should not be valid without title and options' do
     expect(FactoryGirl.build(:poll)).to_not be_valid
   end
 
@@ -32,6 +32,10 @@ RSpec.describe Poll, type: :model do
     poll.options.destroy_all
     poll.touch
     expect(poll).not_to be_ready
+  end
+
+  it 'should have rating' do
+    expect(FactoryGirl.create(:valid_poll).rating.value).to eq(0)
   end
 
   context 'when create poll' do
