@@ -2,7 +2,9 @@
 require 'rails_helper'
 
 RSpec.describe Poll, type: :model do
-  let(:poll){ FactoryGirl.create(:valid_poll) }
+  let(:poll) { FactoryGirl.create(:valid_poll) }
+  let(:user) { FactoryGirl.create(:user) }
+
   it 'shold not be valid without title and options' do
     expect(FactoryGirl.build(:poll)).to_not be_valid
   end
@@ -44,10 +46,19 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'should have default maximum number of voters' do
-     expect( poll.max_voters ).to eq( 100 )
+    expect(poll.max_voters).to eq(100)
+  end
+
+  it 'should have no voters' do
+    expect(poll.voters).to eq([])
+  end
+
+  it 'raise error when try to add voter twice' do
+    poll.voters << user
+
+    expect { poll.voters << user }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it 'should be closed when reach maximum voters limit' do
-
   end
 end

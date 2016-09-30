@@ -11,6 +11,8 @@ class Poll < ActiveRecord::Base
   }
 
   has_many :options, dependent: :destroy
+  has_many :user_votes
+  has_many :voters, through: :user_votes, source: :user
   belongs_to :user
 
   serialize :vote_results, Array
@@ -36,11 +38,14 @@ class Poll < ActiveRecord::Base
     super
   end
 
-  def vote!(preferences)
-    vote_results << preferences
-    vote = SchulzeBasic.do vote_results, vote_results.first.count
-    self.current_state = vote.ranks
-    save!
+  def vote!(user:, preferences:)
+    transaction do
+      voters << user
+      vote_results << preferences
+      vote = SchulzeBasic.do vote_results, vote_results.first.count
+      self.current_state = vote.ranks
+      save!
+    end
   end
 
   def accessible_for?(user)

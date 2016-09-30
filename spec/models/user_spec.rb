@@ -41,6 +41,10 @@ RSpec.describe User, type: :model do
     it 'should have activation digest' do
       expect(FactoryGirl.create(:user).activation_digest).to_not be_nil
     end
+
+    it 'should have no voters' do
+      expect(FactoryGirl.create(:user).voted_polls).to eq([])
+    end
   end
 
   context 'when check remember token' do

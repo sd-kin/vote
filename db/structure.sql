@@ -83,7 +83,8 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer
+    poll_id integer,
+    row_order integer
 );
 
 
@@ -217,6 +218,38 @@ ALTER SEQUENCE upvotes_id_seq OWNED BY upvotes.id;
 
 
 --
+-- Name: user_votes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE user_votes (
+    id integer NOT NULL,
+    user_id integer,
+    poll_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: user_votes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE user_votes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_votes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE user_votes_id_seq OWNED BY user_votes.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -295,6 +328,13 @@ ALTER TABLE ONLY upvotes ALTER COLUMN id SET DEFAULT nextval('upvotes_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY user_votes ALTER COLUMN id SET DEFAULT nextval('user_votes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -336,6 +376,14 @@ ALTER TABLE ONLY ratings
 
 ALTER TABLE ONLY upvotes
     ADD CONSTRAINT upvotes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_votes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY user_votes
+    ADD CONSTRAINT user_votes_pkey PRIMARY KEY (id);
 
 
 --
@@ -396,6 +444,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
+INSERT INTO schema_migrations (version) VALUES ('20160603184925');
+
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605155750');
@@ -423,4 +473,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160921101715');
 INSERT INTO schema_migrations (version) VALUES ('20160921101732');
 
 INSERT INTO schema_migrations (version) VALUES ('20160930151136');
+
+INSERT INTO schema_migrations (version) VALUES ('20160930163031');
 
