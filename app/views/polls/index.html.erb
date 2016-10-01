@@ -6,8 +6,10 @@
   <% @polls.each do |poll| %>
     <li>
       <%= link_to "#{poll.title}", poll_path(poll)%>
-      <%= link_to "edit poll", edit_poll_path(poll)%>
-      <%= link_to "delete poll", poll_path(poll), method: :delete %>
+      <% if can_be_edited?( poll ) %>
+        <%= link_to "edit poll", edit_poll_path(poll)%>
+        <%= link_to "delete poll", poll_path(poll), method: :delete %>
+      <% end %>
     </li>
   <% end %>
 </ul>

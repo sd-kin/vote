@@ -8,9 +8,15 @@
     Title: <%= poll.title %>
   </div>
 
-  <%= link_to 'edit', edit_poll_path( poll ), remote: true unless poll.ready?%>
+  <div id = "<%= dom_id(poll, :voters_limit_for) %>">
+    Maximum voters: <%= poll.max_voters %>
+  </div>
 
-  <%= render 'shared/rating', object: poll %>
+  <%= link_to 'edit', edit_poll_path( poll ), remote: true if can_be_edited?( poll ) %>
+
+  <div id='rating'>
+    <%= render 'shared/rating', object: poll %>
+  </div>
 
   <ul>
     <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">
