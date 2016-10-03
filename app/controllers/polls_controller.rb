@@ -12,9 +12,9 @@ class PollsController < ApplicationController
 
   def show
     id = params[:id]
-    @already_voted = remembered_ids.include? id.to_i
     @poll = Poll.find(id)
     @rating = @poll.rating
+    @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
   end
 
   def new
@@ -48,7 +48,7 @@ class PollsController < ApplicationController
   def choose
     id = params[:id]
     @poll = Poll.find(id)
-    unless remembered_ids.include? id.to_i
+    unless remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
       preferences = preferences_as_weight(@poll, params[:choices_array])
       @poll.vote!(user: current_user, preferences: preferences)
       remember_id(id)
