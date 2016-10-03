@@ -201,6 +201,7 @@ RSpec.describe PollsController, type: :controller do
           subject
           expect(assigns(:poll).errors[:title]).to eq(["can't be blank"])
         end
+
         it 'not change poll attributes' do
           subject
           expect(users_poll.reload.title).not_to eq(poll_params[:title])

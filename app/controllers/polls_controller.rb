@@ -35,6 +35,7 @@ class PollsController < ApplicationController
 
   def update
     @poll = Poll.find(params[:id])
+    @rating = @poll.rating
     execute_if_accessible(@poll) { |poll| poll.update poll_params }
   end
 
@@ -76,7 +77,7 @@ class PollsController < ApplicationController
   private
 
   def poll_params
-    params.require(:poll).permit(:title)
+    params.require(:poll).permit(:title, :max_voters)
   end
 
   def remember_id(id)

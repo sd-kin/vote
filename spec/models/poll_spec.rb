@@ -51,7 +51,7 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'should have default maximum number of voters' do
-    expect(poll.max_voters).to eq(100)
+    expect(poll.max_voters).to eq(Float::INFINITY)
   end
 
   it 'should have no voters' do
@@ -70,6 +70,6 @@ RSpec.describe Poll, type: :model do
     poll.vote!(user: user, preferences: [0, 1, 2])
     poll.vote!(user: user2, preferences: [2, 1, 0])
 
-    expect( poll ).to be_closed
+    expect(poll).to be_closed
   end
 end
