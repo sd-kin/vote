@@ -77,7 +77,7 @@ class PollsController < ApplicationController
   private
 
   def poll_params
-    params.require(:poll).permit(:title, :max_voters)
+    params.require(:poll).permit(:title, :max_voters, :expire_at)
   end
 
   def remember_id(id)

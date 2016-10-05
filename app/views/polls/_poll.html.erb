@@ -12,6 +12,10 @@
     Maximum voters: <%= poll.max_voters %>
   </div>
 
+  <div id = "<%= dom_id(poll, :expiration_date_for) %>">
+    Expiration date: <%= poll.expire_at.to_s %>
+  </div>
+
   <%= link_to 'edit', edit_poll_path( poll ), remote: true if can_be_edited?( poll ) %>
 
   <div id='rating'>

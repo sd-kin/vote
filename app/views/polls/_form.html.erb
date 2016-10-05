@@ -3,6 +3,8 @@
   <%= f.text_field :title %> <br>
   <%= f.label 'Maximum voters(empty for infinity):'%>
   <%= f.number_field :max_voters, min: 1 %> <br>
+  <%= f.label 'Expiration date:' %>
+  <%= f.date_select :expire_at %> <br>
   <%= f.submit 'Ok' %>
 <% end %>
 
