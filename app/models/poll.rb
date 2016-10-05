@@ -22,7 +22,8 @@ class Poll < ActiveRecord::Base
   serialize :current_state, Array
 
   validates :title, presence: true
-  validate :validate_max_voters
+  validate  :max_voters_should_be_number
+  validate  :date_should_be_in_future
 
   after_touch       :ensure_status_is_correct
   after_create      :create_rating
@@ -75,7 +76,11 @@ class Poll < ActiveRecord::Base
     draft! if options.empty?
   end
 
-  def validate_max_voters
-    errors.add(:base, 'should be number greater than 0') unless (is_a?(Integer) || Float::INFINITY) && max_voters > 0
+  def max_voters_should_be_number
+    errors.add(:max_voters, 'should be number greater than 0') unless (is_a?(Integer) || Float::INFINITY) && max_voters > 0
+  end
+
+  def date_should_be_in_future
+    errors.add(:expire_at, 'should be in future') if expire_at&. < DateTime.now
   end
 end

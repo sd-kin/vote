@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -84,7 +83,8 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer
+    poll_id integer,
+    row_order integer
 );
 
 
@@ -120,7 +120,8 @@ CREATE TABLE polls (
     vote_results text,
     current_state character varying,
     user_id integer,
-    max_voters integer
+    max_voters integer,
+    expire_at timestamp without time zone
 );
 
 
@@ -444,6 +445,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
+INSERT INTO schema_migrations (version) VALUES ('20160603184925');
+
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605155750');
@@ -473,4 +476,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160921101732');
 INSERT INTO schema_migrations (version) VALUES ('20160930151136');
 
 INSERT INTO schema_migrations (version) VALUES ('20160930163031');
+
+INSERT INTO schema_migrations (version) VALUES ('20161004235133');
 

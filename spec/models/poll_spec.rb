@@ -72,4 +72,9 @@ RSpec.describe Poll, type: :model do
 
     expect(poll).to be_closed
   end
+
+  it 'should have expiration date in future' do
+    poll.expire_at = 1.year.ago
+    expect { poll.save! }.to raise_error(ActiveRecord::RecordInvalid)
+  end
 end
