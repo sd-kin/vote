@@ -16,7 +16,7 @@
     Expiration date: <%= poll.expire_at.to_s %>
   </div>
 
-  <%= link_to 'edit', edit_poll_path( poll ), remote: true if can_be_edited?( poll ) %>
+  <%= link_to 'edit', edit_poll_path( poll ), remote: true if poll.accessible_for?(current_user) %>
 
   <div id='rating'>
     <%= render 'shared/rating', object: poll %>

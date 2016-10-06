@@ -145,7 +145,7 @@ feature 'when changing poll status' do
 end
 
 feature 'when cast a vote' do
-  given(:poll) { FactoryGirl.create(:valid_poll) }
+  given(:poll) { FactoryGirl.create(:valid_poll, status: :ready) }
 
   scenario 'can access vote by unique url', js: true do
     current_page = ShowPollPage.new
@@ -175,7 +175,7 @@ feature 'when cast a vote' do
 end
 
 feature 'when want to see poll result' do
-  given(:poll) { FactoryGirl.create(:valid_poll) }
+  given(:poll) { FactoryGirl.create(:valid_poll, status: :ready) }
 
   scenario 'cant do it before vote' do
     visit result_poll_path(id: poll.id)

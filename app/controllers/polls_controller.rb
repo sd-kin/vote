@@ -41,7 +41,7 @@ class PollsController < ApplicationController
 
   def destroy
     @poll = Poll.find(params[:id])
-    execute_if_accessible(@poll, redirect: false, &:destroy)
+    execute_if_accessible(@poll, redirect: false, &:deleted!)
     redirect_to polls_path
   end
 
