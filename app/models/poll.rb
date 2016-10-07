@@ -27,6 +27,7 @@ class Poll < ActiveRecord::Base
 
   after_touch       :ensure_status_is_correct
   after_create      :create_rating
+  after_find        :close_if_expire
 
   def ready!
     if options.empty?
@@ -92,5 +93,9 @@ class Poll < ActiveRecord::Base
 
   def date_should_be_in_future
     errors.add(:expire_at, 'should be in future') if expire_at&. < DateTime.now
+  end
+
+  def close_if_expire
+    closed! if expire_at&. < DateTime.now
   end
 end
