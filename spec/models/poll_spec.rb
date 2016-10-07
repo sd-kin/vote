@@ -64,13 +64,27 @@ RSpec.describe Poll, type: :model do
     expect { poll.voters << user }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
-  it 'should be closed when reach maximum voters limit' do
-    poll.max_voters = 2
+  context 'maximum voters' do
+    it 'should be closed when reach maximum voters limit' do
+      poll.max_voters = 2
 
-    poll.vote!(user, [0, 1, 2])
-    poll.vote!(user2, [2, 1, 0])
+      poll.vote!(user, [0, 1, 2])
+      poll.vote!(user2, [2, 1, 0])
 
-    expect(poll).to be_closed
+      expect(poll).to be_closed
+    end
+
+    it 'should not save infinity value to db' do
+      poll.max_voters = 1.0 / 0
+      poll.save
+
+      expect(poll.reload[:max_voters]).to be_nil
+    end
+
+    it 'never set max_voters to infinity' do
+      poll.max_voters = 1.0 / 0
+      expect(poll[:max_voters]).to be_nil
+    end
   end
 
   it 'should have expiration date in future' do
