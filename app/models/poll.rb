@@ -88,7 +88,7 @@ class Poll < ActiveRecord::Base
   end
 
   def max_voters_should_be_number
-    errors.add(:max_voters, 'should be number greater than 0') unless (is_a?(Integer) || Float::INFINITY) && max_voters > 0
+    errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters > 0) || self[:max_voters].nil?
   end
 
   def date_should_be_in_future
