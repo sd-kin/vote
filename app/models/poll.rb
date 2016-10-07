@@ -42,6 +42,16 @@ class Poll < ActiveRecord::Base
     self.vote_results = []
     self.current_state = []
     super
+  rescue ActiveRecord::RecordInvalid => e # rescue only when try to make closed poll whith expiration date in the past 'draft' again
+    raise e if errors[:expire_at].blank? # in order to have object with error instead of thrown error
+    reload # reload object so rendered correct status and validation error
+  end
+
+  def closed!
+    super
+  rescue ActiveRecord::RecordInvalid => e # status of polls with expiration date in past can be modifyed to closed
+    raise e if errors[:expire_at].blank?
+    update_attribute(:status, :closed)
   end
 
   def vote!(user:, preferences:)

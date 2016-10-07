@@ -9,9 +9,6 @@ module Accessible
       flash[:error] = 'only owner can do that'
       redirect_to root_path if redirect
     end
-
-  rescue ActiveRecord::RecordInvalid
-    object.reload
   end
 
   alias check_accessability execute_if_accessible
