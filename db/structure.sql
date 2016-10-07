@@ -396,6 +396,13 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_downvotes_on_rater_id_and_rating_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_downvotes_on_rater_id_and_rating_id ON downvotes USING btree (rater_id, rating_id);
+
+
+--
 -- Name: index_polls_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -407,6 +414,20 @@ CREATE INDEX index_polls_on_user_id ON polls USING btree (user_id);
 --
 
 CREATE INDEX index_ratings_on_rateable_type_and_rateable_id ON ratings USING btree (rateable_type, rateable_id);
+
+
+--
+-- Name: index_upvotes_on_rater_id_and_rating_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_upvotes_on_rater_id_and_rating_id ON upvotes USING btree (rater_id, rating_id);
+
+
+--
+-- Name: index_user_votes_on_user_id_and_poll_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_user_votes_on_user_id_and_poll_id ON user_votes USING btree (user_id, poll_id);
 
 
 --
@@ -467,6 +488,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160818061937');
 
 INSERT INTO schema_migrations (version) VALUES ('20160918090302');
 
+INSERT INTO schema_migrations (version) VALUES ('20160919151155');
+
 INSERT INTO schema_migrations (version) VALUES ('20160921101715');
 
 INSERT INTO schema_migrations (version) VALUES ('20160921101732');
@@ -476,4 +499,10 @@ INSERT INTO schema_migrations (version) VALUES ('20160930151136');
 INSERT INTO schema_migrations (version) VALUES ('20160930163031');
 
 INSERT INTO schema_migrations (version) VALUES ('20161004235133');
+
+INSERT INTO schema_migrations (version) VALUES ('20161007135238');
+
+INSERT INTO schema_migrations (version) VALUES ('20161007140039');
+
+INSERT INTO schema_migrations (version) VALUES ('20161007140053');
 
