@@ -54,7 +54,7 @@ class Poll < ActiveRecord::Base
     update_attribute(:status, :closed)
   end
 
-  def vote!(user:, preferences:)
+  def vote!(user, preferences)
     transaction do
       voters << user
       vote_results << preferences

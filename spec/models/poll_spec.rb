@@ -67,8 +67,8 @@ RSpec.describe Poll, type: :model do
   it 'should be closed when reach maximum voters limit' do
     poll.max_voters = 2
 
-    poll.vote!(user: user, preferences: [0, 1, 2])
-    poll.vote!(user: user2, preferences: [2, 1, 0])
+    poll.vote!(user, [0, 1, 2])
+    poll.vote!(user2, [2, 1, 0])
 
     expect(poll).to be_closed
   end

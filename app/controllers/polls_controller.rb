@@ -50,7 +50,7 @@ class PollsController < ApplicationController
     @poll = Poll.find(id)
     unless remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
       preferences = preferences_as_weight(@poll, params[:choices_array])
-      @poll.vote!(user: current_user, preferences: preferences)
+      @poll.vote!(current_user, preferences)
       remember_id(id)
       @already_voted = true
     end
