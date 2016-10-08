@@ -59,7 +59,7 @@ class PollsController < ApplicationController
   def result
     id = params[:id]
     @poll = Poll.find(id)
-    @already_voted = remembered_ids.include? id.to_i
+    @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
   end
 
   def make_ready
@@ -69,8 +69,10 @@ class PollsController < ApplicationController
   end
 
   def make_draft
-    @poll = Poll.find(params[:id])
+    id = params[:id]
+    @poll = Poll.find(id)
     execute_if_accessible(@poll, redirect: false, &:draft!)
+    forgot_id(id)
     render 'change_status'
   end
 
@@ -84,6 +86,13 @@ class PollsController < ApplicationController
     cookies.signed.permanent[:voted_polls] ||= '[]'
     arr = JSON.parse(cookies.signed[:voted_polls])
     arr << id
+    cookies.signed[:voted_polls] = JSON.generate(arr.uniq)
+  end
+
+  def forgot_id(id)
+    cookies.signed.permanent[:voted_polls] ||= '[]'
+    arr = JSON.parse(cookies.signed[:voted_polls])
+    arr.delete(id)
     cookies.signed[:voted_polls] = JSON.generate(arr.uniq)
   end
 

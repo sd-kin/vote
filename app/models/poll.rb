@@ -11,11 +11,11 @@ class Poll < ActiveRecord::Base
   }
 
   has_one    :rating, as: :rateable, dependent: :destroy
-  has_many   :downvoters, through: :rating, source: :downvoters
-  has_many   :upvoters, through: :rating, source: :upvoters
+  has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
+  has_many   :upvoters, through: :rating, source: :upvoters # users, who increase poll rating
   has_many   :options, dependent: :destroy
   has_many   :user_votes
-  has_many   :voters, through: :user_votes, source: :user
+  has_many   :voters, through: :user_votes, source: :user # users voted in this poll
   belongs_to :user
 
   serialize :vote_results, Array
@@ -42,6 +42,7 @@ class Poll < ActiveRecord::Base
   def draft!
     self.vote_results = []
     self.current_state = []
+    voters.clear
     super
   rescue ActiveRecord::RecordInvalid => e # rescue only when try to make closed poll whith expiration date in the past 'draft' again
     raise e if errors[:expire_at].blank? # in order to have object with error instead of thrown error
