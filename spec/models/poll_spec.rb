@@ -85,6 +85,12 @@ RSpec.describe Poll, type: :model do
       poll.max_voters = 1.0 / 0
       expect(poll[:max_voters]).to be_nil
     end
+
+    it 'should be valid when nill' do
+      poll = Poll.new(title: 'test', max_voters: nil, expire_at: 1.year.from_now)
+
+      expect(poll).to be_valid
+    end
   end
 
   it 'should have expiration date in future' do
