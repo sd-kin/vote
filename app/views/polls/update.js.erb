@@ -3,4 +3,5 @@
   $('#<%= dom_id(@poll, :errors_for) %>').html('<%= escape_javascript render "polls/errors", poll: @poll %>');
 <% else %>
   $('#<%= dom_id(@poll) %>').html('<%= escape_javascript render @poll %>');
+  $('#<%= dom_id(@poll, :status_for) %>').html('<%= escape_javascript render "polls/status", poll: @poll %>')
 <% end %>

@@ -193,6 +193,14 @@ RSpec.describe PollsController, type: :controller do
         it 'not increase count of polls' do
           expect { subject }.to change { Poll.count }.by(0)
         end
+
+        it 'change status back to draft' do
+          users_poll.ready!
+
+          subject
+
+          expect(users_poll.reload).to be_draft
+        end
       end
 
       context 'and attributes not valid' do

@@ -8,4 +8,16 @@ class Option < ActiveRecord::Base
   def accessible_for?(user)
     poll.user_id == user.id
   end
+
+  def update(attributes)
+    poll.draft!
+
+    super(attributes)
+  end
+
+  def destroy
+    poll.draft!
+
+    super
+  end
 end

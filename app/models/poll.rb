@@ -78,6 +78,12 @@ class Poll < ActiveRecord::Base
     self[:max_voters] || Float::INFINITY
   end
 
+  def update(attributes)
+    draft!
+
+    super(attributes)
+  end
+
   private
 
   def calculate_ranks

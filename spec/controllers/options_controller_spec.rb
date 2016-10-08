@@ -73,6 +73,14 @@ RSpec.describe OptionsController, type: :controller do
 
         expect(assigns(:option).title).to_not eq(option.title)
       end
+
+      it 'change poll status back to draft' do
+        option.poll.ready!
+
+        subject
+
+        expect(option.poll.reload).to be_draft
+      end
     end
 
     context 'when not owner does it' do
@@ -98,6 +106,14 @@ RSpec.describe OptionsController, type: :controller do
 
       it 'decrease options count' do
         expect { subject }.to change { poll.reload.options.count }.by(-1)
+      end
+
+      it 'change poll status back to draft' do
+        option.poll.ready!
+
+        subject
+
+        expect(option.poll.reload).to be_draft
       end
     end
 
