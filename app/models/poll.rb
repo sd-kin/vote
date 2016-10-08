@@ -88,7 +88,7 @@ class Poll < ActiveRecord::Base
   end
 
   def max_voters_should_be_number
-    # work just like standart numericality validation, but check [:max_voters] instead of .max_voters which return infinity 
+    # work just like standart numericality validation, but check [:max_voters] instead of .max_voters which return infinity
     errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters > 0) || self[:max_voters].nil?
   end
 
