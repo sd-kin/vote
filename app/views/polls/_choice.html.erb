@@ -2,5 +2,5 @@
     <h2> Your choice has been accepted </h2>
     <%= link_to 'see results', result_poll_path %>
 <% else %>
-  <%= button_to 'make choice', "javascript:makeChoice()" %>
+  <%= button_to 'make choice', "javascript:makeChoice()" if poll.ready? %>
 <% end %>

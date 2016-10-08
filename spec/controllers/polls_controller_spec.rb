@@ -146,8 +146,13 @@ RSpec.describe PollsController, type: :controller do
 
       it { is_expected.to have_http_status(302) }
 
-      it 'decrease count of polls' do
-        expect { subject }.to change { Poll.count }.by(-1)
+      it 'not decrease count of polls' do
+        expect { subject }.to_not change { Poll.count }
+      end
+
+      it 'change poll status to deleted' do
+        subject
+        expect(users_poll.reload).to be_deleted
       end
     end
 
@@ -201,6 +206,7 @@ RSpec.describe PollsController, type: :controller do
           subject
           expect(assigns(:poll).errors[:title]).to eq(["can't be blank"])
         end
+
         it 'not change poll attributes' do
           subject
           expect(users_poll.reload.title).not_to eq(poll_params[:title])

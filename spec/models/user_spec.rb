@@ -42,6 +42,10 @@ RSpec.describe User, type: :model do
       expect(FactoryGirl.create(:user).activation_digest).to_not be_nil
     end
 
+    it 'should have no voters' do
+      expect(FactoryGirl.create(:user).voted_polls).to eq([])
+    end
+
     it 'should have rating = 0' do
       expect(FactoryGirl.create(:user).rating.value).to eq(0)
     end

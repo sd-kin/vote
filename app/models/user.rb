@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   has_many :downvoters, through: :rating, source: :downvoters
   has_many :upvoters, through: :rating, source: :upvoters
   has_many :polls, dependent: :destroy
+  has_many :user_votes
+  has_many :voted_polls, through: :user_votes, source: :poll
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }

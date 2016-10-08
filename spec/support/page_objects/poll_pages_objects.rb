@@ -26,6 +26,7 @@ module PollPagesObjects
 
     def create_poll(title: 'poll title')
       fill_in 'poll_title', with: title
+      select '2020', from: 'poll_expire_at_1i'
       click_button 'Ok'
     end
 
@@ -50,6 +51,7 @@ module PollPagesObjects
     def visit_page(title: 'poll title')
       visit new_poll_path
       fill_in 'poll_title', with: title
+      select '2020', from: 'poll_expire_at_1i'
       click_button 'Ok'
 
       self

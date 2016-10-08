@@ -8,9 +8,19 @@
     Title: <%= poll.title %>
   </div>
 
-  <%= link_to 'edit', edit_poll_path( poll ), remote: true unless poll.ready?%>
+  <div id = "<%= dom_id(poll, :voters_limit_for) %>">
+    Maximum voters: <%= poll.max_voters %>
+  </div>
 
-  <%= render 'shared/rating', object: poll %>
+  <div id = "<%= dom_id(poll, :expiration_date_for) %>">
+    Expiration date: <%= poll.expire_at.to_s %>
+  </div>
+
+  <%= link_to 'edit', edit_poll_path( poll ), remote: true if poll.accessible_for?(current_user) %>
+
+  <div id='rating'>
+    <%= render 'shared/rating', object: poll %>
+  </div>
 
   <ul>
     <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">

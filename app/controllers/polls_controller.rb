@@ -12,9 +12,9 @@ class PollsController < ApplicationController
 
   def show
     id = params[:id]
-    @already_voted = remembered_ids.include? id.to_i
     @poll = Poll.find(id)
     @rating = @poll.rating
+    @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
   end
 
   def new
@@ -35,20 +35,22 @@ class PollsController < ApplicationController
 
   def update
     @poll = Poll.find(params[:id])
+    @rating = @poll.rating
     execute_if_accessible(@poll) { |poll| poll.update poll_params }
   end
 
   def destroy
     @poll = Poll.find(params[:id])
-    execute_if_accessible(@poll, redirect: false, &:destroy)
+    execute_if_accessible(@poll, redirect: false, &:deleted!)
     redirect_to polls_path
   end
 
   def choose
     id = params[:id]
     @poll = Poll.find(id)
-    unless remembered_ids.include? id.to_i
-      @poll.vote! preferences_as_weight(@poll, params[:choices_array])
+    unless remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
+      preferences = preferences_as_weight(@poll, params[:choices_array])
+      @poll.vote!(current_user, preferences)
       remember_id(id)
       @already_voted = true
     end
@@ -75,7 +77,7 @@ class PollsController < ApplicationController
   private
 
   def poll_params
-    params.require(:poll).permit(:title)
+    params.require(:poll).permit(:title, :max_voters, :expire_at)
   end
 
   def remember_id(id)

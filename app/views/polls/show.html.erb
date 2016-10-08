@@ -1,5 +1,5 @@
 <%= render @poll %>
 <div id='choice'>
-  <%= render 'choice' %>
+  <%= render 'choice', poll: @poll %>
 </div>
 <%= link_to 'back', :back %>
