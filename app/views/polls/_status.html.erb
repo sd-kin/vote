@@ -2,13 +2,7 @@ Status: <%= poll.status %>
 
 <% if poll.draft? %>
   <%= button_to 'Make ready', make_ready_poll_path(poll), remote: true %>
-<% end %>
-
-<% if poll.ready? || poll.deleted? %>
-  <%= button_to 'Make draft', make_draft_poll_path(poll), remote: true %>
-<% end %>
-
-<% if poll.closed? %>
-  <%= button_to 'Make draft', make_draft_poll_path(poll), remote: true, data: { confirm: 'All votes will be destroyed! Are you shure?' } %>
+<% else %>
+  <%= button_to 'Make draft', make_draft_poll_path(poll), remote: true, data: { confirm: 'Votation progress will be lost!' } %>
   (All progress will be lost!)
 <% end %>
