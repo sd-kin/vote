@@ -93,21 +93,29 @@ RSpec.describe Poll, type: :model do
     end
   end
 
-  it 'should have expiration date in future' do
-    poll.expire_at = 1.year.ago
-    expect { poll.save! }.to raise_error(ActiveRecord::RecordInvalid)
+  context 'expiration date' do
+    it 'should have expiration date in future' do
+      poll.expire_at = 1.year.ago
+      expect { poll.save! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it 'shold have error when reopen outdated' do
+      poll.update_attribute(:expire_at, 1.year.ago)
+      poll.closed!
+
+      expect(poll.errors[:expire_at]).to eq(['should be in future'])
+    end
+
+    it 'should close polls with expiration date in past' do
+      poll.update_attribute(:expire_at, 1.year.ago)
+
+      expect { poll.closed! }.to change { poll.status }.to('closed')
+    end
   end
 
-  it 'shold have error when reopen outdated' do
-    poll.update_attribute(:expire_at, 1.year.ago)
-    poll.closed!
-
-    expect(poll.errors[:expire_at]).to eq(['should be in future'])
-  end
-
-  it 'should close polls with expiration date in past' do
-    poll.update_attribute(:expire_at, 1.year.ago)
-
-    expect { poll.closed! }.to change { poll.status }.to('closed')
+  context 'comments' do
+    it 'should have comments' do
+      expect(poll.comments).to eq([])
+    end
   end
 end

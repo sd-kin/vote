@@ -70,15 +70,21 @@ Rails.application.routes.draw do
 
     get 'ready', on: :collection
     resources :options
+    resources :comments
   end
 
-  resources :users
   resources :ratings, only: [:increase, :decrease] do
     member do
       post 'increase'
       post 'decrease'
     end
   end
+
+  resources :comments do
+    resources :comments
+  end
+
+  resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :update, :edit]
 

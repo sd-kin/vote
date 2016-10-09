@@ -16,6 +16,7 @@ class Poll < ActiveRecord::Base
   has_many   :options, dependent: :destroy
   has_many   :user_votes
   has_many   :voters, through: :user_votes, source: :user # users voted in this poll
+  has_many   :comments, as: :commentable
   belongs_to :user
 
   serialize :vote_results, Array

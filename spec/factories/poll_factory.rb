@@ -27,6 +27,12 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_comments do
+      after :create do |poll|
+        FactoryGirl.create_list(:comment, 3, commentable_id: poll.id, commentable_type: 'Poll')
+      end
+    end
+
     factory :valid_poll, traits: [:with_title, :with_options]
     factory :updated_poll, traits: [:with_updated_title, :with_updated_options]
   end

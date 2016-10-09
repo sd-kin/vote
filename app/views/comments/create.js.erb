@@ -1,0 +1,5 @@
+<% if @created %>
+  $('#<%= dom_id(@commentable, :comments_for) %>').append('<%= escape_javascript render @comment %>');
+  $('#<%= dom_id(@commentable, :reply_form_for) %>').html("<%= escape_javascript link_to 'Reply', new_comment_comment_path(@commentable), remote: true %>")
+<% end %>
+$('#<%= dom_id(@commentable.comments.build) %>').html("<%= escape_javascript render 'comments/form', commentable: @commentable %>");

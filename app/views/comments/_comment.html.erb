@@ -1,0 +1,13 @@
+<li>
+  <%= comment.body %> <br>
+  Commented at: <%= comment.created_at %> <br>
+
+  <div id='<%= dom_id(comment, :reply_form_for) %>'>
+    <%= link_to 'Reply', new_comment_comment_path(comment), remote: true %>
+  </div>
+</li>
+
+<ul>
+  <div id='<%= dom_id(comment, :comments_for) %>'>
+  <%= render comment.comments %>
+</ul>
