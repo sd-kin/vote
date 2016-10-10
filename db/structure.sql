@@ -51,7 +51,8 @@ CREATE TABLE comments (
     commentable_id integer,
     commentable_type character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -116,7 +117,8 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer
+    poll_id integer,
+    row_order integer
 );
 
 
@@ -450,6 +452,13 @@ CREATE INDEX index_comments_on_commentable_type_and_commentable_id ON comments U
 
 
 --
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
 -- Name: index_downvotes_on_rater_id_and_rating_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -499,6 +508,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_03de2dc08c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT fk_rails_03de2dc08c FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_16e77efa22; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -519,6 +536,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151227204113');
 INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
+
+INSERT INTO schema_migrations (version) VALUES ('20160603184925');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
@@ -559,4 +578,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161007140039');
 INSERT INTO schema_migrations (version) VALUES ('20161007140053');
 
 INSERT INTO schema_migrations (version) VALUES ('20161009120043');
+
+INSERT INTO schema_migrations (version) VALUES ('20161010155351');
 

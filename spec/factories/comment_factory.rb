@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 FactoryGirl.define do
   factory :comment do
+    association :author, factory: :user
+
     sequence(:body) { |n| "comment number #{n} " }
 
     trait :with_comments do

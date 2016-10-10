@@ -12,7 +12,7 @@
 </ul>
 
 <div id="<%= dom_id( @poll.comments.build ) %>">
-  <%= render 'comments/form', commentable: @poll %>
+  <%= render 'comments/form', commentable: @poll unless current_user.anonimous? %>
 </div>
 
 <%= link_to 'back', :back %>

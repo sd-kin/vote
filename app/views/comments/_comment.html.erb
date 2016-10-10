@@ -1,9 +1,10 @@
 <li>
   <%= comment.body %> <br>
-  Commented at: <%= comment.created_at %> <br>
+  <%= link_to comment.author.username, user_path(comment.author) %>
+  commented at: <%= comment.created_at %> <br>
 
   <div id='<%= dom_id(comment, :reply_form_for) %>'>
-    <%= link_to 'Reply', new_comment_comment_path(comment), remote: true %>
+    <%= link_to 'Reply', new_comment_comment_path(comment), remote: true unless current_user.anonimous? %>
   </div>
 </li>
 

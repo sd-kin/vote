@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class CommentsController < ApplicationController
+  include Accessible
+
   before_action :set_commentable
 
   def new
@@ -7,7 +9,8 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @commentable.comments.build comment_params
-    @created = @comment.save
+    @comment.author = current_user
+    @created = execute_if_accessible(@comment, redirect: false, &:save)
   end
 
   private

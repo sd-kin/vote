@@ -7,4 +7,8 @@ RSpec.describe Comment, type: :model do
   it 'have comments' do
     expect(comment.comments).to eq([])
   end
+
+  it 'have author' do
+    expect(comment.author).to_not be_nil
+  end
 end
