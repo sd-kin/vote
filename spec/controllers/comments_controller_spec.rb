@@ -3,13 +3,14 @@ require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
   let!(:comment) { FactoryGirl.create :comment }
-  let(:comments_params) { FactoryGirl.attributes_for :comment }
+  let(:commented_comment) { FactoryGirl.create :comment, :with_comments }
+  let(:comment_params) { FactoryGirl.attributes_for :comment }
   let(:poll) { FactoryGirl.create :valid_poll }
   let(:user) { FactoryGirl.create :user }
   let(:anonimous_user) { User.create_anonimous! }
 
   describe 'GET#new' do
-    subject { xhr :get, :new, comment: comment }
+    subject { xhr :get, :new, comment_id: comment }
 
     it { is_expected.to be_success }
   end
@@ -18,7 +19,7 @@ RSpec.describe CommentsController, type: :controller do
     before(:each) { session[:user_id] = user.id }
 
     context 'when poll commented' do
-      subject { xhr :post, :create, poll_id: poll, comment: comments_params }
+      subject { xhr :post, :create, poll_id: poll, comment: comment_params }
 
       it { is_expected.to be_success }
 
@@ -37,7 +38,7 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'when comment commented' do
-      subject { xhr :post, :create, comment_id: comment, comment: comments_params }
+      subject { xhr :post, :create, comment_id: comment, comment: comment_params }
 
       it { is_expected.to be_success }
 
@@ -56,7 +57,7 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'when user logged in' do
-      subject { xhr :post, :create, comment_id: comment, comment: comments_params }
+      subject { xhr :post, :create, comment_id: comment, comment: comment_params }
       before(:each) { session[:user_id] = user.id }
 
       it 'create comment with author' do
@@ -67,7 +68,7 @@ RSpec.describe CommentsController, type: :controller do
 
     context 'when user not login in' do
       before(:each) { session[:user_id] = anonimous_user.id }
-      subject { xhr :post, :create, comment_id: comment, comment: comments_params }
+      subject { xhr :post, :create, comment_id: comment, comment: comment_params }
 
       it 'not create comment' do
         expect { subject }.to_not change { Comment.count }
@@ -90,6 +91,26 @@ RSpec.describe CommentsController, type: :controller do
     context 'when user does not owe comment' do
       it 'not change comments counter' do
         expect { subject }.to_not change { Comment.count }
+      end
+    end
+  end
+
+  describe 'PUT#update' do
+    before(:each) { session[:user_id] = user.id }
+    let!(:comment_for_update) { commented_comment.comments.first }
+    subject { xhr :put, :update, id: comment_for_update, comment_id: commented_comment, comment: comment_params }
+
+    context 'when user owe comment' do
+      before(:each) { comment_for_update.update_attribute(:author, user) }
+
+      it 'can change comment body' do
+        expect { subject }.to change { comment_for_update.reload.body }.to(comment_params[:body])
+      end
+    end
+
+    context 'when user does not owe comment' do
+      it 'can not change comment body' do
+        expect { subject }.to_not change { comment_for_update.body }
       end
     end
   end

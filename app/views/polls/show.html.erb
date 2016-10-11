@@ -11,8 +11,8 @@
   </div>
 </ul>
 
-<div id="<%= dom_id( @poll.comments.build ) %>">
-  <%= render 'comments/form', commentable: @poll unless current_user.anonimous? %>
+<div id="<%= dom_id( @poll.comments.build) %>">
+  <%= render 'comments/form', commentable: @poll, comment: @poll.comments.build, remote: true unless current_user.anonimous? %>
 </div>
 
 <%= link_to 'back', :back %>

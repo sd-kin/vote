@@ -1,7 +1,6 @@
+$('div[id*=errors_for]').each(function(){$(this).html('')});
 <% if @deleted %>
-  $('div[id*=errors_for]').each(function(){$(this).html('')});
   $('#<%= dom_id(@comment) %>').parent().remove();
 <% else %>
-  $('div[id*=errors_for]').each(function(){$(this).html('')});
   $('#<%= dom_id(@comment, :errors_for)%>').html('<%= escape_javascript render "errors", comment: @comment %>');
 <% end %>

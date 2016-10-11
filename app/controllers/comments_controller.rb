@@ -4,7 +4,21 @@ class CommentsController < ApplicationController
 
   before_action :set_commentable
 
+  def show
+    @comment = Comment.find(params[:id])
+  end
+
   def new
+    @comment = @commentable.comments.build
+  end
+
+  def edit
+    @comment = Comment.find(params[:id])
+  end
+
+  def update
+    @comment = Comment.find(params[:id])
+    @updated = execute_if_accessible(@comment, redirect: false) { |c| c.update comment_params }
   end
 
   def create

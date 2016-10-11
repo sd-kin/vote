@@ -1,7 +1,9 @@
-<%= render 'comments/errors', comment: @comment %>
+<%= render 'comments/errors', comment: comment %>
 
-<%= form_for [commentable, commentable.comments.build], remote: true do |f| %>
+<%= form_for [commentable, comment], remote: true do |f| %>
   <%= f.label 'Comment:' %> <br>
   <%= f.text_area :body %> <br>
   <%= f.submit %>
 <% end %>
+
+<%= button_to 'Cancel', comment_path(comment), method: :get, remote: true unless comment.new_record? %>

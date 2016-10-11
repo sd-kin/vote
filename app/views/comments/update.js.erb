@@ -1,0 +1,5 @@
+<% if @updated %>
+  $('#<%= dom_id(@comment) %>').html('<%= escape_javascript render @comment %>');
+<% else %>
+  $('#<%= dom_id(@comment) %>').html('<%= escape_javascript render "comments/form", commentable: @commentable, comment: @comment %>');
+<% end %>
