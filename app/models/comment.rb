@@ -9,4 +9,13 @@ class Comment < ActiveRecord::Base
   def accessible_for?(user)
     user_id == user.id && !user.anonimous?
   end
+
+  def destroy
+    if comments.empty?
+      super
+    else
+      errors.add(:base, 'Comment with replys can not be deleted')
+      false
+    end
+  end
 end

@@ -6,7 +6,7 @@ RSpec.describe CommentsController, type: :controller do
   let(:comments_params) { FactoryGirl.attributes_for :comment }
   let(:poll) { FactoryGirl.create :valid_poll }
   let(:user) { FactoryGirl.create :user }
-  let(:anonimous_user){ User.create_anonimous! }
+  let(:anonimous_user) { User.create_anonimous! }
 
   describe 'GET#new' do
     subject { xhr :get, :new, comment: comment }
@@ -70,6 +70,25 @@ RSpec.describe CommentsController, type: :controller do
       subject { xhr :post, :create, comment_id: comment, comment: comments_params }
 
       it 'not create comment' do
+        expect { subject }.to_not change { Comment.count }
+      end
+    end
+  end
+
+  describe 'DELETE#destroy' do
+    before(:each) { session[:user_id] = user.id }
+    subject { xhr :delete, :destroy, id: comment }
+
+    context 'when user owe comment' do
+      before(:each) { comment.update_attribute(:author, user) }
+
+      it 'decrease comments counter' do
+        expect { subject }.to change { Comment.count }.by(-1)
+      end
+    end
+
+    context 'when user does not owe comment' do
+      it 'not change comments counter' do
         expect { subject }.to_not change { Comment.count }
       end
     end

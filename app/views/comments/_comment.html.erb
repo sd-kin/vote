@@ -1,10 +1,17 @@
 <li>
-  <%= comment.body %> <br>
-  <%= link_to comment.author.username, user_path(comment.author) %>
-  commented at: <%= comment.created_at %> <br>
+  <div id='<%= dom_id(comment) %>'>
 
-  <div id='<%= dom_id(comment, :reply_form_for) %>'>
-    <%= link_to 'Reply', new_comment_comment_path(comment), remote: true unless current_user.anonimous? %>
+    <div id='<%= dom_id(comment, :errors_for) %>'>
+    </div>
+
+    <%= comment.body %> <br>
+    <%= link_to comment.author.username, user_path(comment.author) %>
+    commented at: <%= comment.created_at %> <br>
+    <%= link_to 'delete', comment_path(comment), method: :delete, remote: true if comment.accessible_for?( current_user ) %>
+
+    <div id='<%= dom_id(comment, :reply_form_for) %>'>
+      <%= link_to 'Reply', new_comment_comment_path(comment), remote: true unless current_user.anonimous? %>
+    </div>
   </div>
 </li>
 

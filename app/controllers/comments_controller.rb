@@ -13,6 +13,11 @@ class CommentsController < ApplicationController
     @created = execute_if_accessible(@comment, redirect: false, &:save)
   end
 
+  def destroy
+    @comment = Comment.find(params[:id])
+    @deleted = execute_if_accessible(@comment, redirect: false, &:destroy)
+  end
+
   private
 
   def comment_params
