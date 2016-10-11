@@ -1,7 +1,11 @@
 Show user page
 <br>
 <%= render 'errors' %>
-<%= render 'shared/rating', object: @user %>
+
+<div id='<%= dom_id(@user.rating) %>'>
+  <%= render 'shared/rating', rating: @user.rating %>
+</div>
+
 Login: <%= @user.username %> <br>
 Email: <%= @user.email %> <br>
 <% if @user == current_user %>

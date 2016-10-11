@@ -1,1 +1,1 @@
-$('#rating').html('<%= escape_javascript render "shared/rating" %>')
+$('#<%= dom_id( @rating ) %>').html('<%= escape_javascript render "shared/rating", rating: @rating %>')

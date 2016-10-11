@@ -4,7 +4,12 @@ class Comment < ActiveRecord::Base
 
   belongs_to :commentable, polymorphic: true
   belongs_to :author, foreign_key: :user_id, class_name: 'User'
+  has_one    :rating, as: :rateable, dependent: :destroy
+  has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease comment rating
+  has_many   :upvoters, through: :rating, source: :upvoters # users, who increase comment rating
   has_many   :comments, as: :commentable
+
+  after_create :create_rating # metod aded by ActiveRecord has_one
 
   def accessible_for?(user)
     user_id == user.id && !user.anonimous?

@@ -1,5 +1,10 @@
 <li>
-  <div id='<%= dom_id(comment) %>'>
+
+  <div id='<%= dom_id( comment.rating ) %>' style='display: inline-block'>
+    <%= render 'shared/rating', rating: comment.rating %>
+  </div>
+
+  <div id='<%= dom_id(comment) %>'style='display: inline-block'>
 
     <div id='<%= dom_id(comment, :errors_for) %>'>
     </div>

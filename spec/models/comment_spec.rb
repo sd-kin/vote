@@ -24,4 +24,8 @@ RSpec.describe Comment, type: :model do
       end
     end
   end
+
+  it 'have rating' do
+    expect(comment.rating).to_not be_nil
+  end
 end
