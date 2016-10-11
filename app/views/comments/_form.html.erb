@@ -1,4 +1,5 @@
-<%= render 'comments/errors', comment: comment %>
+<div id='<%= dom_id(commentable, :creation_errors_for ) %>'>
+</div>
 
 <%= form_for [commentable, comment], remote: true do |f| %>
   <%= f.label 'Comment:' %> <br>

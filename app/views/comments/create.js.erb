@@ -3,4 +3,5 @@
   $('#<%= dom_id(@commentable, :reply_form_for) %>').html("<%= escape_javascript link_to 'Reply', new_comment_comment_path(@commentable), remote: true %>")
 <% else %>
   $('#<%= dom_id(@commentable, :reply_form_for) %>').html('<%= escape_javascript render "comments/form", commentable: @commentable, comment: @comment %>');
+  $('#<%= dom_id(@commentable, :creation_errors_for) %>').html('<%= escape_javascript render "errors", comment: @comment %>');
 <% end %>
