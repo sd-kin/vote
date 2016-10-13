@@ -5,6 +5,9 @@ class Option < ActiveRecord::Base
   validates :title, presence: true
   validates :description, presence: true
 
+  after_update  :draft!
+  after_destroy :draft!
+
   def accessible_for?(user)
     poll.user_id == user.id
   end
@@ -15,9 +18,7 @@ class Option < ActiveRecord::Base
     super(attributes)
   end
 
-  def destroy
+  def draft!
     poll.draft!
-
-    super
   end
 end
