@@ -58,7 +58,6 @@ RSpec.describe CommentsController, type: :controller do
 
     context 'when user logged in' do
       subject { xhr :post, :create, comment_id: comment, comment: comment_params }
-      before(:each) { session[:user_id] = user.id }
 
       it 'create comment with author' do
         subject
@@ -66,7 +65,7 @@ RSpec.describe CommentsController, type: :controller do
       end
     end
 
-    context 'when user not login in' do
+    context 'when user is not login in' do
       before(:each) { session[:user_id] = anonimous_user.id }
       subject { xhr :post, :create, comment_id: comment, comment: comment_params }
 
@@ -80,7 +79,7 @@ RSpec.describe CommentsController, type: :controller do
     before(:each) { session[:user_id] = user.id }
     subject { xhr :delete, :destroy, id: comment }
 
-    context 'when user owe comment' do
+    context 'when user owns comment' do
       before(:each) { comment.update_attribute(:author, user) }
 
       it 'decrease comments counter' do
@@ -88,7 +87,7 @@ RSpec.describe CommentsController, type: :controller do
       end
     end
 
-    context 'when user does not owe comment' do
+    context 'when user does not owns comment' do
       it 'not change comments counter' do
         expect { subject }.to_not change { Comment.count }
       end
@@ -100,7 +99,7 @@ RSpec.describe CommentsController, type: :controller do
     let!(:comment_for_update) { commented_comment.comments.first }
     subject { xhr :put, :update, id: comment_for_update, comment_id: commented_comment, comment: comment_params }
 
-    context 'when user owe comment' do
+    context 'when user owns comment' do
       before(:each) { comment_for_update.update_attribute(:author, user) }
 
       it 'can change comment body' do
@@ -108,7 +107,7 @@ RSpec.describe CommentsController, type: :controller do
       end
     end
 
-    context 'when user does not owe comment' do
+    context 'when user does not owns comment' do
       it 'can not change comment body' do
         expect { subject }.to_not change { comment_for_update.body }
       end

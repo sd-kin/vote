@@ -13,7 +13,7 @@ RSpec.describe Comment, type: :model do
     expect(comment.author).to_not be_nil
   end
 
-  context 'when have replys' do
+  context 'when have replies' do
     context 'can not be deleted' do
       subject { commented_comment.destroy }
 
