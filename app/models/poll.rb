@@ -29,6 +29,7 @@ class Poll < ActiveRecord::Base
   after_touch       :ensure_status_is_correct
   after_create      :create_rating
   after_find        :close_if_expire
+  after_update      :draft!, if: :ready?
 
   def ready!
     if options.empty?
@@ -45,14 +46,15 @@ class Poll < ActiveRecord::Base
     self.current_state = []
     voters.clear
     super
-  rescue ActiveRecord::RecordInvalid => e # rescue only when try to make closed poll whith expiration date in the past 'draft' again
+    reload # without reload get wrong status in controller because it changes in after_update callback
+  rescue ActiveRecord::RecordInvalid => e # rescue only when try to make closed poll with expiration date in the past 'draft' again
     raise e if errors[:expire_at].blank? # in order to have object with error instead of thrown error
     reload # reload object so rendered correct status and validation error
   end
 
   def closed!
     super
-  rescue ActiveRecord::RecordInvalid => e # status of polls with expiration date in past can be modifyed to closed
+  rescue ActiveRecord::RecordInvalid => e # status of polls with expiration date in past can be modified to closed
     raise e if errors[:expire_at].blank?
     update_attribute(:status, :closed)
   end
@@ -79,12 +81,6 @@ class Poll < ActiveRecord::Base
     self[:max_voters] || Float::INFINITY
   end
 
-  def update(attributes)
-    draft!
-
-    super(attributes)
-  end
-
   private
 
   def calculate_ranks
@@ -96,7 +92,7 @@ class Poll < ActiveRecord::Base
   end
 
   def max_voters_should_be_number
-    # work just like standart numericality validation, but check [:max_voters] instead of .max_voters which return infinity
+    # work just like standard numericality validation, but check [:max_voters] instead of .max_voters which return infinity
     errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters > 0) || self[:max_voters].nil?
   end
 
