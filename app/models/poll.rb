@@ -11,6 +11,7 @@ class Poll < ActiveRecord::Base
   }
 
   has_one    :rating, as: :rateable, dependent: :destroy
+  has_many   :notifications
   has_many   :downvoters, through: :rating, source: :downvoters
   has_many   :upvoters, through: :rating, source: :upvoters
   has_many   :options, dependent: :destroy

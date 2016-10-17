@@ -42,6 +42,40 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    body text,
+    commentable_id integer,
+    commentable_type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
+);
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
 -- Name: downvotes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -71,6 +105,40 @@ CREATE SEQUENCE downvotes_id_seq
 --
 
 ALTER SEQUENCE downvotes_id_seq OWNED BY downvotes.id;
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE notifications (
+    id integer NOT NULL,
+    user_id integer,
+    subject_id integer,
+    subject_type character varying,
+    message character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
 
 
 --
@@ -294,7 +362,21 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY downvotes ALTER COLUMN id SET DEFAULT nextval('downvotes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
 
 
 --
@@ -340,11 +422,27 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: downvotes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY downvotes
     ADD CONSTRAINT downvotes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -396,10 +494,38 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_comments_on_commentable_type_and_commentable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_type_and_commentable_id ON comments USING btree (commentable_type, commentable_id);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
 -- Name: index_downvotes_on_rater_id_and_rating_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_downvotes_on_rater_id_and_rating_id ON downvotes USING btree (rater_id, rating_id);
+
+
+--
+-- Name: index_notifications_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_subject_type_and_subject_id ON notifications USING btree (subject_type, subject_id);
+
+
+--
+-- Name: index_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_user_id ON notifications USING btree (user_id);
 
 
 --
@@ -445,11 +571,27 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: fk_rails_03de2dc08c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT fk_rails_03de2dc08c FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- Name: fk_rails_16e77efa22; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY polls
     ADD CONSTRAINT fk_rails_16e77efa22 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_b080fb4855; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT fk_rails_b080fb4855 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -505,4 +647,10 @@ INSERT INTO schema_migrations (version) VALUES ('20161007135238');
 INSERT INTO schema_migrations (version) VALUES ('20161007140039');
 
 INSERT INTO schema_migrations (version) VALUES ('20161007140053');
+
+INSERT INTO schema_migrations (version) VALUES ('20161009120043');
+
+INSERT INTO schema_migrations (version) VALUES ('20161010155351');
+
+INSERT INTO schema_migrations (version) VALUES ('20161016123710');
 
