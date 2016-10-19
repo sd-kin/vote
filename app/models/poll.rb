@@ -1,21 +1,20 @@
 # frozen_string_literal: true
 class Poll < ActiveRecord::Base
   require 'vote-schulze'
+  require 'poll_status_machine'
+  include PollStatusMachine
 
-  enum status: {
-    draft:     'draft',
-    ready:     'ready',
-    published: 'published',
-    closed:    'closed',
-    deleted:   'deleted'
-  }
+  AVAILIBLE_TRANSITIONS = { draft:     { 'ready' => 'draft', 'closed' => 'draft', 'deleted' => 'draft' },
+                            ready:     { 'draft' => 'ready' },
+                            finished:  { 'ready' => 'finished' },
+                            deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' } }.freeze
 
   has_one    :rating, as: :rateable, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
-  has_many   :upvoters, through: :rating, source: :upvoters # users, who increase poll rating
+  has_many   :upvoters, through: :rating, source: :upvoters     # users, who increase poll rating
   has_many   :options, dependent: :destroy
   has_many   :user_votes
-  has_many   :voters, through: :user_votes, source: :user # users voted in this poll
+  has_many   :voters, through: :user_votes, source: :user       # users voted in this poll
   has_many   :comments, as: :commentable
   belongs_to :user
 
@@ -31,32 +30,22 @@ class Poll < ActiveRecord::Base
   after_find        :close_if_expire
   after_update      :draft!, if: :ready?
 
-  def ready!
-    if options.empty?
-      errors.add(:status, "can't be ready when poll have no options")
-    else
-      self.vote_results = []
-      self.current_state = []
-      super
+  AVAILIBLE_TRANSITIONS.each_key do |k| # dynamic generation metods for ceck and change status
+    define_method "#{k}!" do       # methods with ! change status to status of the same name
+      status_machine.trigger(k)
     end
-  end
 
-  def draft!
-    self.vote_results = []
-    self.current_state = []
-    voters.clear
-    super
-    reload # without reload get wrong status in controller because it changes in after_update callback
-  rescue ActiveRecord::RecordInvalid => e # rescue only when try to make closed poll with expiration date in the past 'draft' again
-    raise e if errors[:expire_at].blank? # in order to have object with error instead of thrown error
-    reload # reload object so rendered correct status and validation error
-  end
+    define_method "#{k}?" do       # method with ? check if current status equal with method-named status
+      status == k.to_s
+    end
 
-  def closed!
-    super
-  rescue ActiveRecord::RecordInvalid => e # status of polls with expiration date in past can be modified to closed
-    raise e if errors[:expire_at].blank?
-    update_attribute(:status, :closed)
+    define_method "can_be_#{k}?" do # method check if status can be changed from current to method-named
+      status_machine.trigger?(k)
+    end
+
+    define_singleton_method k.to_s do # scoping polls by each status
+      where(status: k)
+    end
   end
 
   def vote!(user, preferences)
@@ -64,7 +53,7 @@ class Poll < ActiveRecord::Base
       voters << user
       vote_results << preferences
       self.current_state = calculate_ranks
-      closed! if voters.count >= max_voters
+      finished! if voters.count >= max_voters
       save!
     end
   end
@@ -101,6 +90,10 @@ class Poll < ActiveRecord::Base
   end
 
   def close_if_expire
-    closed! if expire_at&. < DateTime.now
+    finished! if expire_at&. < DateTime.now
+  end
+
+  def status_machine
+    machine ||= configure_machine(status, AVAILIBLE_TRANSITIONS)
   end
 end

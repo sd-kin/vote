@@ -20,7 +20,7 @@ RSpec.describe Poll, type: :model do
 
   it 'should change valid poll status to ready' do
     poll.ready!
-    expect(poll).to be_ready
+    expect(poll.reload).to be_ready
   end
 
   it 'should not change non valid poll status to ready' do
@@ -66,12 +66,14 @@ RSpec.describe Poll, type: :model do
 
   context 'maximum voters' do
     it 'should be closed when reach maximum voters limit' do
+      pending 'change status callbacks not implemented'
       poll.max_voters = 2
+      poll.ready!
 
       poll.vote!(user, [0, 1, 2])
       poll.vote!(user2, [2, 1, 0])
 
-      expect(poll).to be_closed
+      expect(poll.reload).to be_finished
     end
 
     it 'should not save infinity value to db' do
@@ -100,16 +102,19 @@ RSpec.describe Poll, type: :model do
     end
 
     it 'shold have error when reopen outdated' do
+      pending 'change status callbacks not implemented'
       poll.update_attribute(:expire_at, 1.year.ago)
-      poll.closed!
+      poll.finished!
 
       expect(poll.errors[:expire_at]).to eq(['should be in future'])
     end
 
     it 'should close polls with expiration date in past' do
+      pending 'change status callbacks not implemented'
+      poll.ready!
       poll.update_attribute(:expire_at, 1.year.ago)
 
-      expect { poll.closed! }.to change { poll.status }.to('closed')
+      expect { poll.finished! }.to change { poll.reload.status }.to('finished')
     end
   end
 

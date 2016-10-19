@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -23,19 +24,6 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
-
---
--- Name: status; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE status AS ENUM (
-    'draft',
-    'ready',
-    'published',
-    'closed',
-    'deleted'
-);
-
 
 SET default_tablespace = '';
 
@@ -117,8 +105,7 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer,
-    row_order integer
+    poll_id integer
 );
 
 
@@ -150,12 +137,12 @@ CREATE TABLE polls (
     title character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    status status DEFAULT 'draft'::status,
     vote_results text,
     current_state character varying,
     user_id integer,
     max_voters integer,
-    expire_at timestamp without time zone
+    expire_at timestamp without time zone,
+    status character varying DEFAULT 'draft'::character varying
 );
 
 
@@ -537,8 +524,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151227213610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160531140023');
 
-INSERT INTO schema_migrations (version) VALUES ('20160603184925');
-
 INSERT INTO schema_migrations (version) VALUES ('20160605115357');
 
 INSERT INTO schema_migrations (version) VALUES ('20160605155750');
@@ -580,4 +565,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161007140053');
 INSERT INTO schema_migrations (version) VALUES ('20161009120043');
 
 INSERT INTO schema_migrations (version) VALUES ('20161010155351');
+
+INSERT INTO schema_migrations (version) VALUES ('20161019085252');
+
+INSERT INTO schema_migrations (version) VALUES ('20161019113747');
 
