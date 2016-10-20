@@ -4,7 +4,7 @@ class Poll < ActiveRecord::Base
   require 'poll_status_machine'
   include PollStatusMachine
 
-  AVAILIBLE_TRANSITIONS = { draft:     { 'ready' => 'draft', 'closed' => 'draft', 'deleted' => 'draft' },
+  AVAILIBLE_TRANSITIONS = { draft:     { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
                             ready:     { 'draft' => 'ready' },
                             finished:  { 'ready' => 'finished' },
                             deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' } }.freeze
@@ -49,12 +49,14 @@ class Poll < ActiveRecord::Base
   end
 
   def vote!(user, preferences)
-    transaction do
-      voters << user
-      vote_results << preferences
-      self.current_state = calculate_ranks
-      finished! if voters.count >= max_voters
-      save!
+    if ready?
+      transaction do
+        save_votation_progress(user, preferences)
+        finished! if voters.count >= max_voters
+        save!
+      end
+    else
+      errors.add(:base, 'only poll with ready status can be voted')
     end
   end
 
@@ -95,5 +97,17 @@ class Poll < ActiveRecord::Base
 
   def status_machine
     machine ||= configure_machine(status, AVAILIBLE_TRANSITIONS)
+  end
+
+  def drop_votation_progress
+    [current_state, vote_results, voters].map(&:clear)
+    save!
+  end
+
+  def save_votation_progress(user, preferences)
+    binding.pry
+    voters << user
+    vote_results << preferences
+    self.current_state = calculate_ranks
   end
 end

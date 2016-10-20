@@ -69,7 +69,7 @@ RSpec.describe Poll, type: :model do
       pending 'change status callbacks not implemented'
       poll.max_voters = 2
       poll.ready!
-
+      poll.reload
       poll.vote!(user, [0, 1, 2])
       poll.vote!(user2, [2, 1, 0])
 

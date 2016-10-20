@@ -13,10 +13,16 @@ module PollStatusMachine
       end
     end
 
+    add_callbacks(machine)
+
     machine
   end
 
   private
+
+  def add_callbacks(machine)
+    save_status(machine)
+  end
 
   def save_status(machine)
     machine.on(:any) do             # after any state change
