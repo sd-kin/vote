@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
+  get 'notifications/index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -72,7 +74,9 @@ Rails.application.routes.draw do
     resources :options
   end
 
-  resources :users
+  resources :users do
+    resources :notifications, only: [:index]
+  end
   resources :ratings, only: [:increase, :decrease] do
     member do
       post 'increase'

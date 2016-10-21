@@ -4,6 +4,7 @@
 
   <% if logged_in? %>
     Hello, <%= current_user.username %>!
+    <%= link_to 'notifications', user_notifications_path(current_user) %>
     <%= link_to 'log out', logout_path, method: :delete %>
   <% else %>
     <%= link_to 'sign up', new_user_path %>
