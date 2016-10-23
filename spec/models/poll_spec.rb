@@ -23,7 +23,7 @@ RSpec.describe Poll, type: :model do
     expect(poll.reload).to be_ready
   end
 
-  it 'should not change non valid poll status to ready' do
+  it 'should not change poll with no options status to ready' do
     poll = FactoryGirl.create(:poll, :with_title)
     poll.ready!
     expect(poll).not_to be_ready
@@ -66,7 +66,6 @@ RSpec.describe Poll, type: :model do
 
   context 'maximum voters' do
     it 'should be closed when reach maximum voters limit' do
-      pending 'change status callbacks not implemented'
       poll.max_voters = 2
       poll.ready!
       poll.reload
@@ -102,7 +101,6 @@ RSpec.describe Poll, type: :model do
     end
 
     it 'shold have error when reopen outdated' do
-      pending 'change status callbacks not implemented'
       poll.update_attribute(:expire_at, 1.year.ago)
       poll.finished!
 
@@ -110,17 +108,112 @@ RSpec.describe Poll, type: :model do
     end
 
     it 'should close polls with expiration date in past' do
-      pending 'change status callbacks not implemented'
       poll.ready!
       poll.update_attribute(:expire_at, 1.year.ago)
 
-      expect { poll.finished! }.to change { poll.reload.status }.to('finished')
+      expect { poll.reload }.to change { poll.status }.to('finished')
     end
   end
 
   context 'comments' do
     it 'should have comments' do
       expect(poll.comments).to eq([])
+    end
+  end
+
+  context 'check availible transitions' do
+    context 'when poll draft' do
+      it 'have status draft' do
+        expect(poll).to be_draft
+      end
+
+      it 'able to be ready' do
+        expect(poll.can_be_ready?).to be_truthy
+      end
+
+      it 'able to be deleted' do
+        expect(poll.can_be_deleted?).to be_truthy
+      end
+
+      it 'not able to be finished' do
+        expect(poll.can_be_finished?).to be_falsey
+      end
+    end
+
+    context 'when poll ready' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
+
+      it 'have status ready' do
+        expect(poll).to be_ready
+      end
+
+      it 'able to be draft' do
+        expect(poll.can_be_draft?).to be_truthy
+      end
+
+      it 'able to be deleted' do
+        expect(poll.can_be_deleted?).to be_truthy
+      end
+
+      it 'able to be finished' do
+        expect(poll.can_be_finished?).to be_truthy
+      end
+    end
+
+    context 'when poll finished' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'finished' }
+
+      it 'have status finished' do
+        expect(poll).to be_finished
+      end
+
+      it 'able to be draft' do
+        expect(poll.can_be_draft?).to be_truthy
+      end
+
+      it 'able to be deleted' do
+        expect(poll.can_be_deleted?).to be_truthy
+      end
+
+      it 'not able to be ready' do
+        expect(poll.can_be_ready?).to be_falsey
+      end
+    end
+
+    context 'when poll deleted' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'deleted' }
+
+      it 'have status deleted' do
+        expect(poll).to be_deleted
+      end
+
+      it 'able to be draft' do
+        expect(poll.can_be_draft?).to be_truthy
+      end
+
+      it 'not able to be ready' do
+        expect(poll.can_be_ready?).to be_falsey
+      end
+
+      it 'not able to be finished' do
+        expect(poll.can_be_finished?).to be_falsey
+      end
+    end
+  end
+
+  context 'Check changing status callbacks.' do
+    context 'draft -> ready' do
+      let(:poll) { FactoryGirl.create :poll, :with_title }
+
+      it 'stay draft if poll have no options' do
+        poll.ready!
+
+        expect(poll).to be_draft
+      end
+
+      it 'have an error if poll have no options' do
+        expect { poll.ready! }.to change { poll.errors.count }.by(1)
+      end
     end
   end
 end

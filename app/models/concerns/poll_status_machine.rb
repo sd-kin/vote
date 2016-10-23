@@ -21,13 +21,13 @@ module PollStatusMachine
   private
 
   def add_callbacks(machine)
-    save_status(machine)
+    machine.on('ready') { check_options_presists(machine) }
   end
 
-  def save_status(machine)
-    machine.on(:any) do             # after any state change
-      self.status = machine.state   # set poll status to current state-machine state
-      save!                         # save here instead of in model method becouse no need to reload instance that way
+  def check_options_presists(machine)
+    if options.empty?
+      errors.add(:base, "Status can't be ready when poll have no options")
+      machine.trigger(:draft)
     end
   end
 end

@@ -195,6 +195,7 @@ RSpec.describe PollsController, type: :controller do
         end
 
         it 'change status back to draft' do
+          pending 'callback on status not implemented'
           users_poll.ready!
 
           subject
@@ -265,6 +266,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #choose' do
+    let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
     subject { xhr :post, :choose, id: poll.id, choices_array: preferences }
     let(:preferences) { poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
 

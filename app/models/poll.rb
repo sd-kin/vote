@@ -28,11 +28,12 @@ class Poll < ActiveRecord::Base
   after_touch       :ensure_status_is_correct
   after_create      :create_rating
   after_find        :close_if_expire
-  after_update      :draft!, if: :ready?
 
   AVAILIBLE_TRANSITIONS.each_key do |k| # dynamic generation metods for ceck and change status
     define_method "#{k}!" do       # methods with ! change status to status of the same name
       status_machine.trigger(k)
+      self.status = status_machine.state
+      save if errors.empty?
     end
 
     define_method "#{k}?" do       # method with ? check if current status equal with method-named status
@@ -96,7 +97,7 @@ class Poll < ActiveRecord::Base
   end
 
   def status_machine
-    machine ||= configure_machine(status, AVAILIBLE_TRANSITIONS)
+    @status_machine ||= configure_machine(status, AVAILIBLE_TRANSITIONS)
   end
 
   def drop_votation_progress
@@ -105,7 +106,6 @@ class Poll < ActiveRecord::Base
   end
 
   def save_votation_progress(user, preferences)
-    binding.pry
     voters << user
     vote_results << preferences
     self.current_state = calculate_ranks
