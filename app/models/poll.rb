@@ -4,10 +4,10 @@ class Poll < ActiveRecord::Base
   require 'poll_status_machine'
   include PollStatusMachine
 
-  AVAILIBLE_TRANSITIONS = { draft:     { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
-                            ready:     { 'draft' => 'ready' },
-                            finished:  { 'ready' => 'finished' },
-                            deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' } }.freeze
+  @availible_transitions = { draft:     { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
+                             ready:     { 'draft' => 'ready' },
+                             finished:  { 'ready' => 'finished' },
+                             deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' } }
 
   has_one    :rating, as: :rateable, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
@@ -29,25 +29,7 @@ class Poll < ActiveRecord::Base
   after_create      :create_rating
   after_find        :close_if_expire
 
-  AVAILIBLE_TRANSITIONS.each_key do |k| # dynamic generation metods for ceck and change status
-    define_method "#{k}!" do       # methods with ! change status to status of the same name
-      status_machine.trigger(k)
-      self.status = status_machine.state
-      save if errors.empty?
-    end
-
-    define_method "#{k}?" do       # method with ? check if current status equal with method-named status
-      status == k.to_s
-    end
-
-    define_method "can_be_#{k}?" do # method check if status can be changed from current to method-named
-      status_machine.trigger?(k)
-    end
-
-    define_singleton_method k.to_s do # scoping polls by each status
-      where(status: k)
-    end
-  end
+  define_status_methods_from @availible_transitions # define methods for each status. Source in PollStatusMachine concern
 
   def vote!(user, preferences)
     if ready?
@@ -97,7 +79,7 @@ class Poll < ActiveRecord::Base
   end
 
   def status_machine
-    @status_machine ||= configure_machine(status, AVAILIBLE_TRANSITIONS)
+    @status_machine ||= configure_machine(status, self.class.instance_variable_get(:@availible_transitions))
   end
 
   def drop_votation_progress
