@@ -4,10 +4,11 @@ class Poll < ActiveRecord::Base
   require 'poll_status_machine'
   include PollStatusMachine
 
-  @availible_transitions = { draft:     { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
-                             ready:     { 'draft' => 'ready' },
-                             finished:  { 'ready' => 'finished' },
-                             deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' } }
+  # Source in PollStatusMachine concern
+  availible_status_transitions draft:     { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
+                               ready:     { 'draft' => 'ready' },
+                               finished:  { 'ready' => 'finished' },
+                               deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
 
   has_one    :rating, as: :rateable, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
@@ -28,8 +29,6 @@ class Poll < ActiveRecord::Base
   after_touch       :ensure_status_is_correct
   after_create      :create_rating
   after_find        :close_if_expire
-
-  define_status_methods_from @availible_transitions # define methods for each status. Source in PollStatusMachine concern
 
   def vote!(user, preferences)
     if ready?
@@ -79,7 +78,7 @@ class Poll < ActiveRecord::Base
   end
 
   def status_machine
-    @status_machine ||= configure_machine(status, self.class.instance_variable_get(:@availible_transitions))
+    @status_machine ||= configure_machine(status)
   end
 
   def drop_votation_progress

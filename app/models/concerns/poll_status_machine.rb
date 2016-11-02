@@ -4,14 +4,8 @@ module PollStatusMachine
 
   extend ActiveSupport::Concern
 
-  def configure_machine(initial_state, rules)
-    machine = MicroMachine.new(initial_state)               # new state-macine initialized by poll status
-    rules.each do |k, v|
-      machine.transitions_for[k] = v                        # create rules for changing poll status from Poll::AVAILIBLE_TRANSITIONS
-      machine.define_singleton_method k do                  # define method for each possible status
-        trigger(k)
-      end
-    end
+  def configure_machine(initial_state)
+    machine = PollMicroMachine.new(initial_state) # new state-machine initialized by poll status
 
     add_callbacks(machine)
 
@@ -33,16 +27,29 @@ module PollStatusMachine
 
   # Poll class methods
   module ClassMethods
+    def availible_status_transitions(rules)
+      generate_status_machine_class(rules)
+      define_status_methods_from(rules)
+    end
+
+    private
+
+    def generate_status_machine_class(rules) # generate class for status machine with included list of available transitions
+      PollStatusMachine.const_set(:PollMicroMachine, Class.new(MicroMachine))
+      PollMicroMachine.send :define_method, :initialize do |status|
+        super(status)
+        @transitions_for = rules
+      end
+    end
+
     def define_status_methods_from(rules)
-      rules.each_key do |k| # dynamic generation metods for ceck and change status
+      rules.each_key do |k| # dynamic generation methods for check and change status
         define_change_status_method(k)
         define_check_status_method(k)
         define_check_availability_to_change_status_method(k)
         define_scope_by_status_method(k)
       end
     end
-
-    private
 
     def define_change_status_method(status_name)
       define_method "#{status_name}!" do       # methods with ! change status to status of the same name
