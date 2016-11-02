@@ -102,7 +102,7 @@ RSpec.describe Poll, type: :model do
 
     it 'shold have error when reopen outdated' do
       poll.update_attribute(:expire_at, 1.year.ago)
-      poll.finished!
+      poll.finish!
 
       expect(poll.errors[:expire_at]).to eq(['should be in future'])
     end
@@ -128,15 +128,15 @@ RSpec.describe Poll, type: :model do
       end
 
       it 'able to be ready' do
-        expect(poll.can_be_ready?).to be_truthy
+        expect(poll.able_to_ready?).to be_truthy
       end
 
       it 'able to be deleted' do
-        expect(poll.can_be_deleted?).to be_truthy
+        expect(poll.able_to_delete?).to be_truthy
       end
 
       it 'not able to be finished' do
-        expect(poll.can_be_finished?).to be_falsey
+        expect(poll.able_to_finish?).to be_falsey
       end
     end
 
@@ -148,15 +148,15 @@ RSpec.describe Poll, type: :model do
       end
 
       it 'able to be draft' do
-        expect(poll.can_be_draft?).to be_truthy
+        expect(poll.able_to_draft?).to be_truthy
       end
 
       it 'able to be deleted' do
-        expect(poll.can_be_deleted?).to be_truthy
+        expect(poll.able_to_delete?).to be_truthy
       end
 
       it 'able to be finished' do
-        expect(poll.can_be_finished?).to be_truthy
+        expect(poll.able_to_finish?).to be_truthy
       end
     end
 
@@ -168,15 +168,15 @@ RSpec.describe Poll, type: :model do
       end
 
       it 'able to be draft' do
-        expect(poll.can_be_draft?).to be_truthy
+        expect(poll.able_to_draft?).to be_truthy
       end
 
       it 'able to be deleted' do
-        expect(poll.can_be_deleted?).to be_truthy
+        expect(poll.able_to_delete?).to be_truthy
       end
 
       it 'not able to be ready' do
-        expect(poll.can_be_ready?).to be_falsey
+        expect(poll.able_to_ready?).to be_falsey
       end
     end
 
@@ -188,15 +188,15 @@ RSpec.describe Poll, type: :model do
       end
 
       it 'able to be draft' do
-        expect(poll.can_be_draft?).to be_truthy
+        expect(poll.able_to_draft?).to be_truthy
       end
 
       it 'not able to be ready' do
-        expect(poll.can_be_ready?).to be_falsey
+        expect(poll.able_to_ready?).to be_falsey
       end
 
       it 'not able to be finished' do
-        expect(poll.can_be_finished?).to be_falsey
+        expect(poll.able_to_finish?).to be_falsey
       end
     end
   end

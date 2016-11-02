@@ -5,10 +5,10 @@ class Poll < ActiveRecord::Base
   include PollStatusMachine
 
   # Source in PollStatusMachine concern
-  availible_status_transitions draft:     { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
-                               ready:     { 'draft' => 'ready' },
-                               finished:  { 'ready' => 'finished' },
-                               deleted:   { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
+  availible_status_transitions draft:  { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
+                               ready:  { 'draft' => 'ready' },
+                               finish: { 'ready' => 'finished' },
+                               delete: { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
 
   has_one    :rating, as: :rateable, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
@@ -34,7 +34,7 @@ class Poll < ActiveRecord::Base
     if ready?
       transaction do
         save_votation_progress(user, preferences)
-        finished! if voters.count >= max_voters
+        finish! if voters.count >= max_voters
         save!
       end
     else
@@ -74,7 +74,7 @@ class Poll < ActiveRecord::Base
   end
 
   def close_if_expire
-    finished! if expire_at&. < DateTime.now
+    finish! if expire_at&. < DateTime.now
   end
 
   def status_machine

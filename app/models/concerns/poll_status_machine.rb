@@ -43,10 +43,13 @@ module PollStatusMachine
     end
 
     def define_status_methods_from(rules)
+      statuses = rules.values.map(&:to_a).flatten.uniq
       rules.each_key do |k| # dynamic generation methods for check and change status
         define_change_status_method(k)
-        define_check_status_method(k)
         define_check_availability_to_change_status_method(k)
+      end
+      statuses.each do |k|
+        define_check_status_method(k)
         define_scope_by_status_method(k)
       end
     end
@@ -66,7 +69,7 @@ module PollStatusMachine
     end
 
     def define_check_availability_to_change_status_method(status_name)
-      define_method "can_be_#{status_name}?" do # method check if status can be changed from current to method-named
+      define_method "able_to_#{status_name}?" do # method check if status can be changed from current to method-named
         status_machine.trigger?(status_name)
       end
     end
