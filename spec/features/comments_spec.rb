@@ -27,11 +27,11 @@ RSpec.feature 'Commenting', type: :feature do
 
       within "#comment_#{poll.comments.first.id}" do
         expect(page).to have_link('Reply')
-        expect(page).to_not have_field('comment_body')
+        expect(page).to have_no_field('comment_body')
 
         click_link 'Reply'
 
-        expect(page).to_not have_link('Reply')
+        expect(page).to have_no_link('Reply')
         expect(page).to have_field('comment_body')
       end
     end
@@ -62,7 +62,7 @@ RSpec.feature 'Commenting', type: :feature do
         fill_in 'comment_body', with: 'edited comment text'
         click_button 'Update Comment'
 
-        expect(page).to_not have_content 'new comment text'
+        expect(page).to have_no_content 'new comment text'
         expect(page).to have_content 'edited comment text'
       end
     end
@@ -76,7 +76,7 @@ RSpec.feature 'Commenting', type: :feature do
         click_link 'delete'
       end
 
-      expect(page).to_not have_content 'new comment text'
+      expect(page).to have_no_content 'new comment text'
     end
   end
 
@@ -85,8 +85,8 @@ RSpec.feature 'Commenting', type: :feature do
       visit poll_path(poll)
 
       within("#comment_#{poll.comments.first.id}") do
-        expect(page).to_not have_link 'edit'
-        expect(page).to_not have_link 'delete'
+        expect(page).to have_no_link 'edit'
+        expect(page).to have_no_link 'delete'
       end
     end
   end
