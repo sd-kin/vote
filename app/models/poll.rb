@@ -26,7 +26,6 @@ class Poll < ActiveRecord::Base
   validate  :max_voters_should_be_number
   validate  :date_should_be_in_future
 
-  after_touch       :ensure_status_is_correct
   after_create      :create_rating
   after_find        :close_if_expire
 
@@ -58,10 +57,6 @@ class Poll < ActiveRecord::Base
 
   def calculate_ranks
     SchulzeBasic.do(vote_results, vote_results.first.count).ranks
-  end
-
-  def ensure_status_is_correct
-    draft! if options.empty?
   end
 
   def max_voters_should_be_number
