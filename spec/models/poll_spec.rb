@@ -215,5 +215,40 @@ RSpec.describe Poll, type: :model do
         expect { poll.ready! }.to change { poll.errors.count }.by(1)
       end
     end
+
+    context 'ready -> draft' do
+      let(:user) { FactoryGirl.create :user }
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
+      let(:poll2) { FactoryGirl.create :valid_poll, status: 'ready' }
+      before(:each) { poll.vote!(user, [0, 1, 2]) }
+      subject { poll.draft! }
+
+      context 'drop votation history' do
+        it 'have empty current state' do
+          subject
+
+          expect(poll.current_state).to be_empty
+        end
+
+        it 'have no vote results' do
+          subject
+
+          expect(poll.vote_results).to be_empty
+        end
+
+        it 'have no voters' do
+          subject
+
+          expect(poll.voters).to be_empty
+        end
+
+        it 'dissapear from users voted polls' do
+          poll2.vote!(user, [0, 1, 2])
+          subject
+
+          expect(user.voted_polls).to eq([poll2])
+        end
+      end
+    end
   end
 end

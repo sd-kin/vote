@@ -82,8 +82,7 @@ class Poll < ActiveRecord::Base
   end
 
   def drop_votation_progress
-    [current_state, vote_results, voters].map(&:clear)
-    save!
+    update_attributes(current_state: [], vote_results: [], voters: [])
   end
 
   def save_votation_progress(user, preferences)

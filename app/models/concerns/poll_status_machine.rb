@@ -58,7 +58,10 @@ module PollStatusMachine
       define_method "#{status_name}!" do       # methods with ! change status to status of the same name
         status_machine.trigger(status_name)
         self.status = status_machine.state
-        save if errors.empty?
+        if errors.empty?
+          drop_votation_progress
+          save
+        end
       end
     end
 
