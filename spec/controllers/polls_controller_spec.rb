@@ -195,7 +195,6 @@ RSpec.describe PollsController, type: :controller do
         end
 
         it 'change status back to draft' do
-          pending 'callback on status not implemented'
           users_poll.ready!
 
           subject

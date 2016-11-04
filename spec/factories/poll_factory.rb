@@ -17,7 +17,9 @@ FactoryGirl.define do
 
     trait :with_options do
       after :create do |poll|
+        Option.skip_callback(:create, :after, :draft_poll!)
         FactoryGirl.create_list(:valid_option, 3, poll: poll)
+        Option.set_callback(:create, :after, :draft_poll!)
       end
     end
 

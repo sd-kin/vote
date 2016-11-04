@@ -16,6 +16,7 @@ module PollStatusMachine
 
   def add_callbacks(machine)
     machine.on('ready') { check_options_presists(machine) }
+    machine.on('draft') { drop_votation_progress }
   end
 
   def check_options_presists(machine)
@@ -58,10 +59,7 @@ module PollStatusMachine
       define_method "#{status_name}!" do       # methods with ! change status to status of the same name
         status_machine.trigger(status_name)
         self.status = status_machine.state
-        if errors.empty?
-          drop_votation_progress
-          save
-        end
+        save if errors.empty?
       end
     end
 

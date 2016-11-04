@@ -26,8 +26,9 @@ class Poll < ActiveRecord::Base
   validate  :max_voters_should_be_number
   validate  :date_should_be_in_future
 
-  after_create      :create_rating
-  after_find        :close_if_expire
+  after_create  :create_rating
+  after_find    :close_if_expire
+  before_update :draft_callback, if: :title_changed?
 
   def vote!(user, preferences)
     if ready?
@@ -77,12 +78,17 @@ class Poll < ActiveRecord::Base
   end
 
   def drop_votation_progress
-    update_attributes(current_state: [], vote_results: [], voters: [])
+    [current_state, vote_results, voters].map(&:clear) # caution! that's don't save record. Should be saved down the flow.
   end
 
   def save_votation_progress(user, preferences)
     voters << user
     vote_results << preferences
     self.current_state = calculate_ranks
+  end
+
+  def draft_callback
+    drop_votation_progress
+    self.status = 'draft'
   end
 end

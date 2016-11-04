@@ -50,6 +50,23 @@ RSpec.describe Poll, type: :model do
     end
   end
 
+  context 'when update poll' do
+    subject { poll.update_attribute(:title, 'updated_title!') }
+
+    it 'change title' do
+      expect { subject }.to change { poll.title }.to('updated_title!')
+    end
+
+    it 'drop votation progress' do
+      poll.ready!
+      poll.vote!(user, [0, 1, 2])
+      subject
+
+      expect(poll.reload.vote_results).to be_empty
+      expect(poll.reload).to be_draft
+    end
+  end
+
   it 'should have default maximum number of voters' do
     expect(poll.max_voters).to eq(Float::INFINITY)
   end
@@ -217,7 +234,6 @@ RSpec.describe Poll, type: :model do
     end
 
     context 'ready -> draft' do
-      let(:user) { FactoryGirl.create :user }
       let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
       let(:poll2) { FactoryGirl.create :valid_poll, status: 'ready' }
       before(:each) { poll.vote!(user, [0, 1, 2]) }
@@ -249,6 +265,33 @@ RSpec.describe Poll, type: :model do
           expect(user.voted_polls).to eq([poll2])
         end
       end
+    end
+
+    context 'ready -> finished' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
+      subject { poll.finish! }
+
+      it 'keep votation progress' do
+        poll.vote!(user, [0, 1, 2])
+        subject
+
+        expect(poll.voters).to eq([user])
+      end
+    end
+  end
+
+  context 'draft poll when' do
+    before(:each) { poll.ready! }
+
+    it 'create option' do
+      expect { poll.options.create(title: 'new_option', description: 'blah blah') }.to change { poll.reload.status }.from('ready').to('draft')
+    end
+
+    it 'update option' do
+      expect { poll.options.first.update_attribute(:title, 'updated title') }.to change { poll.reload.status }.from('ready').to('draft')
+    end
+    it 'delete option' do
+      expect { poll.options.first.destroy }.to change { poll.reload.status }.from('ready').to('draft')
     end
   end
 end
