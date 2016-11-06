@@ -39,7 +39,14 @@ class CommentsController < ApplicationController
   end
 
   def set_commentable
-    @commentable = Poll.find(params[:poll_id]) if params[:poll_id]
-    @commentable = Comment.find(params[:comment_id]) if params[:comment_id]
+    @commentable = poll_from_params || comment_from_params
+  end
+
+  def comment_from_params
+    Comment.find(params[:comment_id]) if params[:comment_id]
+  end
+
+  def poll_from_params
+    Poll.find(params[:poll_id]) if params[:poll_id]
   end
 end

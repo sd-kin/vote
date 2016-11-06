@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -93,6 +92,40 @@ CREATE SEQUENCE downvotes_id_seq
 --
 
 ALTER SEQUENCE downvotes_id_seq OWNED BY downvotes.id;
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE notifications (
+    id integer NOT NULL,
+    user_id integer,
+    subject_id integer,
+    subject_type character varying,
+    message character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
 
 
 --
@@ -329,6 +362,13 @@ ALTER TABLE ONLY downvotes ALTER COLUMN id SET DEFAULT nextval('downvotes_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY options ALTER COLUMN id SET DEFAULT nextval('options_id_seq'::regclass);
 
 
@@ -381,6 +421,14 @@ ALTER TABLE ONLY comments
 
 ALTER TABLE ONLY downvotes
     ADD CONSTRAINT downvotes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -453,6 +501,20 @@ CREATE UNIQUE INDEX index_downvotes_on_rater_id_and_rating_id ON downvotes USING
 
 
 --
+-- Name: index_notifications_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_subject_type_and_subject_id ON notifications USING btree (subject_type, subject_id);
+
+
+--
+-- Name: index_notifications_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_user_id ON notifications USING btree (user_id);
+
+
+--
 -- Name: index_polls_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -511,6 +573,14 @@ ALTER TABLE ONLY polls
 
 
 --
+-- Name: fk_rails_b080fb4855; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT fk_rails_b080fb4855 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -565,6 +635,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161007140053');
 INSERT INTO schema_migrations (version) VALUES ('20161009120043');
 
 INSERT INTO schema_migrations (version) VALUES ('20161010155351');
+
+INSERT INTO schema_migrations (version) VALUES ('20161016123710');
 
 INSERT INTO schema_migrations (version) VALUES ('20161019085252');
 
