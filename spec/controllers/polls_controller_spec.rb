@@ -62,6 +62,7 @@ RSpec.describe PollsController, type: :controller do
       end
 
       it 'mark voted poll' do
+        poll.ready!
         preferences = poll.options.ids.map { |id| 'option_' + id.to_s }.reverse
 
         xhr :post, :choose, id: poll.id, choices_array: preferences

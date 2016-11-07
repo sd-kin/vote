@@ -27,7 +27,7 @@ class Poll < ActiveRecord::Base
   validate  :date_should_be_in_future
 
   after_create  :create_rating
-  after_find    :close_if_expire
+  after_find    :close_if_expire, :status_machine
   before_update :draft_callback, if: :title_changed?
 
   def vote!(user, preferences)

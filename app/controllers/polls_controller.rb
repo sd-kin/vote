@@ -14,6 +14,7 @@ class PollsController < ApplicationController
     id = params[:id]
     @poll = Poll.find(id)
     @rating = @poll.rating
+    actualize_voted_polls_cookie
     @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
   end
 
@@ -51,7 +52,7 @@ class PollsController < ApplicationController
     unless remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
       preferences = preferences_as_weight(@poll, params[:choices_array])
       @poll.vote!(current_user, preferences)
-      remember_id(id)
+      actualize_voted_polls_cookie
       @already_voted = true
     end
   end
@@ -72,7 +73,7 @@ class PollsController < ApplicationController
     id = params[:id]
     @poll = Poll.find(id)
     execute_if_accessible(@poll, redirect: false, &:draft!)
-    forgot_id(id)
+    actualize_voted_polls_cookie
     render 'change_status'
   end
 
@@ -82,18 +83,9 @@ class PollsController < ApplicationController
     params.require(:poll).permit(:title, :max_voters, :expire_at)
   end
 
-  def remember_id(id)
-    cookies.signed.permanent[:voted_polls] ||= '[]'
-    arr = JSON.parse(cookies.signed[:voted_polls])
-    arr << id
-    cookies.signed[:voted_polls] = JSON.generate(arr.uniq)
-  end
-
-  def forgot_id(id)
-    cookies.signed.permanent[:voted_polls] ||= '[]'
-    arr = JSON.parse(cookies.signed[:voted_polls])
-    arr.delete(id)
-    cookies.signed[:voted_polls] = JSON.generate(arr.uniq)
+  def actualize_voted_polls_cookie
+    current_user.reload
+    cookies.signed[:voted_polls] = JSON.generate(current_user.voted_polls.ids)
   end
 
   def remembered_ids
