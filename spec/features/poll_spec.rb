@@ -131,17 +131,6 @@ feature 'when changing poll status' do
 
     expect(current_page).to have_status('ready')
   end
-
-  scenario 'ready poll return to draft when all options deleted', js: true do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.create_option
-    current_page.make_ready
-    current_page.destroy_option
-    wait_for_ajax
-
-    expect(current_page).to have_status
-  end
 end
 
 feature 'when cast a vote' do

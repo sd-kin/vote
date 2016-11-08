@@ -221,23 +221,28 @@ RSpec.describe PollsController, type: :controller do
           expect(users_poll.reload.title).not_to eq(poll_params[:title])
         end
       end
+    end
+  
+    context 'when user dont own poll' do
+      let(:poll_params) { FactoryGirl.attributes_for(:updated_poll) }
 
-      context 'when user dont own poll' do
-        let(:poll_params) { FactoryGirl.attributes_for(:updated_poll) }
+      before(:each) { session[:user_id] = user.id + 1 }
 
-        before(:each) { session[:user_id] = user.id + 1 }
+      it 'not change poll attributes' do
+        subject
+        expect(users_poll.reload.title).not_to eq(poll_params[:title])
+      end
 
-        it 'not change poll attributes' do
-          subject
-          expect(users_poll.reload.title).not_to eq(poll_params[:title])
-        end
+      it { is_expected.to be_success }
+ 
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq( 'window.location = "/"' )
+      end
 
-        it { is_expected.to redirect_to root_path }
-
-        it 'have acces denied message' do
-          subject
-          expect(flash[:error]).to eq('only owner can do that')
-        end
+      it 'have acces denied message' do
+        subject
+        expect(flash[:error]).to eq('only owner can do that')
       end
     end
   end

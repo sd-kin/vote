@@ -40,7 +40,12 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to root_path }
+      it { is_expected.to be_success}
+
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq("window.location = \"/\"")
+      end
     end
   end
 
@@ -56,7 +61,12 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to root_path }
+      it { is_expected.to be_success}
+
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq("window.location = \"/\"")
+      end
     end
   end
 
@@ -86,7 +96,12 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to root_path }
+        it { is_expected.to be_success}
+
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq("window.location = \"/\"")
+      end
 
       it 'not change option title' do
         subject

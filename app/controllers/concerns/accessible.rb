@@ -7,8 +7,14 @@ module Accessible
       yield(object) if block_given?
     else
       flash[:error] = 'only owner can do that'
-      redirect_to controller: 'polls', action: 'ready', format: 'html' if redirect
+      both_format_redirect if redirect
     end
+  end
+
+  private
+
+  def both_format_redirect
+    request.xhr? ? render( js: 'window.location = "/"' ) : redirect_to(root_path)
   end
 
   alias check_accessability execute_if_accessible
