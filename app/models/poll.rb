@@ -62,15 +62,15 @@ class Poll < ActiveRecord::Base
 
   def max_voters_should_be_number
     # work just like standard numericality validation, but check [:max_voters] instead of .max_voters which return infinity
-    errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters > 0) || self[:max_voters].nil?
+    errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters.positive?) || self[:max_voters].nil?
   end
 
   def date_should_be_in_future
-    errors.add(:expire_at, 'should be in future') if expire_at&. < DateTime.now
+    errors.add(:expire_at, 'should be in future') if expire_at&. < DateTime.current
   end
 
   def close_if_expire
-    finish! if expire_at&. < DateTime.now
+    finish! if expire_at&. < DateTime.current
   end
 
   def drop_votation_progress

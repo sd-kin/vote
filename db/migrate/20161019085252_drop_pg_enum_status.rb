@@ -2,7 +2,7 @@
 class DropPgEnumStatus < ActiveRecord::Migration
   def up
     remove_column :polls, :status
-    execute "DROP TYPE status;"
+    execute 'DROP TYPE status;'
   end
 
   def down

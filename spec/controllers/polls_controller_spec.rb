@@ -168,7 +168,7 @@ RSpec.describe PollsController, type: :controller do
 
       it 'have access denied error' do
         subject
-        expect(flash[:error]).to eq("only owner can do that")
+        expect(flash[:error]).to eq('only owner can do that')
       end
     end
   end
@@ -236,7 +236,7 @@ RSpec.describe PollsController, type: :controller do
 
         it 'have acces denied message' do
           subject
-          expect(flash[:error]).to eq("only owner can do that")
+          expect(flash[:error]).to eq('only owner can do that')
         end
       end
     end

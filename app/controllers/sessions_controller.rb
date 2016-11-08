@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
       remember_user if session_params[:remember_me] == '1'
       redirect_to ready_polls_path
     else
-      flash.now[:error] = "Error! Email or password incorrect"
+      flash.now[:error] = 'Error! Email or password incorrect'
       render :new
     end
   end

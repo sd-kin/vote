@@ -5,7 +5,7 @@
   <li>
     Title: <%= option.title %> <br>
     Description: <%= option.description %> <br>
-    <% if option.accessible_for? current_user %>
+    <% if !option.accessible_for? current_user %>
       <%= link_to 'Edit', edit_poll_option_path(option.poll, option), remote: true unless option.poll.ready? %> 
       <%= link_to 'Delete', poll_option_path(option.poll, option), method: :delete, remote: true unless option.poll.ready? %>
     <% end %>
