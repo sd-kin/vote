@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 class Poll < ActiveRecord::Base
   require 'vote-schulze'
-  require 'poll_status_machine'
-  include PollStatusMachine
+  require 'status_machine'
+  include StatusMachine
 
-  # Source in PollStatusMachine concern
+  # Source in StatusMachine concern
   availible_status_transitions draft:  { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
                                ready:  { 'draft' => 'ready' },
                                finish: { 'ready' => 'finished' },
@@ -27,7 +27,7 @@ class Poll < ActiveRecord::Base
   validate  :date_should_be_in_future
 
   after_create  :create_rating
-  after_find    :close_if_expire, :status_machine
+  after_find    :close_if_expire
   before_update :draft_callback, if: :title_changed?
 
   def vote!(user, preferences)
@@ -71,10 +71,6 @@ class Poll < ActiveRecord::Base
 
   def close_if_expire
     finish! if expire_at&. < DateTime.now
-  end
-
-  def status_machine
-    @status_machine ||= configure_machine(status)
   end
 
   def drop_votation_progress

@@ -1,47 +1,34 @@
 # frozen_string_literal: true
-module PollStatusMachine
-  require 'micromachine'
+module StatusMachine
+  require "#{Rails.root}/lib/simple_machine/simple_machine.rb"
 
   extend ActiveSupport::Concern
 
-  def configure_machine(initial_state)
-    machine = PollMicroMachine.new(initial_state) # new state-machine initialized by poll status
+  included do
+    # in order to have status_machine whith correct state
+    after_initialize { initialize_status_machine } # new state-machine when build statusable object
+    after_create     { initialize_status_machine } # new state-machine when create statusable object
+    after_find       { initialize_status_machine } # new state-machine when initialize existing statusable object
 
-    add_callbacks(machine)
+    private
 
-    machine
+    attr_accessor :status_machine
   end
 
   private
 
-  def add_callbacks(machine)
-    machine.on('ready') { check_options_presists(machine) }
-    machine.on('draft') { drop_votation_progress }
+  def initialize_status_machine
+    self.status_machine = SimpleMachine.new(status)
   end
 
-  def check_options_presists(machine)
-    if options.empty?
-      errors.add(:base, "Status can't be ready when poll have no options")
-      machine.trigger(:draft)
-    end
-  end
-
-  # Poll class methods
+  # Statusable class methods
   module ClassMethods
     def availible_status_transitions(rules)
-      generate_status_machine_class(rules)
+      SimpleMachine.transitions_for = rules
       define_status_methods_from(rules)
     end
 
     private
-
-    def generate_status_machine_class(rules) # generate class for status machine with included list of available transitions
-      PollStatusMachine.const_set(:PollMicroMachine, Class.new(MicroMachine))
-      PollMicroMachine.send :define_method, :initialize do |status|
-        super(status)
-        @transitions_for = rules
-      end
-    end
 
     def define_status_methods_from(rules)
       statuses = rules.values.map(&:to_a).flatten.uniq
