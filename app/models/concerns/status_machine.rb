@@ -68,7 +68,7 @@ module StatusMachine
 
     def define_status_methods
       transitions_for.each_key do |k| # dynamic generation methods for check and change status
-        define_change_status_method(k)
+        define_transition(k)
         define_check_availability_to_change_status_method(k)
       end
       statuses.each do |k|
@@ -77,12 +77,12 @@ module StatusMachine
       end
     end
 
-    def define_change_status_method(status_name)
-      define_method "#{status_name}!" do       # methods with ! change status to status of the same name
+    def define_transition(transition_name)
+      define_method "#{transition_name}!" do # methods with ! change status to status of the same name
         run_callbacks :change_status do
-          run_callbacks status_name.to_sym do
+          run_callbacks transition_name.to_sym do
             return if errors.any?
-            trigger(status_name)
+            trigger(transition_name)
             save
           end
         end
@@ -90,14 +90,14 @@ module StatusMachine
     end
 
     def define_check_status_method(status_name)
-      define_method "#{status_name}?" do       # method with ? check if current status equal with method-named status
+      define_method "#{status_name}?" do # method with ? check if current status equal with method-named status
         status == status_name.to_s
       end
     end
 
-    def define_check_availability_to_change_status_method(status_name)
-      define_method "able_to_#{status_name}?" do # method check if status can be changed from current to method-named
-        trigger?(status_name)
+    def define_check_availability_to_change_status_method(transition_name)
+      define_method "able_to_#{transition_name}?" do # method check if status can be changed from current to method-named
+        trigger?(transition_name)
       end
     end
 

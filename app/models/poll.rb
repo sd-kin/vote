@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 class Poll < ActiveRecord::Base
   require 'vote-schulze'
-  require 'status_machine'
   include StatusMachine
 
   # Source in StatusMachine concern
