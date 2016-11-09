@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 module StatusMachine
-  require "#{Rails.root}/lib/simple_machine/simple_machine.rb"
+  InvalidEvent = Class.new(NoMethodError)
+  InvalidState = Class.new(ArgumentError)
 
   extend ActiveSupport::Concern
 
   included do
-    # in order to have status_machine whith correct state
-    after_initialize { initialize_status_machine } # new state-machine when build statusable object
-    after_create     { initialize_status_machine } # new state-machine when create statusable object
-    after_find       { initialize_status_machine } # new state-machine when initialize existing statusable object
-
     private
 
     attr_accessor :status_machine
@@ -17,21 +13,39 @@ module StatusMachine
 
   private
 
-  def initialize_status_machine
-    self.status_machine = SimpleMachine.new(status)
+  def transitions_for
+    self.class.transitions_for
+  end
+
+  def change_status(event)
+    self.status = transitions_for[event][status] # status did not saved
+  end
+
+  def trigger(event)
+    trigger?(event) && change_status(event)
+  end
+
+  def trigger!(event)
+    raise InvalidState, "Event '#{event}' not valid from state '#{status}'" unless trigger(event)
+  end
+
+  def trigger?(event)
+    raise InvalidEvent unless transitions_for.key?(event)
+    transitions_for[event].key?(status)
   end
 
   # Statusable class methods
   module ClassMethods
+    attr_reader :transitions_for
+
     def availible_status_transitions(rules)
-      SimpleMachine.transitions_for = rules
+      @transitions_for = rules
       define_status_methods_from(rules)
     end
 
     private
 
     def define_status_methods_from(rules)
-      statuses = rules.values.map(&:to_a).flatten.uniq
       rules.each_key do |k| # dynamic generation methods for check and change status
         define_change_status_method(k)
         define_check_availability_to_change_status_method(k)
@@ -44,8 +58,7 @@ module StatusMachine
 
     def define_change_status_method(status_name)
       define_method "#{status_name}!" do       # methods with ! change status to status of the same name
-        status_machine.trigger(status_name)
-        self.status = status_machine.state
+        trigger(status_name)
         save if errors.empty?
       end
     end
@@ -58,7 +71,7 @@ module StatusMachine
 
     def define_check_availability_to_change_status_method(status_name)
       define_method "able_to_#{status_name}?" do # method check if status can be changed from current to method-named
-        status_machine.trigger?(status_name)
+        trigger?(status_name)
       end
     end
 
@@ -66,6 +79,14 @@ module StatusMachine
       define_singleton_method status_name.to_s do # scoping polls by each status
         where(status: status_name)
       end
+    end
+
+    def status_events
+      transitions_for.keys
+    end
+
+    def statuses
+      transitions_for.values.map(&:to_a).flatten.uniq
     end
   end
 end

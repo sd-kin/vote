@@ -14,7 +14,7 @@ module Accessible
   private
 
   def both_format_redirect
-    request.xhr? ? render( js: 'window.location = "/"' ) : redirect_to(root_path)
+    request.xhr? ? render(js: 'window.location = "/"') : redirect_to(root_path)
   end
 
   alias check_accessability execute_if_accessible

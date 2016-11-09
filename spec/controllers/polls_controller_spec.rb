@@ -222,7 +222,7 @@ RSpec.describe PollsController, type: :controller do
         end
       end
     end
-  
+
     context 'when user dont own poll' do
       let(:poll_params) { FactoryGirl.attributes_for(:updated_poll) }
 
@@ -234,10 +234,10 @@ RSpec.describe PollsController, type: :controller do
       end
 
       it { is_expected.to be_success }
- 
+
       it 'redirect to root' do
         subject
-        expect(response.body).to eq( 'window.location = "/"' )
+        expect(response.body).to eq('window.location = "/"')
       end
 
       it 'have acces denied message' do
