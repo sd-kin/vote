@@ -58,6 +58,8 @@ Rails/HttpPositionalArguments:
     - 'spec/controllers/polls_controller_spec.rb'
     - 'spec/controllers/users_controller_spec.rb'
 
-
+Lint/AmbiguousOperator:
+  Exclude:
+    - 'app/models/concerns/status_machine.rb'
 
 

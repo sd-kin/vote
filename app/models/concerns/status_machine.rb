@@ -3,7 +3,8 @@ module StatusMachine
   InvalidEvent = Class.new(NoMethodError)
   InvalidState = Class.new(ArgumentError)
 
-  extend ActiveSupport::Concern
+  include ActiveSupport::Callbacks
+  extend  ActiveSupport::Concern
 
   included do
     private
@@ -40,10 +41,30 @@ module StatusMachine
 
     def availible_status_transitions(rules)
       @transitions_for = rules
+      define_status_callbacks
+      define_status_callbacks_methods
       define_status_methods_from(rules)
     end
 
     private
+
+    def define_status_callbacks
+      define_callbacks *(status_events.map(&:to_sym) << :change_status) # define callbacks for each status plus :change_status.
+    end
+
+    def define_status_callbacks_methods
+      %w( before_ after_ around_ ).each do |prefix|
+        define_singleton_method "#{prefix}change_status" do |method|
+          set_callback :change_status, prefix.chop.to_sym, method
+        end
+
+        status_events.each do |event|
+          define_singleton_method "#{prefix}#{event}" do |method|
+            set_callback event.to_sym, prefix.chop.to_sym, method
+          end
+        end
+      end
+    end
 
     def define_status_methods_from(rules)
       rules.each_key do |k| # dynamic generation methods for check and change status
@@ -58,8 +79,12 @@ module StatusMachine
 
     def define_change_status_method(status_name)
       define_method "#{status_name}!" do       # methods with ! change status to status of the same name
-        trigger(status_name)
-        save if errors.empty?
+        run_callbacks :change_status do
+          run_callbacks status_name.to_sym do
+            trigger(status_name)
+            save if errors.empty?
+          end
+        end
       end
     end
 
