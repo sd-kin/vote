@@ -30,6 +30,10 @@ class Poll < ActiveRecord::Base
   after_find    :close_if_expire
   before_update :draft_callback, if: :title_changed?
 
+  # callbacks on status
+  before_ready :check_options_presist
+  before_draft :drop_votation_progress
+
   def vote!(user, preferences)
     if ready?
       transaction do
@@ -86,5 +90,9 @@ class Poll < ActiveRecord::Base
   def draft_callback
     drop_votation_progress
     self.status = 'draft'
+  end
+
+  def check_options_presist
+    errors.add(:base, 'Status can\'t be changed. Add more options.') if options.empty?
   end
 end

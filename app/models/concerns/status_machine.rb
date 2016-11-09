@@ -19,7 +19,7 @@ module StatusMachine
   end
 
   def change_status(event)
-    self.status = transitions_for[event][status] # status did not saved
+    self.status = transitions_for[event][status] # status does not saved
   end
 
   def trigger(event)
@@ -43,7 +43,7 @@ module StatusMachine
       @transitions_for = rules
       define_status_callbacks
       define_status_callbacks_methods
-      define_status_methods_from(rules)
+      define_status_methods
     end
 
     private
@@ -52,22 +52,22 @@ module StatusMachine
       define_callbacks *(status_events.map(&:to_sym) << :change_status) # define callbacks for each status plus :change_status.
     end
 
-    def define_status_callbacks_methods
+    def define_status_callbacks_methods # add class methods for setting callback.
       %w( before_ after_ around_ ).each do |prefix|
         define_singleton_method "#{prefix}change_status" do |method|
           set_callback :change_status, prefix.chop.to_sym, method
         end
 
         status_events.each do |event|
-          define_singleton_method "#{prefix}#{event}" do |method|
+          define_singleton_method "#{prefix}#{event}" do |method| # TODO: accept block as callback parameter
             set_callback event.to_sym, prefix.chop.to_sym, method
           end
         end
       end
     end
 
-    def define_status_methods_from(rules)
-      rules.each_key do |k| # dynamic generation methods for check and change status
+    def define_status_methods
+      transitions_for.each_key do |k| # dynamic generation methods for check and change status
         define_change_status_method(k)
         define_check_availability_to_change_status_method(k)
       end
@@ -81,8 +81,9 @@ module StatusMachine
       define_method "#{status_name}!" do       # methods with ! change status to status of the same name
         run_callbacks :change_status do
           run_callbacks status_name.to_sym do
+            return if errors.any?
             trigger(status_name)
-            save if errors.empty?
+            save
           end
         end
       end
