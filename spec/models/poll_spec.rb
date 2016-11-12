@@ -3,6 +3,7 @@ require 'rails_helper'
 
 RSpec.describe Poll, type: :model do
   let(:poll) { FactoryGirl.create(:valid_poll) }
+  let(:voted_poll) { FactoryGirl.create :valid_poll, :voted }
   let(:user) { FactoryGirl.create(:user) }
   let(:user2) { FactoryGirl.create(:user) }
 
@@ -51,15 +52,13 @@ RSpec.describe Poll, type: :model do
   end
 
   context 'when update poll' do
-    subject { poll.update_attribute(:title, 'updated_title!') }
+    subject { voted_poll.update_attribute(:title, 'updated_title!') }
 
     it 'change title' do
-      expect { subject }.to change { poll.title }.to('updated_title!')
+      expect { subject }.to change { voted_poll.title }.to('updated_title!')
     end
 
     it 'drop votation progress' do
-      poll.ready!
-      poll.vote!(user, [0, 1, 2])
       subject
 
       expect(poll.reload.vote_results).to be_empty
@@ -76,20 +75,15 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'raise error when try to add voter twice' do
-    poll.voters << user
-
-    expect { poll.voters << user }.to raise_error(ActiveRecord::RecordInvalid)
+    expect { voted_poll.voters << voted_poll.voters.first }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   context 'maximum voters' do
     it 'should be closed when reach maximum voters limit' do
-      poll.max_voters = 2
-      poll.ready!
-      poll.reload
-      poll.vote!(user, [0, 1, 2])
-      poll.vote!(user2, [2, 1, 0])
+      voted_poll.max_voters = 2
+      voted_poll.vote!(user2, [2, 1, 0])
 
-      expect(poll.reload).to be_finished
+      expect(voted_poll.reload).to be_finished
     end
 
     it 'should not save infinity value to db' do
@@ -234,54 +228,54 @@ RSpec.describe Poll, type: :model do
     end
 
     context 'ready -> draft' do
-      let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
-      let(:poll2) { FactoryGirl.create :valid_poll, status: 'ready' }
-      before(:each) { poll.vote!(user, [0, 1, 2]) }
-      subject { poll.draft! }
+      subject { voted_poll.draft! }
 
       context 'drop votation history' do
         it 'have empty current state' do
           subject
 
-          expect(poll.current_state).to be_empty
+          expect(voted_poll.current_state).to be_empty
         end
 
         it 'have no vote results' do
           subject
 
-          expect(poll.vote_results).to be_empty
+          expect(voted_poll.vote_results).to be_empty
         end
 
         it 'have no voters' do
           subject
 
-          expect(poll.voters).to be_empty
+          expect(voted_poll.voters).to be_empty
         end
 
         it 'dissapear from users voted polls' do
-          poll2.vote!(user, [0, 1, 2])
+          user = voted_poll.voters.first
+          poll.status = 'ready'
+          poll.vote!(user, [0, 1, 2])
+
+          expect(user.voted_polls).to eq([voted_poll, poll])
+
           subject
 
-          expect(user.voted_polls).to eq([poll2])
+          expect(user.reload.voted_polls).to eq([poll])
         end
       end
     end
 
     context 'ready -> finished' do
-      let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
-      subject { poll.finish! }
+      subject { voted_poll.finish! }
 
       it 'keep votation progress' do
-        poll.vote!(user, [0, 1, 2])
         subject
 
-        expect(poll.voters).to eq([user])
+        expect(voted_poll.voters).to_not be_empty
       end
     end
   end
 
   context 'draft poll when' do
-    before(:each) { poll.ready! }
+    let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
 
     it 'create option' do
       expect { poll.options.create(title: 'new_option', description: 'blah blah') }.to change { poll.reload.status }.from('ready').to('draft')

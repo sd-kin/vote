@@ -35,6 +35,15 @@ FactoryGirl.define do
       end
     end
 
+    trait :voted do
+      status 'ready'
+      current_state [1, 1, 1]
+      vote_results [[1, 1, 1]]
+      after :create do |poll|
+        poll.voters << FactoryGirl.create(:user)
+      end
+    end
+
     factory :valid_poll, traits: [:with_title, :with_options]
     factory :updated_poll, traits: [:with_updated_title, :with_updated_options]
   end
