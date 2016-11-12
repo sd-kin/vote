@@ -1,9 +1,11 @@
-<div id='<%= dom_id(commentable, :creation_errors_for ) %>'>
+<div id='<%= dom_id(comment, :creation_errors_for ) %>'>
 </div>
 
-<%= form_for [commentable, comment], remote: true do |f| %>
+<%= form_for comment, remote: true do |f| %>
   <%= f.label 'Comment:' %> <br>
   <%= f.text_area :body %> <br>
+  <%= f.hidden_field :commentable_id, value: comment.commentable.id %>
+  <%= f.hidden_field :commentable_type, value: comment.commentable.class %>
   <%= f.submit %>
 <% end %>
 

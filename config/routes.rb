@@ -70,7 +70,6 @@ Rails.application.routes.draw do
 
     get 'ready', on: :collection
     resources :options
-    resources :comments
   end
 
   resources :ratings, only: [:increase, :decrease] do
@@ -80,9 +79,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :comments do
-    resources :comments
-  end
+  resources :comments
 
   resources :users
   resources :account_activations, only: [:edit]

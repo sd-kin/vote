@@ -1,24 +1,25 @@
 <li>
-
-  <div id='<%= dom_id( comment.rating ) %>' style='display: inline-block'>
-    <%= render 'shared/rating', rating: comment.rating %>
+  <div id='<%= dom_id(comment, :errors_for) %>'>
   </div>
 
-  <div id='<%= dom_id(comment) %>'style='display: inline-block'>
+  <div id='<%= dom_id(comment) %>'>
 
-    <div id='<%= dom_id(comment, :errors_for) %>'>
+    <div id='<%= dom_id( comment.rating ) %>' style='display: inline-block'>
+      <%= render 'shared/rating', rating: comment.rating %>
     </div>
 
-    <%= comment.body %> <br>
-    <%= link_to comment.author.username, user_path(comment.author) %>
-    commented <%= time_ago_in_words comment.created_at %> ago <br>
-    <% if comment.accessible_for?( current_user )  %>
-      <%= link_to 'delete', comment_path(comment), method: :delete, remote: true %>
-      <%= link_to 'edit', edit_comment_path(comment), remote: true %>
-    <% end %>
+    <div id='<%= dom_id(comment, :body )%>'style='display: inline-block'>
+      <%= comment.body %> <br>
+      <%= link_to comment.author.username, user_path(comment.author) %>
+      commented <%= time_ago_in_words comment.created_at %> ago <br>
+      <% if comment.accessible_for?( current_user )  %>
+        <%= link_to 'delete', comment_path(comment), method: :delete, remote: true %>
+        <%= link_to 'edit', edit_comment_path(comment), remote: true %>
+      <% end %>
+    </div>
 
     <div id='<%= dom_id(comment, :reply_form_for) %>'>
-      <%= link_to 'Reply', new_comment_comment_path(comment), remote: true unless current_user.anonimous? %>
+      <%= link_to 'Reply', new_comment_path(comment_id: comment), remote: true unless current_user.anonimous? %>
     </div>
   </div>
 </li>

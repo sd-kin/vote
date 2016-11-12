@@ -2,10 +2,15 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-  let!(:comment) { FactoryGirl.create :comment }
+  let!(:comment) { FactoryGirl.create :comment, :belongs_to_poll }
   let(:commented_comment) { FactoryGirl.create :comment, :with_comments }
-  let(:comment_params) { FactoryGirl.attributes_for :comment }
-  let(:poll) { FactoryGirl.create :valid_poll }
+  let(:poll_comment_params) do
+    FactoryGirl.attributes_for(:comment).merge(commentable_id: comment.commentable_id, commentable_type: comment.commentable.class)
+  end
+  let(:comment_comment_params) do
+    FactoryGirl.attributes_for(:comment).merge(commentable_id: comment.id, commentable_type: comment.class)
+  end
+  let(:poll) { comment.commentable }
   let(:user) { FactoryGirl.create :user }
   let(:anonimous_user) { User.create_anonimous! }
 
@@ -19,13 +24,13 @@ RSpec.describe CommentsController, type: :controller do
     before(:each) { session[:user_id] = user.id }
 
     context 'when poll commented' do
-      subject { xhr :post, :create, poll_id: poll, comment: comment_params }
+      subject { xhr :post, :create, comment: poll_comment_params }
 
       it { is_expected.to be_success }
 
       it 'have poll as commentable' do
         subject
-        expect(assigns(:commentable)).to be_a(Poll)
+        expect(assigns(:comment).commentable).to be_a(Poll)
       end
 
       it 'increase comments counter' do
@@ -38,13 +43,13 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'when comment commented' do
-      subject { xhr :post, :create, comment_id: comment, comment: comment_params }
+      subject { xhr :post, :create, comment: comment_comment_params }
 
       it { is_expected.to be_success }
 
       it 'have comment as commentable' do
         subject
-        expect(assigns(:commentable)).to be_a(Comment)
+        expect(assigns(:comment).commentable).to be_a(Comment)
       end
 
       it 'increase comments counter' do
@@ -57,7 +62,7 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'when user logged in' do
-      subject { xhr :post, :create, comment_id: comment, comment: comment_params }
+      subject { xhr :post, :create, comment: poll_comment_params }
 
       it 'create comment with author' do
         subject
@@ -67,7 +72,7 @@ RSpec.describe CommentsController, type: :controller do
 
     context 'when user is not login in' do
       before(:each) { session[:user_id] = anonimous_user.id }
-      subject { xhr :post, :create, comment_id: comment, comment: comment_params }
+      subject { xhr :post, :create, comment: poll_comment_params }
 
       it 'not create comment' do
         expect { subject }.to_not change { Comment.count }
@@ -97,13 +102,13 @@ RSpec.describe CommentsController, type: :controller do
   describe 'PUT#update' do
     before(:each) { session[:user_id] = user.id }
     let!(:comment_for_update) { commented_comment.comments.first }
-    subject { xhr :put, :update, id: comment_for_update, comment_id: commented_comment, comment: comment_params }
+    subject { xhr :put, :update, id: comment_for_update, comment: comment_comment_params }
 
     context 'when user owns comment' do
       before(:each) { comment_for_update.update_attribute(:author, user) }
 
       it 'can change comment body' do
-        expect { subject }.to change { comment_for_update.reload.body }.to(comment_params[:body])
+        expect { subject }.to change { comment_for_update.reload.body }.to(comment_comment_params[:body])
       end
     end
 

@@ -10,5 +10,9 @@ FactoryGirl.define do
         FactoryGirl.create_list(:comment, 3, commentable_id: comment.id, commentable_type: 'Comment')
       end
     end
+
+    trait :belongs_to_poll do
+      association :commentable, factory: :valid_poll
+    end
   end
 end
