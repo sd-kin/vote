@@ -22,10 +22,14 @@ require 'factory_girl_rails'
 require 'capybara/poltergeist'
 require 'support/wait_for_ajax.rb'
 require 'support/expire_cookies.rb'
+require 'support/features/session_helpers.rb'
+
 Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
-  # include method waits untill all ajax request closed
+  # include session helpers, such as login helper
+  config.include SessionHelpers, type: :feature
+  # include method waits until all ajax request closed
   config.include WaitForAjax, type: :feature
   # include browser closing simulation methods
   config.include ExpireCookies, type: :feature

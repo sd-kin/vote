@@ -14,6 +14,7 @@ class PollsController < ApplicationController
     id = params[:id]
     @poll = Poll.find(id)
     @rating = @poll.rating
+    actualize_voted_polls_cookie
     @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
   end
 
@@ -41,7 +42,7 @@ class PollsController < ApplicationController
 
   def destroy
     @poll = Poll.find(params[:id])
-    execute_if_accessible(@poll, redirect: false, &:deleted!)
+    execute_if_accessible(@poll, redirect: false, &:delete!)
     redirect_to polls_path
   end
 
@@ -51,7 +52,7 @@ class PollsController < ApplicationController
     unless remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
       preferences = preferences_as_weight(@poll, params[:choices_array])
       @poll.vote!(current_user, preferences)
-      remember_id(id)
+      actualize_voted_polls_cookie
       @already_voted = true
     end
   end
@@ -59,7 +60,7 @@ class PollsController < ApplicationController
   def result
     id = params[:id]
     @poll = Poll.find(id)
-    @already_voted = remembered_ids.include? id.to_i
+    @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
   end
 
   def make_ready
@@ -69,8 +70,10 @@ class PollsController < ApplicationController
   end
 
   def make_draft
-    @poll = Poll.find(params[:id])
+    id = params[:id]
+    @poll = Poll.find(id)
     execute_if_accessible(@poll, redirect: false, &:draft!)
+    actualize_voted_polls_cookie
     render 'change_status'
   end
 
@@ -80,11 +83,9 @@ class PollsController < ApplicationController
     params.require(:poll).permit(:title, :max_voters, :expire_at)
   end
 
-  def remember_id(id)
-    cookies.signed.permanent[:voted_polls] ||= '[]'
-    arr = JSON.parse(cookies.signed[:voted_polls])
-    arr << id
-    cookies.signed[:voted_polls] = JSON.generate(arr.uniq)
+  def actualize_voted_polls_cookie
+    current_user.reload
+    cookies.signed[:voted_polls] = JSON.generate(current_user.voted_polls.ids)
   end
 
   def remembered_ids

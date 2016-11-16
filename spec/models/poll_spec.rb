@@ -3,6 +3,7 @@ require 'rails_helper'
 
 RSpec.describe Poll, type: :model do
   let(:poll) { FactoryGirl.create(:valid_poll) }
+  let(:voted_poll) { FactoryGirl.create :valid_poll, :voted }
   let(:user) { FactoryGirl.create(:user) }
   let(:user2) { FactoryGirl.create(:user) }
 
@@ -20,10 +21,10 @@ RSpec.describe Poll, type: :model do
 
   it 'should change valid poll status to ready' do
     poll.ready!
-    expect(poll).to be_ready
+    expect(poll.reload).to be_ready
   end
 
-  it 'should not change non valid poll status to ready' do
+  it 'should not change poll with no options status to ready' do
     poll = FactoryGirl.create(:poll, :with_title)
     poll.ready!
     expect(poll).not_to be_ready
@@ -50,6 +51,21 @@ RSpec.describe Poll, type: :model do
     end
   end
 
+  context 'when update poll' do
+    subject { voted_poll.update_attribute(:title, 'updated_title!') }
+
+    it 'change title' do
+      expect { subject }.to change { voted_poll.title }.to('updated_title!')
+    end
+
+    it 'drop votation progress' do
+      subject
+
+      expect(poll.reload.vote_results).to be_empty
+      expect(poll.reload).to be_draft
+    end
+  end
+
   it 'should have default maximum number of voters' do
     expect(poll.max_voters).to eq(Float::INFINITY)
   end
@@ -59,19 +75,15 @@ RSpec.describe Poll, type: :model do
   end
 
   it 'raise error when try to add voter twice' do
-    poll.voters << user
-
-    expect { poll.voters << user }.to raise_error(ActiveRecord::RecordInvalid)
+    expect { voted_poll.voters << voted_poll.voters.first }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   context 'maximum voters' do
     it 'should be closed when reach maximum voters limit' do
-      poll.max_voters = 2
+      voted_poll.max_voters = 2
+      voted_poll.vote!(user2, [2, 1, 0])
 
-      poll.vote!(user, [0, 1, 2])
-      poll.vote!(user2, [2, 1, 0])
-
-      expect(poll).to be_closed
+      expect(voted_poll.reload).to be_finished
     end
 
     it 'should not save infinity value to db' do
@@ -93,21 +105,187 @@ RSpec.describe Poll, type: :model do
     end
   end
 
-  it 'should have expiration date in future' do
-    poll.expire_at = 1.year.ago
-    expect { poll.save! }.to raise_error(ActiveRecord::RecordInvalid)
+  context 'expiration date' do
+    it 'should have expiration date in future' do
+      poll.expire_at = 1.year.ago
+      expect { poll.save! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it 'shold have error when reopen outdated' do
+      poll.update_attribute(:expire_at, 1.year.ago)
+      poll.finish!
+
+      expect(poll.errors[:expire_at]).to eq(['should be in future'])
+    end
+
+    it 'should close polls with expiration date in past' do
+      poll.ready!
+      poll.update_attribute(:expire_at, 1.year.ago)
+
+      expect { poll.reload }.to change { poll.status }.to('finished')
+    end
   end
 
-  it 'shold have error when reopen outdated' do
-    poll.update_attribute(:expire_at, 1.year.ago)
-    poll.closed!
-
-    expect(poll.errors[:expire_at]).to eq(['should be in future'])
+  context 'comments' do
+    it 'should have comments' do
+      expect(poll.comments).to eq([])
+    end
   end
 
-  it 'should close polls with expiration date in past' do
-    poll.update_attribute(:expire_at, 1.year.ago)
+  context 'check availible transitions' do
+    context 'when poll draft' do
+      it 'have status draft' do
+        expect(poll).to be_draft
+      end
 
-    expect { poll.closed! }.to change { poll.status }.to('closed')
+      it 'able to be ready' do
+        expect(poll.able_to_ready?).to be_truthy
+      end
+
+      it 'able to be deleted' do
+        expect(poll.able_to_delete?).to be_truthy
+      end
+
+      it 'not able to be finished' do
+        expect(poll.able_to_finish?).to be_falsey
+      end
+    end
+
+    context 'when poll ready' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
+
+      it 'have status ready' do
+        expect(poll).to be_ready
+      end
+
+      it 'able to be draft' do
+        expect(poll.able_to_draft?).to be_truthy
+      end
+
+      it 'able to be deleted' do
+        expect(poll.able_to_delete?).to be_truthy
+      end
+
+      it 'able to be finished' do
+        expect(poll.able_to_finish?).to be_truthy
+      end
+    end
+
+    context 'when poll finished' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'finished' }
+
+      it 'have status finished' do
+        expect(poll).to be_finished
+      end
+
+      it 'able to be draft' do
+        expect(poll.able_to_draft?).to be_truthy
+      end
+
+      it 'able to be deleted' do
+        expect(poll.able_to_delete?).to be_truthy
+      end
+
+      it 'not able to be ready' do
+        expect(poll.able_to_ready?).to be_falsey
+      end
+    end
+
+    context 'when poll deleted' do
+      let(:poll) { FactoryGirl.create :valid_poll, status: 'deleted' }
+
+      it 'have status deleted' do
+        expect(poll).to be_deleted
+      end
+
+      it 'able to be draft' do
+        expect(poll.able_to_draft?).to be_truthy
+      end
+
+      it 'not able to be ready' do
+        expect(poll.able_to_ready?).to be_falsey
+      end
+
+      it 'not able to be finished' do
+        expect(poll.able_to_finish?).to be_falsey
+      end
+    end
+  end
+
+  context 'Check changing status callbacks.' do
+    context 'draft -> ready' do
+      let(:poll) { FactoryGirl.create :poll, :with_title }
+
+      it 'stay draft if poll have no options' do
+        poll.ready!
+
+        expect(poll).to be_draft
+      end
+
+      it 'have an error if poll have no options' do
+        expect { poll.ready! }.to change { poll.errors.count }.by(1)
+      end
+    end
+
+    context 'ready -> draft' do
+      subject { voted_poll.draft! }
+
+      context 'drop votation history' do
+        it 'have empty current state' do
+          subject
+
+          expect(voted_poll.current_state).to be_empty
+        end
+
+        it 'have no vote results' do
+          subject
+
+          expect(voted_poll.vote_results).to be_empty
+        end
+
+        it 'have no voters' do
+          subject
+
+          expect(voted_poll.voters).to be_empty
+        end
+
+        it 'dissapear from users voted polls' do
+          user = voted_poll.voters.first
+          poll.status = 'ready'
+          poll.vote!(user, [0, 1, 2])
+
+          expect(user.voted_polls).to eq([voted_poll, poll])
+
+          subject
+
+          expect(user.reload.voted_polls).to eq([poll])
+        end
+      end
+    end
+
+    context 'ready -> finished' do
+      subject { voted_poll.finish! }
+
+      it 'keep votation progress' do
+        subject
+
+        expect(voted_poll.voters).to_not be_empty
+      end
+    end
+  end
+
+  context 'draft poll when' do
+    let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
+
+    it 'create option' do
+      expect { poll.options.create(title: 'new_option', description: 'blah blah') }.to change { poll.reload.status }.from('ready').to('draft')
+    end
+
+    it 'update option' do
+      expect { poll.options.first.update_attribute(:title, 'updated title') }.to change { poll.reload.status }.from('ready').to('draft')
+    end
+    it 'delete option' do
+      expect { poll.options.first.destroy }.to change { poll.reload.status }.from('ready').to('draft')
+    end
   end
 end

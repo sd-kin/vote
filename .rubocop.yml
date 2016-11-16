@@ -5,10 +5,12 @@ AllCops:
     - 'vendor/**/*'
     - 'spec/fixtures/**/*'
     - 'tmp/**/*'
+    - 'Gemfile'
   TargetRubyVersion: 2.3
 
 Style/Encoding:
-  Enabled: true
+  Exclude:
+    - 'spec/features/poll_spec.rb'  
 
 Lint/UselessAssignment:
   Enabled: false
@@ -24,3 +26,40 @@ Style/PredicateName:
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
+
+Style/Documentation:
+  Enabled: false
+
+Lint/UselessAccessModifier:
+  Exclude:
+    - 'app/models/concerns/status_machine.rb'
+
+Metrics/AbcSize:
+  Max: 17
+
+Metrics/BlockLength:
+  Max: 35
+
+Style/BlockComments:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/test_helper.rb'
+
+Style/GuardClause:
+  Exclude:
+    - 'app/controllers/password_resets_controller.rb'
+    - 'app/controllers/polls_controller.rb'
+
+Rails/HttpPositionalArguments:
+  Exclude:
+    - 'spec/controllers/polls_controller_spec.rb'
+    - 'spec/controllers/users_controller_spec.rb'
+
+Lint/AmbiguousOperator:
+  Exclude:
+    - 'app/models/concerns/status_machine.rb'
+
+

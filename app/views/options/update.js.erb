@@ -3,4 +3,5 @@ $('#<%= dom_id(@option) %>').html('<%= escape_javascript render "edit_form", opt
 <% else %>
 $('#<%= dom_id(@option) %>').html('<%= escape_javascript render @option %>');
 <% end %>
+$('#<%= dom_id(@option.poll, :status_for) %>').html('<%= escape_javascript render "polls/status", poll: @option.poll %>');
 $('#<%= dom_id(@option, :errors_for) %>').html('<%= escape_javascript render "errors", option: @option %>');

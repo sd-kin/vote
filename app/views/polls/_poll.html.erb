@@ -18,8 +18,8 @@
 
   <%= link_to 'edit', edit_poll_path( poll ), remote: true if poll.accessible_for?(current_user) %>
 
-  <div id='rating'>
-    <%= render 'shared/rating', object: poll %>
+  <div id='<%= dom_id(poll.rating) %>'>
+    <%= render 'shared/rating', rating: poll.rating %>
   </div>
 
   <ul>

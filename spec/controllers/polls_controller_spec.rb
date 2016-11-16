@@ -62,6 +62,7 @@ RSpec.describe PollsController, type: :controller do
       end
 
       it 'mark voted poll' do
+        poll.ready!
         preferences = poll.options.ids.map { |id| 'option_' + id.to_s }.reverse
 
         xhr :post, :choose, id: poll.id, choices_array: preferences
@@ -167,7 +168,7 @@ RSpec.describe PollsController, type: :controller do
 
       it 'have access denied error' do
         subject
-        expect(flash[:error]).to eq("only owner can do that")
+        expect(flash[:error]).to eq('only owner can do that')
       end
     end
   end
@@ -193,6 +194,14 @@ RSpec.describe PollsController, type: :controller do
         it 'not increase count of polls' do
           expect { subject }.to change { Poll.count }.by(0)
         end
+
+        it 'change status back to draft' do
+          users_poll.ready!
+
+          subject
+
+          expect(users_poll.reload).to be_draft
+        end
       end
 
       context 'and attributes not valid' do
@@ -212,23 +221,28 @@ RSpec.describe PollsController, type: :controller do
           expect(users_poll.reload.title).not_to eq(poll_params[:title])
         end
       end
+    end
 
-      context 'when user dont own poll' do
-        let(:poll_params) { FactoryGirl.attributes_for(:updated_poll) }
+    context 'when user dont own poll' do
+      let(:poll_params) { FactoryGirl.attributes_for(:updated_poll) }
 
-        before(:each) { session[:user_id] = user.id + 1 }
+      before(:each) { session[:user_id] = user.id + 1 }
 
-        it 'not change poll attributes' do
-          subject
-          expect(users_poll.reload.title).not_to eq(poll_params[:title])
-        end
+      it 'not change poll attributes' do
+        subject
+        expect(users_poll.reload.title).not_to eq(poll_params[:title])
+      end
 
-        it { is_expected.to redirect_to root_path }
+      it { is_expected.to be_success }
 
-        it 'have acces denied message' do
-          subject
-          expect(flash[:error]).to eq("only owner can do that")
-        end
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq('window.location = "/"')
+      end
+
+      it 'have acces denied message' do
+        subject
+        expect(flash[:error]).to eq('only owner can do that')
       end
     end
   end
@@ -257,6 +271,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #choose' do
+    let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
     subject { xhr :post, :choose, id: poll.id, choices_array: preferences }
     let(:preferences) { poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
 
