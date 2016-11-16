@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 # test reopening browser simulation
-feature 'when reopen browswer' do
+feature 'when reopen browser' do
   context 'and user was logged in' do
     before(:each) do
       user = FactoryGirl.create(:user)
@@ -56,7 +56,7 @@ feature 'when try to log in' do
   end
 end
 
-feature 'after successfull login' do
+feature 'after successful login' do
   before(:each) do
     user = FactoryGirl.create(:user)
     visit root_path
@@ -79,13 +79,13 @@ feature 'after successfull login' do
 end
 
 feature 'remember me function' do
-  scenario 'shoul have checkbox on login page' do
+  scenario 'should have check-box on login page' do
     visit login_path
 
     expect(page).to have_css('input[type=checkbox]#session_remember_me')
   end
 
-  context 'if checkbox checked' do
+  context 'if check-box checked' do
     it 'should remember user' do
       user = FactoryGirl.create(:user)
       visit root_path
@@ -103,7 +103,7 @@ feature 'remember me function' do
     end
   end
 
-  context 'if checkbox not checked' do
+  context 'if check-box not checked' do
     it 'should not remember user' do
       user = FactoryGirl.create(:user)
       visit root_path

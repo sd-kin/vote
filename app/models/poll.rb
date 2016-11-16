@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 class Poll < ActiveRecord::Base
   require 'vote-schulze'
+  include StatusMachine
 
-  enum status: {
-    draft:     'draft',
-    ready:     'ready',
-    published: 'published',
-    closed:    'closed',
-    deleted:   'deleted'
-  }
+  # Source in StatusMachine concern
+  availible_status_transitions draft:  { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
+                               ready:  { 'draft' => 'ready' },
+                               finish: { 'ready' => 'finished' },
+                               delete: { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
 
   has_one    :rating, as: :rateable, dependent: :destroy
-  has_many   :downvoters, through: :rating, source: :downvoters
-  has_many   :upvoters, through: :rating, source: :upvoters
+  has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
+  has_many   :upvoters, through: :rating, source: :upvoters     # users, who increase poll rating
   has_many   :options, dependent: :destroy
   has_many   :user_votes
-  has_many   :voters, through: :user_votes, source: :user
+  has_many   :voters, through: :user_votes, source: :user       # users voted in this poll
+  has_many   :comments, as: :commentable
   belongs_to :user
 
   serialize :vote_results, Array
@@ -25,43 +25,23 @@ class Poll < ActiveRecord::Base
   validate  :max_voters_should_be_number
   validate  :date_should_be_in_future
 
-  after_touch       :ensure_status_is_correct
-  after_create      :create_rating
-  after_find        :close_if_expire
+  after_create  :create_rating
+  after_find    :close_if_expire
+  before_update :draft_callback, if: :title_changed?
 
-  def ready!
-    if options.empty?
-      errors.add(:status, "can't be ready when poll have no options")
-    else
-      self.vote_results = []
-      self.current_state = []
-      super
-    end
-  end
-
-  def draft!
-    self.vote_results = []
-    self.current_state = []
-    super
-  rescue ActiveRecord::RecordInvalid => e # rescue only when try to make closed poll whith expiration date in the past 'draft' again
-    raise e if errors[:expire_at].blank? # in order to have object with error instead of thrown error
-    reload # reload object so rendered correct status and validation error
-  end
-
-  def closed!
-    super
-  rescue ActiveRecord::RecordInvalid => e # status of polls with expiration date in past can be modifyed to closed
-    raise e if errors[:expire_at].blank?
-    update_attribute(:status, :closed)
-  end
+  # callbacks on status
+  before_ready :check_options_presist
+  before_draft :drop_votation_progress
 
   def vote!(user, preferences)
-    transaction do
-      voters << user
-      vote_results << preferences
-      self.current_state = calculate_ranks
-      closed! if voters.count >= max_voters
-      save!
+    if ready?
+      transaction do
+        save_votation_progress(user, preferences)
+        finish! if voters.count >= max_voters
+        save!
+      end
+    else
+      errors.add(:base, 'only poll with ready status can be voted')
     end
   end
 
@@ -83,20 +63,35 @@ class Poll < ActiveRecord::Base
     SchulzeBasic.do(vote_results, vote_results.first.count).ranks
   end
 
-  def ensure_status_is_correct
-    draft! if options.empty?
-  end
-
   def max_voters_should_be_number
-    # work just like standart numericality validation, but check [:max_voters] instead of .max_voters which return infinity
-    errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters > 0) || self[:max_voters].nil?
+    # work just like standard numericality validation, but check [:max_voters] instead of .max_voters which return infinity
+    errors.add(:max_voters, 'should be number greater than 0') unless (max_voters.is_a?(Integer) && max_voters.positive?) || self[:max_voters].nil?
   end
 
   def date_should_be_in_future
-    errors.add(:expire_at, 'should be in future') if expire_at&. < DateTime.now
+    errors.add(:expire_at, 'should be in future') if expire_at&. < DateTime.current
   end
 
   def close_if_expire
-    closed! if expire_at&. < DateTime.now
+    finish! if expire_at&. < DateTime.current
+  end
+
+  def drop_votation_progress
+    [current_state, vote_results, voters].map(&:clear) # caution! that's don't save record. Should be saved down the flow.
+  end
+
+  def save_votation_progress(user, preferences)
+    voters << user
+    vote_results << preferences
+    self.current_state = calculate_ranks
+  end
+
+  def draft_callback
+    drop_votation_progress
+    self.status = 'draft'
+  end
+
+  def check_options_presist
+    errors.add(:base, 'Status can\'t be changed. Add more options.') if options.empty?
   end
 end

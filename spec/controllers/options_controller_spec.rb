@@ -40,7 +40,12 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to root_path }
+      it { is_expected.to be_success }
+
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq('window.location = "/"')
+      end
     end
   end
 
@@ -56,7 +61,12 @@ RSpec.describe OptionsController, type: :controller do
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to root_path }
+      it { is_expected.to be_success }
+
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq('window.location = "/"')
+      end
     end
   end
 
@@ -73,12 +83,25 @@ RSpec.describe OptionsController, type: :controller do
 
         expect(assigns(:option).title).to_not eq(option.title)
       end
+
+      it 'change poll status back to draft' do
+        option.poll.ready!
+
+        subject
+
+        expect(option.poll.reload).to be_draft
+      end
     end
 
     context 'when not owner does it' do
       before(:each) { session[:user_id] = user.id + 1 }
 
-      it { is_expected.to redirect_to root_path }
+      it { is_expected.to be_success }
+
+      it 'redirect to root' do
+        subject
+        expect(response.body).to eq('window.location = "/"')
+      end
 
       it 'not change option title' do
         subject
@@ -98,6 +121,14 @@ RSpec.describe OptionsController, type: :controller do
 
       it 'decrease options count' do
         expect { subject }.to change { poll.reload.options.count }.by(-1)
+      end
+
+      it 'change poll status back to draft' do
+        option.poll.ready!
+
+        subject
+
+        expect(option.poll.reload).to be_draft
       end
     end
 

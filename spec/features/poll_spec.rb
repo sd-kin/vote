@@ -90,7 +90,7 @@ feature 'when create options for poll', js: true do
 end
 
 feature 'after create poll' do
-  scenario 'should be accesible by index page', js: true do
+  scenario 'should be accessible by index page', js: true do
     current_page = NewPollPage.new
     current_page.visit_page
     current_page.create_poll(title: 'test title')
@@ -104,7 +104,7 @@ feature 'after create poll' do
 end
 
 feature 'when changing poll status' do
-  scenario 'poll withoot options cant be ready', js: true do
+  scenario 'poll without options cant be ready', js: true do
     current_page = EditPollPage.new
     current_page.visit_page
     current_page.make_ready
@@ -131,23 +131,12 @@ feature 'when changing poll status' do
 
     expect(current_page).to have_status('ready')
   end
-
-  scenario 'ready poll return to draft when all options deleted', js: true do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.create_option
-    current_page.make_ready
-    current_page.destroy_option
-    wait_for_ajax
-
-    expect(current_page).to have_status
-  end
 end
 
 feature 'when cast a vote' do
   given(:poll) { FactoryGirl.create(:valid_poll, status: :ready) }
 
-  scenario 'can access vote by unique url', js: true do
+  scenario 'can access vote by unique URL', js: true do
     current_page = ShowPollPage.new
     current_page.visit_page
 
@@ -158,19 +147,19 @@ feature 'when cast a vote' do
     visit poll_path(id: poll.id)
 
     expect(page).to have_button('make choice')
-    expect(page).not_to have_link('see results')
+    expect(page).to have_no_link('see results')
 
     click_button('make choice')
 
     expect(page).to have_content('choice has been accepted')
     expect(page).to have_link('see results')
-    expect(page).not_to have_button('make choice')
+    expect(page).to have_no_button('make choice')
 
     visit poll_path(id: poll.id)
 
     expect(page).to have_content('choice has been accepted')
     expect(page).to have_link('see results')
-    expect(page).not_to have_button('make choice')
+    expect(page).to have_no_button('make choice')
   end
 end
 

@@ -3,7 +3,7 @@ class AccountActivationsController < ApplicationController
   def edit
     user = User.find_by(email: params[:email])
     if user&.correct_token?(:activation, params[:id]) && !user.activated?
-      user.update_attributes(activated: true, activated_at: Time.now)
+      user.update_attributes(activated: true, activated_at: Time.current)
       flash[:notice] = 'email confirmed'
       redirect_to ready_polls_path
     else

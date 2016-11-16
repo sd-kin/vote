@@ -1,0 +1,7 @@
+<% if @updated %>
+  $('#<%= dom_id(@comment) %>').html('<%= escape_javascript render @comment %>');
+<% else %>
+  $('#<%= dom_id(@comment) %>').html('<%= escape_javascript render "comments/form", comment: @comment %>');
+<% end %>
+
+$('#<%= dom_id(@comment, :creation_errors_for) %>').html('<%= escape_javascript render "errors", comment: @comment %>');
