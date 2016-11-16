@@ -59,8 +59,10 @@ module StatusMachine
         end
 
         status_events.each do |event|
-          define_singleton_method "#{prefix}#{event}" do |method| # TODO: accept block as callback parameter
-            set_callback event.to_sym, prefix.chop.to_sym, method
+          define_singleton_method "#{prefix}#{event}" do |*methods| # TODO: accept block as callback parameter
+            methods.each do |method|
+              set_callback event.to_sym, prefix.chop.to_sym, method
+            end
           end
         end
       end
