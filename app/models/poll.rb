@@ -33,6 +33,7 @@ class Poll < ActiveRecord::Base
   # callbacks on status
   before_ready :check_options_presist
   before_draft :drop_votation_progress
+  after_finish :notificate_author, :notificate_voters
 
   def vote!(user, preferences)
     if ready?
@@ -94,5 +95,15 @@ class Poll < ActiveRecord::Base
 
   def check_options_presist
     errors.add(:base, 'Status can\'t be changed. Add more options.') if options.empty?
+  end
+
+  def notificate_author
+    user.notifications.create message: 'Your poll was finished', subject: self
+  end
+
+  def notificate_voters
+    voters.each do |user|
+      user.notifications.create message: 'Poll, your voted for, was closed', subject: self
+    end
   end
 end

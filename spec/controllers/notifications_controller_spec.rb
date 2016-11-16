@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe NotificationsController, type: :controller do
   let(:user) { FactoryGirl.create :user, :with_notifications }
 
-  describe "GET #index" do
+  describe 'GET #index' do
     subject { get :index }
 
     context 'when user not logged in' do
