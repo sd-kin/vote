@@ -9,9 +9,15 @@ class Comment < ActiveRecord::Base
   has_many   :upvoters, through: :rating, source: :upvoters # users, who increase comment rating
   has_many   :comments, as: :commentable, dependent: :restrict_with_error
 
-  after_create :create_rating # method added by ActiveRecord has_one
+  after_create :create_rating, :notify_commentable_author # create_rating method added by ActiveRecord has_one
 
   def accessible_for?(user)
     user_id == user.id && !user.anonimous?
+  end
+
+  private
+
+  def notify_commentable_author
+    commentable.author.notifications.create message: 'You have new reply', subject: self
   end
 end

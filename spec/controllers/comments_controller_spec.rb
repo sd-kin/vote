@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
-  let!(:comment) { FactoryGirl.create :comment, :belongs_to_poll }
+  let!(:comment) { FactoryGirl.create :comment }
   let(:commented_comment) { FactoryGirl.create :comment, :with_comments }
   let(:poll_comment_params) do
     FactoryGirl.attributes_for(:comment).merge(commentable_id: comment.commentable_id, commentable_type: comment.commentable.class)

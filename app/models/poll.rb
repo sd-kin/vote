@@ -16,11 +16,13 @@ class Poll < ActiveRecord::Base
   has_many   :options, dependent: :destroy
   has_many   :user_votes
   has_many   :voters, through: :user_votes, source: :user       # users voted in this poll
-  has_many   :comments, as: :commentable
+  has_many   :comments, as: :commentable, dependent: :destroy
   belongs_to :user
 
   serialize :vote_results, Array
   serialize :current_state, Array
+
+  alias_attribute :author, :user
 
   validates :title, presence: true
   validate  :max_voters_should_be_number
@@ -32,8 +34,8 @@ class Poll < ActiveRecord::Base
 
   # callbacks on status
   before_ready :check_options_presist
-  before_draft :drop_votation_progress
-  after_finish :notificate_author, :notificate_voters
+  before_draft -> { notificate_voters_about :draft }, :drop_votation_progress
+  after_finish :notificate_author, -> { notificate_voters_about :finish }
 
   def vote!(user, preferences)
     if ready?
@@ -101,9 +103,16 @@ class Poll < ActiveRecord::Base
     user.notifications.create message: 'Your poll was finished', subject: self
   end
 
-  def notificate_voters
+  def notificate_voters_about(event)
+    message = case event
+              when :draft
+                'Votation progress in poll, your voted for, was cleared.'
+              when :finish
+                'Poll, your voted for, was closed'
+              end
+
     voters.each do |user|
-      user.notifications.create message: 'Poll, your voted for, was closed', subject: self
+      user.notifications.create message: message, subject: self
     end
   end
 end
