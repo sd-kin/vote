@@ -18,6 +18,6 @@ class Comment < ActiveRecord::Base
   private
 
   def notify_commentable_author
-    commentable.author.notifications.create message: 'You have new reply', subject: self
+    commentable.author.notifications.create message: 'You have new reply.', subject: self
   end
 end

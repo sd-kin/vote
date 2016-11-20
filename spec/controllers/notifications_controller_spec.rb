@@ -12,7 +12,7 @@ RSpec.describe NotificationsController, type: :controller do
 
       it 'do not set notifications variable' do
         subject
-        expect(assigns(:notifications)).to be_nil
+        expect(assigns(:notifications_hash)).to be_nil
       end
     end
 
@@ -23,13 +23,13 @@ RSpec.describe NotificationsController, type: :controller do
 
       it 'should have user notifications' do
         subject
-        expect(assigns(:notifications)).to match_array(user.notifications)
+        expect(assigns(:notifications_hash).keys).to match_array(user.notifications)
       end
 
       it 'do not get all notifications' do
         Notification.create
         subject
-        expect(assigns(:notifications)).to_not match_array(Notification.all)
+        expect(assigns(:notifications_hash).keys).to_not match_array(Notification.all)
       end
     end
   end

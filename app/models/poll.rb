@@ -100,7 +100,7 @@ class Poll < ActiveRecord::Base
   end
 
   def notificate_author
-    user.notifications.create message: 'Your poll was finished', subject: self
+    user.notifications.create message: 'Your poll was finished.', subject: self
   end
 
   def notificate_voters_about(event)
@@ -108,7 +108,7 @@ class Poll < ActiveRecord::Base
               when :draft
                 'Votation progress in poll, your voted for, was cleared.'
               when :finish
-                'Poll, your voted for, was closed'
+                'Poll, your voted for, was closed.'
               end
 
     voters.each do |user|
