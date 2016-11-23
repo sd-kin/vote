@@ -33,6 +33,11 @@ gem 'oj'
 gem 'jquery-ui-rails'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+# Use Puma as the app server
+gem 'puma'
+# use redis for pub/sub queue on action cable
+gem 'redis'
+gem 'em-hiredis'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
