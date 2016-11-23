@@ -43,7 +43,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'GET #show' do
-    subject { get :show, id: poll.id }
+    subject { get :show, params: { id: poll.id } }
     context 'when poll exists' do
       it { is_expected.to be_success }
 
@@ -65,8 +65,8 @@ RSpec.describe PollsController, type: :controller do
         poll.ready!
         preferences = poll.options.ids.map { |id| 'option_' + id.to_s }.reverse
 
-        xhr :post, :choose, id: poll.id, choices_array: preferences
-        xhr :get, :show, id: poll.id
+        post :choose, xhr: true, params: { id: poll.id, choices_array: preferences }
+        get :show, xhr: true, params: { id: poll.id }
 
         expect(assigns(:already_voted)).to be true
       end
@@ -74,7 +74,7 @@ RSpec.describe PollsController, type: :controller do
 
     context "when poll doesn't exist" do
       it 'have 404 responce statuse' do
-        expect { get :show, id: 10 }.to raise_exception(ActiveRecord::RecordNotFound)
+        expect { get :show, params: { id: 10 } }.to raise_exception(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -93,7 +93,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #create' do
-    subject { xhr :post, :create, poll: poll_params }
+    subject { post :create, xhr: true, params: { poll: poll_params } }
 
     context 'when valid attributes' do
       let(:poll_params) { FactoryGirl.attributes_for(:valid_poll) }
@@ -140,7 +140,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    subject { delete :destroy, id: users_poll.id }
+    subject { delete :destroy, params: { id: users_poll.id } }
 
     context 'when user own poll' do
       before(:each) { session[:user_id] = user.id }
@@ -174,7 +174,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'PUT #update' do
-    subject { xhr :put, :update, id: users_poll.id, poll: poll_params }
+    subject { put :update, xhr: true, params: { id: users_poll.id, poll: poll_params } }
 
     context 'when user own poll' do
       before(:each) { session[:user_id] = user.id }
@@ -248,7 +248,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    subject { get :edit, id: users_poll.id }
+    subject { get :edit, params: { id: users_poll.id } }
 
     context 'when user own poll' do
       before(:each) { session[:user_id] = user.id }
@@ -272,7 +272,7 @@ RSpec.describe PollsController, type: :controller do
 
   describe 'POST #choose' do
     let(:poll) { FactoryGirl.create :valid_poll, status: 'ready' }
-    subject { xhr :post, :choose, id: poll.id, choices_array: preferences }
+    subject { post :choose, xhr: true, params: { id: poll.id, choices_array: preferences } }
     let(:preferences) { poll.options.ids.map { |id| 'option_' + id.to_s }.reverse }
 
     it { is_expected.to be_success }
@@ -299,13 +299,13 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'GET #result' do
-    subject { get :result, id: poll.id }
+    subject { get :result, params: { id: poll.id } }
 
     it { is_expected.to be_success }
   end
 
   describe 'POST #make_ready' do
-    subject { xhr :post, :make_ready, id: users_poll.id }
+    subject { post :make_ready, xhr: true, params: { id: users_poll.id } }
 
     context 'when user owns poll' do
       before(:each) { session[:user_id] = user.id }
@@ -330,7 +330,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #make_draft' do
-    subject { xhr :post, :make_draft, id: users_poll.id }
+    subject { post :make_draft, xhr: true, params: { id: users_poll.id } }
     before(:each) { users_poll.ready! }
 
     context 'when user owns poll' do

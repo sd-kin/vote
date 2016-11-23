@@ -11,7 +11,7 @@ RSpec.describe OptionsController, type: :controller do
 
   describe 'GET #show' do
     context 'when option exist' do
-      subject { xhr :get, :show, poll_id: poll, id: option }
+      subject { get :show, xhr: true, params: { poll_id: poll, id: option } }
 
       it { is_expected.to be_success }
 
@@ -29,7 +29,7 @@ RSpec.describe OptionsController, type: :controller do
   end
 
   describe 'GET #edit' do
-    subject { xhr :get, :edit, poll_id: poll, id: option }
+    subject { get :edit, xhr: true, params: { poll_id: poll, id: option } }
 
     context 'when owner does it' do
       before(:each) { session[:user_id] = user.id }
@@ -50,7 +50,7 @@ RSpec.describe OptionsController, type: :controller do
   end
 
   describe 'PUT #create' do
-    subject { xhr :post, :create, poll_id: poll, option: FactoryGirl.attributes_for(:valid_option) }
+    subject { post :create, xhr: true, params: { poll_id: poll, option: FactoryGirl.attributes_for(:valid_option) } }
 
     context 'when owner does it' do
       before(:each) { session[:user_id] = user.id }
@@ -71,7 +71,7 @@ RSpec.describe OptionsController, type: :controller do
   end
 
   describe 'PUT #update' do
-    subject { xhr :put, :update, poll_id: poll, id: option, option: FactoryGirl.attributes_for(:valid_option) }
+    subject { put :update, xhr: true, params: { poll_id: poll, id: option, option: FactoryGirl.attributes_for(:valid_option) } }
 
     context 'when owner does it' do
       before(:each) { session[:user_id] = user.id }
@@ -112,7 +112,7 @@ RSpec.describe OptionsController, type: :controller do
   end
 
   describe 'DESTROY #delete' do
-    subject { xhr :delete, :destroy, id: option, poll_id: poll }
+    subject { delete :destroy, xhr: true, params: { id: option, poll_id: poll } }
 
     context 'when owner does it' do
       before(:each) { session[:user_id] = user.id }

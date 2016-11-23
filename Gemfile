@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-ruby '2.3.0'
+ruby '2.3.1'
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.0'
+gem 'rails', '~> 5.0.0.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -71,6 +71,7 @@ group :test do
   gem 'factory_girl_rails', :require => false
   gem 'database_cleaner'
   gem 'rspec_junit_formatter', '0.2.2'
+  gem 'rails-controller-testing'
 end
 
 group :production do

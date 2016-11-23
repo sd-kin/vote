@@ -29,7 +29,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'POST#create' do
-    subject { post :create, user: user_params }
+    subject { post :create, params: { user: user_params } }
 
     context 'when anonimous user exists' do
       let(:user_params) { FactoryGirl.attributes_for(:user) }
@@ -76,7 +76,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'GET#edit' do
-    subject { get :edit, id: user.id }
+    subject { get :edit, params: { id: user.id } }
 
     context 'when user logged in' do
       context 'and try to edit own profile' do
@@ -106,7 +106,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'GET#show' do
-    subject { get :show, id: user.id }
+    subject { get :show, params: { id: user.id } }
 
     it { is_expected.to be_success }
 
@@ -117,7 +117,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'PUT#update' do
-    subject { put :update, id: user.id, user: user_params }
+    subject { put :update, params: { id: user.id, user: user_params } }
 
     context 'when user logged in' do
       context 'and update own parameters' do
@@ -171,7 +171,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   context 'DELETE#destroy' do
-    subject { delete :destroy, id: user.id }
+    subject { delete :destroy, params: { id: user.id } }
 
     context 'when logged in as deleted user' do
       before(:each) { session[:user_id] = user.id }
@@ -199,7 +199,7 @@ RSpec.describe UsersController, type: :controller do
 
       expect(user).to receive(:destroy).and_return(false)
       expect(User).to receive(:find).and_return(user)
-      expect(delete :destroy, id: user.id).to render_template(:show)
+      expect(delete :destroy, params: { id: user.id }).to render_template(:show)
     end
   end
 end
