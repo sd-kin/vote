@@ -9,6 +9,9 @@ class NotificationsChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def notify
+  def self.notify(notification)
+    notification_html =
+      NotificationsController.render :_notifications, locals: { notifications_hash: { notification => notification.subject } }, layout: false
+    ActionCable.server.broadcast 'notification_channel', notification: notification_html
   end
 end
