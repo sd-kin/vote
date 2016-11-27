@@ -77,7 +77,7 @@ class Poll < ActiveRecord::Base
   end
 
   def close_if_expire
-    finish! if expire_at&. < DateTime.current
+    finish! if (expire_at&. < DateTime.current) && able_to_finish?
   end
 
   def drop_votation_progress

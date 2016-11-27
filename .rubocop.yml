@@ -65,4 +65,8 @@ Lint/AmbiguousOperator:
   Exclude:
     - 'app/models/concerns/status_machine.rb'
 
+Lint/AssignmentInCondition:
+  Exclude:
+    - 'app/channels/application_cable/connection.rb'
+
 

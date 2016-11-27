@@ -8,6 +8,6 @@ class Notification < ActiveRecord::Base
   private
 
   def broadcast_notification
-    NotificationsChannel.notify(self)
+    NotificationsChannel.notify(self, user)
   end
 end

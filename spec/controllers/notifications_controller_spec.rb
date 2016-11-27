@@ -2,7 +2,8 @@
 require 'rails_helper'
 
 RSpec.describe NotificationsController, type: :controller do
-  let(:user) { FactoryGirl.create :user, :with_notifications }
+  let(:user)  { FactoryGirl.create :user, :with_notifications }
+  let(:user2) { FactoryGirl.create :user, :with_notifications }
 
   describe 'GET #index' do
     subject { get :index }
@@ -27,7 +28,7 @@ RSpec.describe NotificationsController, type: :controller do
       end
 
       it 'do not get all notifications' do
-        Notification.create
+        user2.notifications.create
         subject
         expect(assigns(:notifications_hash).keys).to_not match_array(Notification.all)
       end
