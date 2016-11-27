@@ -3,6 +3,8 @@ require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
   let(:poll) { FactoryGirl.create :valid_poll, :voted, status: 'ready' }
+  let(:user) { FactoryGirl.create :user }
+  let(:user2) { FactoryGirl.create :user }
 
   context 'Poll notifications.' do
     context 'When poll finished' do
@@ -26,19 +28,32 @@ RSpec.describe Notification, type: :model do
     end
 
     context 'when poll have new comment' do
-      it 'should notificate author' do
-        expect { poll.comments.create body: 'new comment' }.to change { poll.user.notifications.count }.by(1)
+      context 'when commented by poll author' do
+        it 'should not notificate author' do
+          expect { poll.comments.create body: 'new comment', author: poll.user }.to_not change { poll.user.notifications.count }
+        end
+      end
+
+      context 'when commented by another user' do
+        it 'should notificate author' do
+          expect { poll.comments.create body: 'new comment', author: user }.to change { poll.user.notifications.count }.by(1)
+        end
       end
     end
   end
 
   context 'Comment notifications.' do
-    let(:user) { FactoryGirl.create :user }
     let(:comment) { poll.comments.create body: 'comment to comment', author: user }
 
-    context 'when comment have new comment' do
+    context 'when commented by parent comment author' do
+      it 'should not notificate author' do
+        expect { comment.comments.create body: 'new comment', author: user }.to_not change { comment.author.notifications.count }
+      end
+    end
+
+    context 'when commented by another user' do
       it 'should notificate author' do
-        expect { comment.comments.create body: 'new comment' }.to change { comment.author.notifications.count }.by(1)
+        expect { comment.comments.create body: 'new comment', author: user2 }.to change { comment.author.notifications.count }.by(1)
       end
     end
   end

@@ -8,6 +8,4 @@
 
 # Offense count: 1
 # Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'app/channels/application_cable/connection.rb'
+
