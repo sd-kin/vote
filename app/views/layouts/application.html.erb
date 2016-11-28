@@ -5,7 +5,8 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= render 'shared/rollbar' if Rails.env.production? %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
+  <%= csrf_meta_tags %> 
+  <meta name='current_user' id='<%= current_user.id%>'>
 </head>
 <body>
 <%= render 'layouts/header' %>

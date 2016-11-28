@@ -1,6 +1,7 @@
 App.notifications = App.cable.subscriptions.create("NotificationsChannel", {
   connected: function() {
     // Called when the subscription is ready for use on the server
+    this.set_current_user();
   },
 
   disconnected: function() {
@@ -12,7 +13,7 @@ App.notifications = App.cable.subscriptions.create("NotificationsChannel", {
     $('#notifications').append(data.notification);
   },
 
-  notify: function() {
-    return this.perform('notify');
+  set_current_user: function() {
+    return this.perform('create_current_user_stream', {user_id: $('meta[name=current_user]').attr('id')});
   }
 });
