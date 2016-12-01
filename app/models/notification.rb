@@ -8,6 +8,6 @@ class Notification < ActiveRecord::Base
   private
 
   def broadcast_notification
-    NotificationsChannel.notify(self, user)
+    BroadcastNotificationJob.perform_later(self)
   end
 end
