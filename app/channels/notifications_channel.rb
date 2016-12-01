@@ -2,14 +2,11 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
 class NotificationsChannel < ApplicationCable::Channel
   def subscribed
+    stream_from "notifications_for_#{current_user.id}"
   end
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
-  end
-
-  def create_current_user_stream(data)
-    stream_from "notifications_for_#{data['user_id'].to_i}"
   end
 
   def self.notify(notification, user)
