@@ -1,8 +1,8 @@
 <h1>Notifications</h1>
 <div id='notifications'>
-  <% if @notifications_hash.empty? %>
+  <% if @notifications.blank? %>
     <p> You have no notifications yet. </p>
   <% else %>
-    <%= render 'notifications', notifications_hash: @notifications_hash%>
+    <%= render @notifications %>
   <% end %>
 </div>

@@ -4,7 +4,7 @@ class BroadcastNotificationJob < ApplicationJob
 
   def perform(notification)
     notification_html =
-      NotificationsController.render :_notifications, locals: { notifications_hash: { notification => notification.subject } }, layout: false
+      NotificationsController.render :_notification, locals: { notification: notification }, layout: false
     ActionCable.server.broadcast "notifications_for_#{notification.user_id}", notification: notification_html
   end
 end
