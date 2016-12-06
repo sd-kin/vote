@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
 
   def new
     @commentable = Comment.find params[:comment_id]
-    @comment = @commentable.comments.build
+    @comment = @commentable.comments.build(parent_id: @commentable.id)
   end
 
   def edit
@@ -33,6 +33,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:body, :commentable_id, :commentable_type)
+    params.require(:comment).permit(:body, :commentable_id, :commentable_type, :ancestry)
   end
 end

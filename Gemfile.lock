@@ -40,6 +40,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
+    ancestry (2.2.2)
+      activerecord (>= 3.0.0)
     arel (7.1.4)
     ast (2.3.0)
     bcrypt (3.1.11)
@@ -269,6 +271,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ancestry
   bcrypt (~> 3.1.7)
   capybara
   coffee-rails (~> 4.1.0)

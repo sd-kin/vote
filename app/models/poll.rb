@@ -10,7 +10,7 @@ class Poll < ActiveRecord::Base
                                delete: { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
 
   has_one    :rating, as: :rateable, dependent: :destroy
-  has_many   :notifications
+  has_many   :notifications, as: :subject, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
   has_many   :upvoters, through: :rating, source: :upvoters     # users, who increase poll rating
   has_many   :options, dependent: :destroy

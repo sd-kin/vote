@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Comment < ActiveRecord::Base
+  has_ancestry
+
   validates :body, presence: { message: 'of comment can not be empty' }
 
   belongs_to :commentable, polymorphic: true
@@ -8,6 +10,7 @@ class Comment < ActiveRecord::Base
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease comment rating
   has_many   :upvoters, through: :rating, source: :upvoters # users, who increase comment rating
   has_many   :comments, as: :commentable, dependent: :restrict_with_error
+  has_many   :notifications, as: :subject, dependent: :destroy
 
   validates :author, presence: true
 

@@ -6,6 +6,7 @@
   <%= f.text_area :body %> <br>
   <%= f.hidden_field :commentable_id, value: comment.commentable.id %>
   <%= f.hidden_field :commentable_type, value: comment.commentable.class %>
+  <%= f.hidden_field :ancestry unless comment.ancestry.blank? %>
   <%= f.submit %>
 <% end %>
 

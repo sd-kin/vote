@@ -38,6 +38,8 @@ gem 'puma'
 # use redis for pub/sub queue on action cable
 gem 'redis'
 gem 'em-hiredis'
+# use ancestry for maintaining tree structure of comments
+gem 'ancestry'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
