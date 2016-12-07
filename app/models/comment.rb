@@ -14,7 +14,7 @@ class Comment < ActiveRecord::Base
 
   validates :author, presence: true
 
-  after_create :create_rating, :notify_commentable_author # create_rating method added by ActiveRecord has_one
+  after_create :create_rating, :notify_commentable_author, :notify_mentioned_users # create_rating method added by ActiveRecord has_one
 
   def accessible_for?(user)
     user_id == user.id && !user.anonimous?
@@ -24,5 +24,13 @@ class Comment < ActiveRecord::Base
 
   def notify_commentable_author
     commentable.author.notifications.create message: 'You have new reply.', subject: self unless author == commentable.author
+  end
+
+  def notify_mentioned_users
+    mentioned_users.map { |user| user.notifications.create message: 'You was mentioned', subject: self }
+  end
+
+  def mentioned_users
+    body.scan(/@([a-zA-Z0-9._]+)/).flatten.map { |name| User.find_by_username name }.compact
   end
 end

@@ -56,5 +56,14 @@ RSpec.describe Notification, type: :model do
         expect { comment.comments.create body: 'new comment', author: user2 }.to change { comment.author.notifications.count }.by(1)
       end
     end
+
+    context 'when user was mentioned' do
+      let(:comment) { FactoryGirl.build(:comment, body: "comment mention @#{user2.username}", author: user) }
+
+      it 'should notify mentioned user' do
+        # binding.pry
+        expect { comment.save }.to change { user2.notifications.count }.by(1)
+      end
+    end
   end
 end
