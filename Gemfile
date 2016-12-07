@@ -60,7 +60,7 @@ group :development, :test do
   gem 'guard-rubocop'
   # use capypara for acceptanse tests
   gem 'capybara'
-  # use capybara-webkit for test ajax requests
+  # use poltergist for test ajax requests
   gem 'poltergeist'
   # use haml preprocessor for accurate views
   gem 'haml'
