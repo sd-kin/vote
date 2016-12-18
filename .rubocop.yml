@@ -69,4 +69,6 @@ Lint/AssignmentInCondition:
   Exclude:
     - 'app/channels/application_cable/connection.rb'
 
-
+Style/EmptyMethod:
+  Exclude:
+    - 'app/controllers/password_resets_controller.rb'
