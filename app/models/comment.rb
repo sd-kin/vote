@@ -31,6 +31,6 @@ class Comment < ActiveRecord::Base
   end
 
   def mentioned_users
-    body.scan(/@([a-zA-Z0-9._]+)/).flatten.map { |name| User.find_by_username name }.compact
+    User.where(username: body.scan(/@([a-zA-Z0-9._]+)/).flatten.compact.uniq)
   end
 end
