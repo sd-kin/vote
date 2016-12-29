@@ -22,6 +22,7 @@ class CommentsController < ApplicationController
 
   def create
     @comment = current_user.comments.build comment_params
+    @comment.parent_id = @comment.commentable_id if comment_params[:commentable_type] == 'Comment'
     @created = execute_if_accessible(@comment, redirect: false, &:save)
   end
 
@@ -33,6 +34,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:body, :commentable_id, :commentable_type, :ancestry)
+    params.require(:comment).permit(:body, :commentable_id, :commentable_type)
   end
 end
