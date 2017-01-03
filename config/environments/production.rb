@@ -77,4 +77,14 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  # Use Mailgun add-on on heroku for mailing.
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    port:           ENV['MAILGUN_SMTP_PORT'],
+    addres:         ENV['MAILGUN_SMTP_SERVER'],
+    user_name:      ENV['MAILGUN_SMTP_LOGIN'],
+    password:       ENV['MAILGUN_SMTP_PASSWORD'],
+    domain:         'vote-kompot.herokuapp.com',
+    authentication: :plain
+  }
 end
