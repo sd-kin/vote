@@ -79,7 +79,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   # Use Mailgun add-on on heroku for mailing.
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: 'https//vote-kompot.herokuapp.com' }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: 'vote-kompot.herokuapp.com' }
   config.action_mailer.smtp_settings = {
     port:           ENV['MAILGUN_SMTP_PORT'],
     addres:         ENV['MAILGUN_SMTP_SERVER'],
