@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
 
   def new
     @commentable = Comment.find params[:comment_id]
-    @comment = @commentable.comments.build
+    @comment = @commentable.comments.build(parent_id: @commentable.id)
   end
 
   def edit
@@ -22,6 +22,7 @@ class CommentsController < ApplicationController
 
   def create
     @comment = current_user.comments.build comment_params
+    @comment.parent_id = @comment.commentable_id if comment_params[:commentable_type] == 'Comment'
     @created = execute_if_accessible(@comment, redirect: false, &:save)
   end
 

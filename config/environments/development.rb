@@ -46,4 +46,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
   host = 'localhost:4000'
   config.action_mailer.default_url_options = { host: host }
+
+  # add localhost:4000 to allowed origins( default localhost:3000)
+  config.action_cable.allowed_request_origins = ['http://localhost:4000', 'http://localhost:3000']
 end

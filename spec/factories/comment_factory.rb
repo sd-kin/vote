@@ -2,6 +2,7 @@
 FactoryGirl.define do
   factory :comment do
     association :author, factory: :user
+    association :commentable, factory: :valid_poll
 
     sequence(:body) { |n| "comment number #{n} " }
 
@@ -11,8 +12,8 @@ FactoryGirl.define do
       end
     end
 
-    trait :belongs_to_poll do
-      association :commentable, factory: :valid_poll
+    trait :belongs_to_comment do
+      association :commentable, factory: :comment
     end
   end
 end

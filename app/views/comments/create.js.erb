@@ -1,6 +1,6 @@
 <% if @created %>
   $('#<%= dom_id(@comment.commentable, :comments_for) %>').append('<%= escape_javascript render @comment %>');
-  $('#<%= dom_id(@comment.commentable, :reply_form_for) %>').html("<%= escape_javascript link_to 'Reply', new_comment_path( comment_id: @comment ), remote: true %>");
+  $('#<%= dom_id(@comment.commentable, :reply_form_for) %>').html("<%= escape_javascript link_to 'Reply', new_comment_path( comment_id: @comment.commentable ), remote: true %>");
   $('#comment_body').val('');
 <% else %>
   $('#<%= dom_id(@comment.commentable, :reply_form_for) %>').html('<%= escape_javascript render "comments/form", comment: @comment %>');

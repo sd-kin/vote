@@ -8,13 +8,13 @@ RSpec.describe RatingsController, type: :controller do
 
   context 'POST#increase' do
     it 'increase rating' do
-      expect { xhr :post, :increase, id: user.rating }.to change { user.reload.rating.value }.by(1)
+      expect { post :increase, xhr: true, params: { id: user.rating } }.to change { user.reload.rating.value }.by(1)
     end
   end
 
   context 'POST#decrease' do
     it 'decrease rating' do
-      expect { xhr :post, :decrease, id: user.rating }.to change { user.reload.rating.value }.by(-1)
+      expect { post :decrease, xhr: true, params: { id: user.rating } }.to change { user.reload.rating.value }.by(-1)
     end
   end
 end

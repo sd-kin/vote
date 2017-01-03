@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
   has_many :polls, dependent: :destroy
   has_many :user_votes
   has_many :voted_polls, through: :user_votes, source: :poll
-  has_many :comments
+  has_many :notifications
+  has_many :comments, dependent: :restrict_with_error
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }

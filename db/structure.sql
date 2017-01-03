@@ -29,6 +29,18 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -39,7 +51,8 @@ CREATE TABLE comments (
     commentable_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id integer
+    user_id integer,
+    ancestry character varying
 );
 
 
@@ -138,7 +151,8 @@ CREATE TABLE options (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    poll_id integer
+    poll_id integer,
+    row_order integer
 );
 
 
@@ -408,6 +422,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
 -- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -477,6 +499,13 @@ ALTER TABLE ONLY user_votes
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_comments_on_ancestry; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_ancestry ON comments USING btree (ancestry);
 
 
 --
@@ -586,59 +615,6 @@ ALTER TABLE ONLY notifications
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20151225233435');
+INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160603184925'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234');
 
-INSERT INTO schema_migrations (version) VALUES ('20151227204113');
-
-INSERT INTO schema_migrations (version) VALUES ('20151227213610');
-
-INSERT INTO schema_migrations (version) VALUES ('20160531140023');
-
-INSERT INTO schema_migrations (version) VALUES ('20160605115357');
-
-INSERT INTO schema_migrations (version) VALUES ('20160605155750');
-
-INSERT INTO schema_migrations (version) VALUES ('20160709145804');
-
-INSERT INTO schema_migrations (version) VALUES ('20160714233816');
-
-INSERT INTO schema_migrations (version) VALUES ('20160715025202');
-
-INSERT INTO schema_migrations (version) VALUES ('20160726110000');
-
-INSERT INTO schema_migrations (version) VALUES ('20160801154134');
-
-INSERT INTO schema_migrations (version) VALUES ('20160805205610');
-
-INSERT INTO schema_migrations (version) VALUES ('20160818012805');
-
-INSERT INTO schema_migrations (version) VALUES ('20160818061937');
-
-INSERT INTO schema_migrations (version) VALUES ('20160918090302');
-
-INSERT INTO schema_migrations (version) VALUES ('20160921101715');
-
-INSERT INTO schema_migrations (version) VALUES ('20160921101732');
-
-INSERT INTO schema_migrations (version) VALUES ('20160930151136');
-
-INSERT INTO schema_migrations (version) VALUES ('20160930163031');
-
-INSERT INTO schema_migrations (version) VALUES ('20161004235133');
-
-INSERT INTO schema_migrations (version) VALUES ('20161007135238');
-
-INSERT INTO schema_migrations (version) VALUES ('20161007140039');
-
-INSERT INTO schema_migrations (version) VALUES ('20161007140053');
-
-INSERT INTO schema_migrations (version) VALUES ('20161009120043');
-
-INSERT INTO schema_migrations (version) VALUES ('20161010155351');
-
-INSERT INTO schema_migrations (version) VALUES ('20161016123710');
-
-INSERT INTO schema_migrations (version) VALUES ('20161019085252');
-
-INSERT INTO schema_migrations (version) VALUES ('20161019113747');
 

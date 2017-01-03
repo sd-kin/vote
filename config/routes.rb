@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
+  get 'notifications/index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -72,6 +74,10 @@ Rails.application.routes.draw do
     resources :options
   end
 
+  resources :users do
+    resources :notifications, only: [:index]
+  end
+
   resources :ratings, only: [:increase, :decrease] do
     member do
       post 'increase'
@@ -80,12 +86,12 @@ Rails.application.routes.draw do
   end
 
   resources :comments
-
-  resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :update, :edit]
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
+
+  mount ActionCable.server => '/cable'
 end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-ruby '2.3.0'
+ruby '2.3.1'
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.0'
+gem 'rails', '~> 5.0.0.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -33,6 +33,13 @@ gem 'oj'
 gem 'jquery-ui-rails'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+# Use Puma as the app server
+gem 'puma'
+# use redis for pub/sub queue on action cable
+gem 'redis'
+gem 'em-hiredis'
+# use ancestry for maintaining tree structure of comments
+gem 'ancestry'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -53,7 +60,7 @@ group :development, :test do
   gem 'guard-rubocop'
   # use capypara for acceptanse tests
   gem 'capybara'
-  # use capybara-webkit for test ajax requests
+  # use poltergist for test ajax requests
   gem 'poltergeist'
   # use haml preprocessor for accurate views
   gem 'haml'
@@ -71,6 +78,7 @@ group :test do
   gem 'factory_girl_rails', :require => false
   gem 'database_cleaner'
   gem 'rspec_junit_formatter', '0.2.2'
+  gem 'rails-controller-testing'
 end
 
 group :production do

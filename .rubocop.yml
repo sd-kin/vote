@@ -18,6 +18,15 @@ Lint/UselessAssignment:
 Metrics/LineLength:
   Enabled: false
 
+Metrics/MethodLength:
+  Max: 12
+
+Metrics/AbcSize:
+  Max: 17
+
+Metrics/BlockLength:
+  Max: 35
+
 Style/NestedParenthesizedCalls:
   Enabled: false
 
@@ -33,12 +42,6 @@ Style/Documentation:
 Lint/UselessAccessModifier:
   Exclude:
     - 'app/models/concerns/status_machine.rb'
-
-Metrics/AbcSize:
-  Max: 17
-
-Metrics/BlockLength:
-  Max: 35
 
 Style/BlockComments:
   Exclude:
@@ -62,4 +65,10 @@ Lint/AmbiguousOperator:
   Exclude:
     - 'app/models/concerns/status_machine.rb'
 
+Lint/AssignmentInCondition:
+  Exclude:
+    - 'app/channels/application_cable/connection.rb'
 
+Style/EmptyMethod:
+  Exclude:
+    - 'app/controllers/password_resets_controller.rb'

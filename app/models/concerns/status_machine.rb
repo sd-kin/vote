@@ -53,14 +53,16 @@ module StatusMachine
     end
 
     def define_status_callbacks_methods # add class methods for setting callback.
-      %w( before_ after_ around_ ).each do |prefix|
+      %w(before_ after_ around_).each do |prefix|
         define_singleton_method "#{prefix}change_status" do |method|
           set_callback :change_status, prefix.chop.to_sym, method
         end
 
         status_events.each do |event|
-          define_singleton_method "#{prefix}#{event}" do |method| # TODO: accept block as callback parameter
-            set_callback event.to_sym, prefix.chop.to_sym, method
+          define_singleton_method "#{prefix}#{event}" do |*methods| # TODO: accept block as callback parameter
+            methods.each do |method|
+              set_callback event.to_sym, prefix.chop.to_sym, method
+            end
           end
         end
       end

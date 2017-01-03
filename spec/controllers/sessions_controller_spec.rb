@@ -12,7 +12,7 @@ RSpec.describe SessionsController, type: :controller do
 
   context 'POST#create' do
     context 'when input correct' do
-      before(:each) { post :create, session: { email: user.email, password: user.password } }
+      before(:each) { post :create, params: { session: { email: user.email, password: user.password } } }
 
       it 'should redirect to ready polls page' do
         is_expected.to redirect_to ready_polls_path
@@ -24,7 +24,7 @@ RSpec.describe SessionsController, type: :controller do
     end
 
     context 'when input incorrect' do
-      before(:each) { post :create, session: { email: 'nonexistent', password: 'nevermind' } }
+      before(:each) { post :create, params: { session: { email: 'nonexistent', password: 'never mind' } } }
 
       it 'should render template "new"' do
         is_expected.to render_template :new
@@ -38,7 +38,7 @@ RSpec.describe SessionsController, type: :controller do
 
   context 'DELETE#desteoy' do
     subject { delete :destroy }
-    before(:each) { post :create, session: { email: user.email, password: user.password } }
+    before(:each) { post :create, params: { session: { email: user.email, password: user.password } } }
 
     it 'should redirect to root path' do
       is_expected.to redirect_to(root_path)

@@ -10,16 +10,19 @@ class Poll < ActiveRecord::Base
                                delete: { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
 
   has_one    :rating, as: :rateable, dependent: :destroy
+  has_many   :notifications, as: :subject, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
   has_many   :upvoters, through: :rating, source: :upvoters     # users, who increase poll rating
   has_many   :options, dependent: :destroy
   has_many   :user_votes
   has_many   :voters, through: :user_votes, source: :user       # users voted in this poll
-  has_many   :comments, as: :commentable
+  has_many   :comments, as: :commentable, dependent: :destroy
   belongs_to :user
 
   serialize :vote_results, Array
   serialize :current_state, Array
+
+  alias_attribute :author, :user
 
   validates :title, presence: true
   validate  :max_voters_should_be_number
@@ -31,7 +34,8 @@ class Poll < ActiveRecord::Base
 
   # callbacks on status
   before_ready :check_options_presist
-  before_draft :drop_votation_progress
+  before_draft -> { notificate_voters_about :draft }, :drop_votation_progress
+  after_finish :notificate_author, -> { notificate_voters_about :finish }
 
   def vote!(user, preferences)
     if ready?
@@ -73,7 +77,7 @@ class Poll < ActiveRecord::Base
   end
 
   def close_if_expire
-    finish! if expire_at&. < DateTime.current
+    finish! if (expire_at&. < DateTime.current) && able_to_finish?
   end
 
   def drop_votation_progress
@@ -93,5 +97,22 @@ class Poll < ActiveRecord::Base
 
   def check_options_presist
     errors.add(:base, 'Status can\'t be changed. Add more options.') if options.empty?
+  end
+
+  def notificate_author
+    user.notifications.create message: 'Your poll was finished.', subject: self
+  end
+
+  def notificate_voters_about(event)
+    message = case event
+              when :draft
+                'Votation progress in poll, your voted for, was cleared.'
+              when :finish
+                'Poll, your voted for, was closed.'
+              end
+
+    voters.each do |user|
+      user.notifications.create message: message, subject: self
+    end
   end
 end
