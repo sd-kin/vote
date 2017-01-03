@@ -90,4 +90,6 @@ Rails.application.configure do
 
   # add heroku app address to alowed hosts
   config.action_cable.allowed_request_origins = ['https://vote-kompot.herokuapp.com']
+  # set cable server's URI
+  config.web_socket_server_url = 'wss://vote-kompot.herokuapp.com/cable'
 end
