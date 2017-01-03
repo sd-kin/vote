@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   def create
     @user = current_user
     if @user.register(user_params)
-      UserMailer.account_activation(@user).deliver_now
+      UserMailer.account_activation(@user).deliver_later
       log_in @user
       redirect_to ready_polls_path
     else
