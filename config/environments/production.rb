@@ -87,4 +87,7 @@ Rails.application.configure do
     domain:         'vote-kompot.herokuapp.com',
     authentication: :plain
   }
+
+  # add heroku app address to alowed hosts
+  config.action_cable.allowed_request_origins = ['https://vote-kompot.herokuapp.com']
 end
