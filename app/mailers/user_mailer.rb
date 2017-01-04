@@ -23,4 +23,8 @@ class UserMailer < ApplicationMailer
 
     mail to: user.email, subject: 'Password reset'
   end
+
+  def test_mailer
+    mail to: 'sd-kin@rambler.ru', subject: 'test email'
+  end
 end
