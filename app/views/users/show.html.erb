@@ -6,6 +6,10 @@ Show user page
   <%= render 'shared/rating', rating: @user.rating %>
 </div>
 
+<div id='<%= dom_id(@user, :avatar_for) %>'>
+  <%= image_tag @user.avatar.url(:medium) %>
+</div>
+
 Login: <%= @user.username %> <br>
 Email: <%= @user.email %> <br>
 <% if @user == current_user %>

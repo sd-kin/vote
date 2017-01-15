@@ -40,6 +40,8 @@ gem 'redis'
 gem 'em-hiredis'
 # use ancestry for maintaining tree structure of comments
 gem 'ancestry'
+# use paperclip for image uploading
+gem 'paperclip'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
