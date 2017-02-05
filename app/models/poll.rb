@@ -9,9 +9,6 @@ class Poll < ActiveRecord::Base
                                finish: { 'ready' => 'finished' },
                                delete: { 'draft' => 'deleted', 'ready' => 'deleted', 'finished' => 'deleted' }
 
-  has_attached_file                 :image, styles: { medium: '300x300>' }, default_url: ''
-  validates_attachment_content_type :image, content_type: %r{\Aimage\/.*\z}
-
   has_one    :rating, as: :rateable, dependent: :destroy
   has_many   :notifications, as: :subject, dependent: :destroy
   has_many   :downvoters, through: :rating, source: :downvoters # users, who decrease poll rating
@@ -20,6 +17,7 @@ class Poll < ActiveRecord::Base
   has_many   :user_votes
   has_many   :voters, through: :user_votes, source: :user       # users voted in this poll
   has_many   :comments, as: :commentable, dependent: :destroy
+  has_many   :images, as: :imageable, dependent: :destroy
   belongs_to :user
 
   serialize :vote_results, Array

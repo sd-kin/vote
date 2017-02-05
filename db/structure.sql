@@ -109,6 +109,42 @@ ALTER SEQUENCE downvotes_id_seq OWNED BY downvotes.id;
 
 
 --
+-- Name: images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE images (
+    id integer NOT NULL,
+    imageable_type character varying,
+    imageable_id integer,
+    image_file_file_name character varying,
+    image_file_content_type character varying,
+    image_file_file_size integer,
+    image_file_updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE images_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE images_id_seq OWNED BY images.id;
+
+
+--
 -- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -339,11 +375,7 @@ CREATE TABLE users (
     activated_at timestamp without time zone,
     reset_digest character varying,
     reset_sent_at timestamp without time zone,
-    anonimous boolean DEFAULT false,
-    avatar_file_name character varying,
-    avatar_content_type character varying,
-    avatar_file_size integer,
-    avatar_updated_at timestamp without time zone
+    anonimous boolean DEFAULT false
 );
 
 
@@ -378,6 +410,13 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 --
 
 ALTER TABLE ONLY downvotes ALTER COLUMN id SET DEFAULT nextval('downvotes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
 --
@@ -451,6 +490,14 @@ ALTER TABLE ONLY comments
 
 ALTER TABLE ONLY downvotes
     ADD CONSTRAINT downvotes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY images
+    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
 
 
 --
@@ -535,6 +582,13 @@ CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_downvotes_on_rater_id_and_rating_id ON downvotes USING btree (rater_id, rating_id);
+
+
+--
+-- Name: index_images_on_imageable_type_and_imageable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_images_on_imageable_type_and_imageable_id ON images USING btree (imageable_type, imageable_id);
 
 
 --
@@ -623,6 +677,6 @@ ALTER TABLE ONLY notifications
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234'), ('20170115123029'), ('20170205153443');
+INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160919151155'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234'), ('20170115123029'), ('20170205153443'), ('20170205182421'), ('20170205182644');
 
 
