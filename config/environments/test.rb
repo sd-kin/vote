@@ -40,6 +40,12 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  # paperclip file store location
+  Paperclip::Attachment.default_options[:path] = "#{Rails.root}/spec/test_files/:class/:id_partition/:style.:extension"
+
   host = 'localhost:3000'
   config.action_mailer.default_url_options = { host: host, protocol: 'https' }
+
+  # serve static files in test env to not having paperclip error about missing path
+  config.public_file_server.enabled = true
 end

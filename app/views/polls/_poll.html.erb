@@ -23,6 +23,10 @@
   <div id='<%= dom_id(poll.rating) %>'>
     <%= render 'shared/rating', rating: poll.rating %>
   </div>
+  
+  <div id='<%= dom_id(poll, :image_for) %>'>
+    <%= image_tag poll.image.url(:medium) %>
+  </div>
 
   <ul>
     <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">

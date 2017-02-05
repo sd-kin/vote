@@ -42,6 +42,8 @@ gem 'em-hiredis'
 gem 'ancestry'
 # use paperclip for image uploading
 gem 'paperclip'
+# for ajax uploads
+gem 'remotipart'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
