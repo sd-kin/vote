@@ -80,7 +80,7 @@ class PollsController < ApplicationController
   private
 
   def poll_params
-    params.require(:poll).permit(:title, :max_voters, :expire_at, :image)
+    params.require(:poll).permit(:title, :max_voters, :expire_at, images: [])
   end
 
   def actualize_voted_polls_cookie

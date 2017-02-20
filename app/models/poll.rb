@@ -62,6 +62,11 @@ class Poll < ActiveRecord::Base
     self[:max_voters] || Float::INFINITY
   end
 
+  def images=(images_array)
+    images.destroy_all
+    images_array.each {|image| images.new(image_file: image)}
+  end
+
   private
 
   def calculate_ranks

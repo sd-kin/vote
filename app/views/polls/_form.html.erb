@@ -5,7 +5,8 @@
       <%= f.number_field :max_voters, min: 1 %> </p>
   <p> <%= f.label        'Expiration date:' %>
       <%= f.date_select  :expire_at %> </p>
-  <p> <%= f.file_field   :image %> </p>
+  <p> <%= f.file_field   :images, multiple: true %> </p>
+  <p> <%= f.collection_check_boxes :images, @poll.images.ids.zip(@poll.images.map(&:url)).map{|x| [x[0], image_tag(x[1])]} , :first, :last %> </p>
   <p> <%= f.submit       'Ok' %>
 <% end %>
 

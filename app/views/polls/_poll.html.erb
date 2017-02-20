@@ -5,7 +5,7 @@
   </div>
 
   Status: <%= poll.status %>
-  
+
   <div id = "<%= dom_id(poll, :title_for) %>">
     Title: <%= poll.title %>
   </div>
@@ -23,9 +23,11 @@
   <div id='<%= dom_id(poll.rating) %>'>
     <%= render 'shared/rating', rating: poll.rating %>
   </div>
-  
-  <div id='<%= dom_id(poll, :image_for) %>'>
-    <%= image_tag poll.image.url(:medium) %>
+
+  <div id='<%= dom_id(poll, :images_for) %>'>
+    <% poll.images.each do |image| %>
+      <%= image_tag image.url(:medium) %>
+    <% end %>
   </div>
 
   <ul>
@@ -33,4 +35,4 @@
       <%= render poll.options %>
     </div>
   </ul>
-</div>  
+</div>

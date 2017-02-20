@@ -48,8 +48,8 @@ CREATE TABLE ar_internal_metadata (
 CREATE TABLE comments (
     id integer NOT NULL,
     body text,
-    commentable_id integer,
     commentable_type character varying,
+    commentable_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id integer,
@@ -151,8 +151,8 @@ ALTER SEQUENCE images_id_seq OWNED BY images.id;
 CREATE TABLE notifications (
     id integer NOT NULL,
     user_id integer,
-    subject_id integer,
     subject_type character varying,
+    subject_id integer,
     message character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -259,8 +259,8 @@ ALTER SEQUENCE polls_id_seq OWNED BY polls.id;
 CREATE TABLE ratings (
     id integer NOT NULL,
     value integer DEFAULT 0,
-    rateable_id integer,
     rateable_type character varying,
+    rateable_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -375,7 +375,11 @@ CREATE TABLE users (
     activated_at timestamp without time zone,
     reset_digest character varying,
     reset_sent_at timestamp without time zone,
-    anonimous boolean DEFAULT false
+    anonimous boolean DEFAULT false,
+    avatar_file_name character varying,
+    avatar_content_type character varying,
+    avatar_file_size integer,
+    avatar_updated_at timestamp without time zone
 );
 
 
@@ -533,6 +537,14 @@ ALTER TABLE ONLY ratings
 
 
 --
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
 -- Name: upvotes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -641,13 +653,6 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
 -- Name: fk_rails_03de2dc08c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -677,6 +682,6 @@ ALTER TABLE ONLY notifications
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160919151155'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234'), ('20170115123029'), ('20170205153443'), ('20170205182421'), ('20170205182644');
+INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234'), ('20170115123029'), ('20170205182421');
 
 
