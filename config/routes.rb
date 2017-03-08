@@ -68,7 +68,6 @@ Rails.application.routes.draw do
     member do
       post   'choose'
       get    'result'
-      delete 'delete_image'
     end
 
     get 'ready', on: :collection
