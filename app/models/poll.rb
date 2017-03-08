@@ -63,8 +63,7 @@ class Poll < ActiveRecord::Base
   end
 
   def images=(images_array)
-    images.destroy_all
-    images_array.each {|image| images.new(image_file: image)}
+    images_array.each { |image| images.new(image_file: image) }
   end
 
   private

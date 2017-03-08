@@ -66,8 +66,9 @@ Rails.application.routes.draw do
 
   resources :polls, concerns: :statusable do
     member do
-      post 'choose'
-      get  'result'
+      post   'choose'
+      get    'result'
+      delete 'delete_image'
     end
 
     get 'ready', on: :collection

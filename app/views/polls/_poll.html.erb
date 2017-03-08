@@ -25,9 +25,7 @@
   </div>
 
   <div id='<%= dom_id(poll, :images_for) %>'>
-    <% poll.images.each do |image| %>
-      <%= image_tag image.url(:medium) %>
-    <% end %>
+    <%= render poll.images %>
   </div>
 
   <ul>

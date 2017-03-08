@@ -6,7 +6,14 @@
   <p> <%= f.label        'Expiration date:' %>
       <%= f.date_select  :expire_at %> </p>
   <p> <%= f.file_field   :images, multiple: true %> </p>
-  <p> <%= f.collection_check_boxes :images, @poll.images.ids.zip(@poll.images.map(&:url)).map{|x| [x[0], image_tag(x[1])]} , :first, :last %> </p>
+
+  <p> <% @poll.images.each do |image| %>
+        <div id='<%= dom_id(image) %>'>
+          <p> <%= image_tag image.url(:medium) %> </p>
+          <p> <%= link_to 'delete image', delete_image_poll_path(image_id: image.id), method: :delete, remote: true %> </p>
+        </div>
+      <% end %> </p>
+
   <p> <%= f.submit       'Ok' %>
 <% end %>
 
