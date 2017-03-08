@@ -1,0 +1,6 @@
+<% imageable.images.each do |image| %>
+  <div id='<%= dom_id(image) %>'>
+    <p> <%= image_tag image.url(:medium) %> </p>
+    <p> <%= link_to 'delete image', image_path(id: image.id), method: :delete, remote: true %> </p>
+  </div>
+<% end %>

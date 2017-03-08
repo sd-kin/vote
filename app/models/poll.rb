@@ -2,6 +2,7 @@
 class Poll < ActiveRecord::Base
   require 'vote-schulze'
   include StatusMachine
+  include Imageable
 
   # Source in StatusMachine concern
   availible_status_transitions draft:  { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
@@ -17,7 +18,6 @@ class Poll < ActiveRecord::Base
   has_many   :user_votes
   has_many   :voters, through: :user_votes, source: :user       # users voted in this poll
   has_many   :comments, as: :commentable, dependent: :destroy
-  has_many   :images, as: :imageable, dependent: :destroy
   belongs_to :user
 
   serialize :vote_results, Array
@@ -60,10 +60,6 @@ class Poll < ActiveRecord::Base
 
   def max_voters
     self[:max_voters] || Float::INFINITY
-  end
-
-  def images=(images_array)
-    images_array.each { |image| images.new(image_file: image) }
   end
 
   private

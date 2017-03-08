@@ -87,11 +87,12 @@ Rails.application.routes.draw do
   end
 
   resources :comments
+  resources :images,              only: [:destroy]
+  resources :password_resets,     only: [:new, :create, :update, :edit]
   resources :account_activations, only: [:edit]
-  resources :password_resets, only: [:new, :create, :update, :edit]
 
-  get 'login', to: 'sessions#new'
-  post 'login', to: 'sessions#create'
+  get    'login',  to: 'sessions#new'
+  post   'login',  to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
 
   mount ActionCable.server => '/cable'

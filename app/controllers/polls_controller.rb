@@ -92,11 +92,6 @@ class PollsController < ApplicationController
     render 'change_status'
   end
 
-  def delete_image
-    @image   = Image.find(params[:image_id])
-    @success = execute_if_accessible(@image, redirect: false, &:destroy)
-  end
-
   private
 
   def poll_params

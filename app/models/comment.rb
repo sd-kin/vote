@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Comment < ActiveRecord::Base
+  include Imageable
+
   has_ancestry
 
   validates :body, presence: { message: 'of comment can not be empty' }

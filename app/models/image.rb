@@ -8,6 +8,6 @@ class Image < ApplicationRecord
   delegate :url, to: :image_file
 
   def accessible_for?(user)
-    imageable.user.id == user.id
+    imageable.user_id == user.id
   end
 end

@@ -2,11 +2,16 @@
 </div>
 
 <%= form_for comment, remote: true do |f| %>
-  <%= f.label 'Comment:' %> <br>
-  <%= f.text_area :body %> <br>
-  <%= f.hidden_field :commentable_id, value: comment.commentable.id %>
-  <%= f.hidden_field :commentable_type, value: comment.commentable.class %>
-  <%= f.submit %>
+  <p> <%= f.label 'Comment:' %> </p>
+  <p> <%= f.text_area :body %> </p>
+  <p> <%= f.file_field   :images, multiple: true %> </p>
+
+  <p> <%= render 'shared/images_form', imageable: comment %> </p>
+
+      <%= f.hidden_field :commentable_id,   value: comment.commentable.id %>
+      <%= f.hidden_field :commentable_type, value: comment.commentable.class %>
+
+      <%= f.submit %>
 <% end %>
 
 <%= button_to 'Cancel', comment_path(comment), method: :get, remote: true unless comment.new_record? %>

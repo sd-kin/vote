@@ -7,12 +7,7 @@
       <%= f.date_select  :expire_at %> </p>
   <p> <%= f.file_field   :images, multiple: true %> </p>
 
-  <p> <% @poll.images.each do |image| %>
-        <div id='<%= dom_id(image) %>'>
-          <p> <%= image_tag image.url(:medium) %> </p>
-          <p> <%= link_to 'delete image', delete_image_poll_path(image_id: image.id), method: :delete, remote: true %> </p>
-        </div>
-      <% end %> </p>
+  <p> <%= render 'shared/images_form', imageable: @poll %> </p>
 
   <p> <%= f.submit       'Ok' %>
 <% end %>
