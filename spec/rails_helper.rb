@@ -83,7 +83,7 @@ RSpec.configure do |config|
 
   # remove paperclip files after suite
   config.after(:suite) do
-    FileUtils.rm_rf(Dir["#{Rails.root}/spec/test_files/"])
+    FileUtils.rm_rf(Dir["#{Rails.root}/public/test_files/"])
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests

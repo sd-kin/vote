@@ -14,7 +14,7 @@ Rails.application.configure do
   config.eager_load = false
 
   # Configure static file server for tests.
-  config.public_file_server.enabled = false
+  config.public_file_server.enabled = true
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -41,11 +41,9 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # paperclip file store location
-  Paperclip::Attachment.default_options[:path] = "#{Rails.root}/spec/test_files/:class/:id_partition/:style.:extension"
+  Paperclip::Attachment.default_options[:path] = ':rails_root/public:url'
+  Paperclip::Attachment.default_options[:url]  = '/test_files/:class/:id_partition/:style/:filename'
 
   host = 'localhost:3000'
   config.action_mailer.default_url_options = { host: host, protocol: 'https' }
-
-  # serve static files in test env to not having paperclip error about missing path
-  config.public_file_server.enabled = true
 end
