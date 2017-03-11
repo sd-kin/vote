@@ -80,13 +80,13 @@ Rails.application.configure do
   # Use Mailgun add-on on heroku for mailing.
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { host: 'vote-kompot.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'vote-kompote.cu.cc' }
   config.action_mailer.smtp_settings = {
     port:           ENV['MAILGUN_SMTP_PORT'],
     addres:         ENV['MAILGUN_SMTP_SERVER'],
     user_name:      ENV['MAILGUN_SMTP_LOGIN'],
     password:       ENV['MAILGUN_SMTP_PASSWORD'],
-    domain:         'vote-kompot.herokuapp.com',
+    domain:         'vote-kompote.cu.cc',
     authentication: :plain
   }
 
@@ -94,4 +94,14 @@ Rails.application.configure do
   config.action_cable.allowed_request_origins = ['https://vote-kompot.herokuapp.com']
   # set cable server's URI
   config.web_socket_server_url = 'wss://vote-kompot.herokuapp.com/cable'
+  # configure paperclip to use google cloud storage
+   config.paperclip_defaults = {
+      storage: :fog,
+      fog_credentials: {
+        provider: "Google",
+        google_storage_access_key_id: ENV['GOOGLE_STORAGE_ACCESS_KEY_ID'],
+        google_storage_secret_access_key: ENV['GOOGLE_STORAGE_SECRET_ACCESS_KEY']
+      },
+      fog_directory: ENV["GOOGLE_STORAGE_BUCKET_NAME"]
+    }
 end

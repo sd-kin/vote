@@ -88,6 +88,8 @@ end
 group :production do
   # use 12factor for easier running rails app
   gem 'rails_12factor'
+  # for interacting with google cloud storage
+  gem 'fog'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
