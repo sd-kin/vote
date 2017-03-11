@@ -2,6 +2,9 @@
 class User < ActiveRecord::Base
   has_secure_password
 
+  has_attached_file :avatar, styles: { medium: '300x300>' }, default_url: '/images/no-profile.jpg'
+  validates_attachment_content_type :avatar, content_type: %r{\Aimage\/.*\z}
+
   has_one  :rating, as: :rateable, dependent: :destroy
   has_many :downvotes, foreign_key: 'rater_id'
   has_many :upvotes, foreign_key: 'rater_id'

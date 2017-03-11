@@ -15,5 +15,10 @@
 /log/*
 !/log/.keep
 /tmp
+
 # Ignore vim swap files
 *.swp
+*.swo
+
+# Ignore pub folder
+/public/*

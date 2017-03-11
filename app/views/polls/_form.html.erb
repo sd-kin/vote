@@ -1,11 +1,15 @@
-<%= form_for @poll, remote: true do |f| %>
-  <%= f.label 'Title:'%>
-  <%= f.text_field :title %> <br>
-  <%= f.label 'Maximum voters(empty for infinity):'%>
-  <%= f.number_field :max_voters, min: 1 %> <br>
-  <%= f.label 'Expiration date:' %>
-  <%= f.date_select :expire_at %> <br>
-  <%= f.submit 'Ok' %>
+<%= form_for @poll, html: { :multipart => true }, remote: true do |f| %>
+  <p> <%= f.label        'Title:'%> </p>
+  <p> <%= f.text_field   :title %> </p>
+  <p> <%= f.label        'Maximum voters(empty for infinity):'%>
+      <%= f.number_field :max_voters, min: 1 %> </p>
+  <p> <%= f.label        'Expiration date:' %>
+      <%= f.date_select  :expire_at %> </p>
+  <p> <%= f.file_field   :images, multiple: true %> </p>
+
+  <p> <%= render 'shared/images_form', imageable: @poll %> </p>
+
+  <p> <%= f.submit       'Ok' %>
 <% end %>
 
 <%= button_to 'Cancel', {action: :edit}, method: :get unless @poll.new_record? %>

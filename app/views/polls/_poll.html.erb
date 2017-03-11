@@ -5,7 +5,7 @@
   </div>
 
   Status: <%= poll.status %>
-  
+
   <div id = "<%= dom_id(poll, :title_for) %>">
     Title: <%= poll.title %>
   </div>
@@ -24,9 +24,13 @@
     <%= render 'shared/rating', rating: poll.rating %>
   </div>
 
+  <div id='<%= dom_id(poll, :images_for) %>'>
+    <%= render poll.images %>
+  </div>
+
   <ul>
     <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable">
       <%= render poll.options %>
     </div>
   </ul>
-</div>  
+</div>

@@ -40,6 +40,10 @@ gem 'redis'
 gem 'em-hiredis'
 # use ancestry for maintaining tree structure of comments
 gem 'ancestry'
+# use paperclip for image uploading
+gem 'paperclip'
+# for ajax uploads
+gem 'remotipart'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -84,6 +88,8 @@ end
 group :production do
   # use 12factor for easier running rails app
   gem 'rails_12factor'
+  # for interacting with google cloud storage
+  gem 'fog'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

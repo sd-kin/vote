@@ -9,7 +9,9 @@
     </div>
 
     <div id='<%= dom_id(comment, :body )%>'style='display: inline-block'>
-      <%= comment.body %> <br>
+      <p> <%= comment.body %> </p>
+      <p> <%= render comment.images %> </p>
+
       <%= link_to comment.author.username, user_path(comment.author) %>
       commented <%= time_ago_in_words comment.created_at %> ago <br>
       <% if comment.accessible_for?( current_user )  %>

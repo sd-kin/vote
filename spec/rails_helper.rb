@@ -81,6 +81,11 @@ RSpec.configure do |config|
   end
   # end of copypaste
 
+  # remove paperclip files after suite
+  config.after(:suite) do
+    FileUtils.rm_rf(Dir["#{Rails.root}/public/test_files/"])
+  end
+
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.

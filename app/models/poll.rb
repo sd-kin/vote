@@ -2,6 +2,7 @@
 class Poll < ActiveRecord::Base
   require 'vote-schulze'
   include StatusMachine
+  include Imageable
 
   # Source in StatusMachine concern
   availible_status_transitions draft:  { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },

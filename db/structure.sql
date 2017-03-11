@@ -48,8 +48,8 @@ CREATE TABLE ar_internal_metadata (
 CREATE TABLE comments (
     id integer NOT NULL,
     body text,
-    commentable_id integer,
     commentable_type character varying,
+    commentable_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id integer,
@@ -109,14 +109,50 @@ ALTER SEQUENCE downvotes_id_seq OWNED BY downvotes.id;
 
 
 --
+-- Name: images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE images (
+    id integer NOT NULL,
+    imageable_type character varying,
+    imageable_id integer,
+    image_file_file_name character varying,
+    image_file_content_type character varying,
+    image_file_file_size integer,
+    image_file_updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE images_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE images_id_seq OWNED BY images.id;
+
+
+--
 -- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE notifications (
     id integer NOT NULL,
     user_id integer,
-    subject_id integer,
     subject_type character varying,
+    subject_id integer,
     message character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -189,7 +225,11 @@ CREATE TABLE polls (
     user_id integer,
     max_voters integer,
     expire_at timestamp without time zone,
-    status character varying DEFAULT 'draft'::character varying
+    status character varying DEFAULT 'draft'::character varying,
+    image_file_name character varying,
+    image_content_type character varying,
+    image_file_size integer,
+    image_updated_at timestamp without time zone
 );
 
 
@@ -219,8 +259,8 @@ ALTER SEQUENCE polls_id_seq OWNED BY polls.id;
 CREATE TABLE ratings (
     id integer NOT NULL,
     value integer DEFAULT 0,
-    rateable_id integer,
     rateable_type character varying,
+    rateable_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -335,7 +375,11 @@ CREATE TABLE users (
     activated_at timestamp without time zone,
     reset_digest character varying,
     reset_sent_at timestamp without time zone,
-    anonimous boolean DEFAULT false
+    anonimous boolean DEFAULT false,
+    avatar_file_name character varying,
+    avatar_content_type character varying,
+    avatar_file_size integer,
+    avatar_updated_at timestamp without time zone
 );
 
 
@@ -370,6 +414,13 @@ ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq':
 --
 
 ALTER TABLE ONLY downvotes ALTER COLUMN id SET DEFAULT nextval('downvotes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
 --
@@ -446,6 +497,14 @@ ALTER TABLE ONLY downvotes
 
 
 --
+-- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY images
+    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -475,6 +534,14 @@ ALTER TABLE ONLY polls
 
 ALTER TABLE ONLY ratings
     ADD CONSTRAINT ratings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -530,6 +597,13 @@ CREATE UNIQUE INDEX index_downvotes_on_rater_id_and_rating_id ON downvotes USING
 
 
 --
+-- Name: index_images_on_imageable_type_and_imageable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_images_on_imageable_type_and_imageable_id ON images USING btree (imageable_type, imageable_id);
+
+
+--
 -- Name: index_notifications_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -579,13 +653,6 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
-
-
---
 -- Name: fk_rails_03de2dc08c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -615,6 +682,6 @@ ALTER TABLE ONLY notifications
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234');
+INSERT INTO schema_migrations (version) VALUES ('20151225233435'), ('20151227204113'), ('20151227213610'), ('20160531140023'), ('20160605115357'), ('20160605155750'), ('20160709145804'), ('20160714233816'), ('20160715025202'), ('20160726110000'), ('20160801154134'), ('20160805205610'), ('20160818012805'), ('20160818061937'), ('20160918090302'), ('20160921101715'), ('20160921101732'), ('20160930151136'), ('20160930163031'), ('20161004235133'), ('20161007135238'), ('20161007140039'), ('20161007140053'), ('20161009120043'), ('20161010155351'), ('20161016123710'), ('20161019085252'), ('20161019113747'), ('20161205221234'), ('20170115123029'), ('20170205182421');
 
 
