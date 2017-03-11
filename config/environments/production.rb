@@ -95,13 +95,13 @@ Rails.application.configure do
   # set cable server's URI
   config.web_socket_server_url = 'wss://vote-kompot.herokuapp.com/cable'
   # configure paperclip to use google cloud storage
-   config.paperclip_defaults = {
-      storage: :fog,
-      fog_credentials: {
-        provider: "Google",
-        google_storage_access_key_id: ENV['GOOGLE_STORAGE_ACCESS_KEY_ID'],
-        google_storage_secret_access_key: ENV['GOOGLE_STORAGE_SECRET_ACCESS_KEY']
-      },
-      fog_directory: ENV["GOOGLE_STORAGE_BUCKET_NAME"]
-    }
+  config.paperclip_defaults = {
+    storage: :fog,
+    fog_credentials: {
+      provider: 'Google',
+      google_storage_access_key_id: ENV['GOOGLE_STORAGE_ACCESS_KEY_ID'],
+      google_storage_secret_access_key: ENV['GOOGLE_STORAGE_SECRET_ACCESS_KEY']
+    },
+    fog_directory: ENV['GOOGLE_STORAGE_BUCKET_NAME']
+  }
 end
