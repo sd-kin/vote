@@ -103,6 +103,7 @@ Rails.application.configure do
       google_storage_secret_access_key: ENV['GOOGLE_STORAGE_SECRET_ACCESS_KEY'],
       path_style: true
     },
-    fog_directory: ENV['GOOGLE_STORAGE_BUCKET_NAME']
+    fog_directory: ENV['GOOGLE_STORAGE_BUCKET_NAME'],
+    fog_host: 'http://:fog_directory'
   }
 end
