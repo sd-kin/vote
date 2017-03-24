@@ -2,7 +2,7 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  has_attached_file :avatar, styles: { medium: '300x300>' }
+  has_attached_file :avatar, styles: { medium: '300x300>' }, default_url: :missing_avatar_url
   validates_attachment_content_type :avatar, content_type: %r{\Aimage\/.*\z}
 
   has_one  :rating, as: :rateable, dependent: :destroy
@@ -78,5 +78,13 @@ class User < ActiveRecord::Base
   def create_activation_digest
     self.activation_token = User.new_token
     self.activation_digest = User.digest(activation_token)
+  end
+
+  def missing_avatar_url
+    if Rails.env.production?
+      Paperclip::Attachment.default_options[:fog_host] + '/users/avatars/missing.png'
+    else
+      '/system/users/avatars/missing.png'
+    end
   end
 end
