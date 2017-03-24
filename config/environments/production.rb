@@ -104,6 +104,6 @@ Rails.application.configure do
       path_style: true
     },
     fog_directory: ENV['GOOGLE_STORAGE_BUCKET_NAME'],
-    fog_host: 'http://:fog_directory'
+    fog_host: "http://#{ENV['GOOGLE_STORAGE_BUCKET_NAME']}"
   }
 end
