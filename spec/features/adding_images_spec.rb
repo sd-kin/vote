@@ -12,7 +12,7 @@ RSpec.feature 'Adding images', type: :feature do
     scenario '- avatar can be added and changed' do
       visit user_path(user)
 
-      expect(page).to have_xpath("//img[contains(@src, '/images/no-profile.jpg')]")
+      expect(page).to have_xpath("//img[contains(@src, '/medium/missing.png')]")
 
       click_link   'Edit'
       attach_file  'user_avatar', 'spec/fixtures/files/test_image.png'
