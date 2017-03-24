@@ -10,7 +10,7 @@ AllCops:
 
 Style/Encoding:
   Exclude:
-    - 'spec/features/poll_spec.rb'  
+    - 'spec/features/poll_spec.rb'
 
 Lint/UselessAssignment:
   Enabled: false
@@ -25,7 +25,10 @@ Metrics/AbcSize:
   Max: 17
 
 Metrics/BlockLength:
-  Max: 35
+  Max: 37
+  Exclude:
+    - 'config/**/*'
+    - 'spec/**/*'
 
 Style/NestedParenthesizedCalls:
   Enabled: false

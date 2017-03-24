@@ -91,7 +91,7 @@ Rails.application.configure do
   }
 
   # add heroku app address to alowed hosts
-  config.action_cable.allowed_request_origins = ['https://vote-kompot.herokuapp.com', "http://vote-kompote.club", "https://vote-kompote.club"]
+  config.action_cable.allowed_request_origins = ['https://vote-kompot.herokuapp.com', 'http://vote-kompote.club', 'https://vote-kompote.club']
 
   # set cable server's URI
   config.web_socket_server_url = 'wss://vote-kompot.herokuapp.com/cable'
@@ -100,12 +100,12 @@ Rails.application.configure do
   config.paperclip_defaults = {
     storage: :fog,
     fog_credentials: {
-      provider: 'Google',
-      google_storage_access_key_id: "GOOG3RVBJ574LTZCPBBQ",
-      google_storage_secret_access_key: "sL2922BiuFW2HsAy+93Uz9bjnmAn0yVy9a17rqZH",
+      provider:                         'Google',
+      google_storage_access_key_id:     'GOOG3RVBJ574LTZCPBBQ',
+      google_storage_secret_access_key: 'sL2922BiuFW2HsAy+93Uz9bjnmAn0yVy9a17rqZH',
       path_style: true
     },
-    fog_directory: "static.vote-kompote.club",
-    fog_host: "http://static.vote-kompote.club"
+    fog_directory:  'static.vote-kompote.club',
+    fog_host:       'http://static.vote-kompote.club'
   }
 end
