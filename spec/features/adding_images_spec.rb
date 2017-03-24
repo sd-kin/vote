@@ -12,7 +12,7 @@ RSpec.feature 'Adding images', type: :feature do
     scenario '- avatar can be added and changed' do
       visit user_path(user)
 
-      expect(page).to have_xpath("//img[contains(@src, '/medium/missing.png')]")
+      expect(page).to have_xpath("//img[contains(@src, '/avatars/missing.png')]")
 
       click_link   'Edit'
       attach_file  'user_avatar', 'spec/fixtures/files/test_image.png'
@@ -54,8 +54,8 @@ RSpec.feature 'Adding images', type: :feature do
       click_link('delete image', match: :first)
       click_button 'Ok'
 
-      expect(page).to_not have_xpath("//img[contains(@src, 'medium/test_image2.png')]")
-      expect(page).to     have_xpath("//img[contains(@src, 'medium/test_image.png')]")
+      expect(page).to have_no_xpath("//img[contains(@src, 'medium/test_image2.png')]")
+      expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
     end
   end
 
@@ -77,7 +77,7 @@ RSpec.feature 'Adding images', type: :feature do
         click_button('Update Comment')
       end
 
-      expect(page).to_not have_xpath("//img[contains(@src, 'medium/test_image.png')]")
+      expect(page).to have_no_xpath("//img[contains(@src, 'medium/test_image.png')]")
     end
   end
 end
