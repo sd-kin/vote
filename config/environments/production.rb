@@ -82,12 +82,13 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: 'vote-kompote.club' }
   config.action_mailer.smtp_settings = {
-    port:           ENV['SMTP_PORT'],
-    addres:         ENV['SMTP_SERVER'],
-    user_name:      ENV['SENDGRID_USERNAME'],
-    password:       ENV['SENDGRID_PASSWORD'],
-    domain:         'vote-kompote.club',
-    authentication: :plain
+    port:                 ENV['SMTP_PORT'],
+    address:               ENV['SMTP_SERVER'],
+    user_name:            ENV['SENDGRID_USERNAME'],
+    password:             ENV['SENDGRID_PASSWORD'],
+    domain:               'vote-kompote.club',
+    authentication:       :plain,
+    enable_starttls_auto: true
   }
 
   # add heroku app address to alowed hosts
