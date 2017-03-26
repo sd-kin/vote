@@ -1,4 +1,4 @@
 UserMailer#account_activation
 
 <%= @greeting %>, to activate account follow this link:
-<%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
+<%= edit_account_activation_url(@user.activation_digest, email: @user.email) %>
