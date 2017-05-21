@@ -1,15 +1,28 @@
 <header>
+  <nav class="navbar navbar-default" role="navigation">
+    <ul class="nav navbar-nav">
+      <li class="active"> <%= link_to 'Ready polls', ready_polls_path %> </li>
+    </ul>
 
-  <%= link_to 'Ready polls', ready_polls_path %>
+    <div class="nav navbar-nav pull-right">
+      <% if logged_in? %>
 
-  <% if logged_in? %>
-    Hello, <%= current_user.username %>!
-    <%= link_to 'notifications', user_notifications_path(current_user) %>
-    <%= link_to 'log out', logout_path, method: :delete %>
-  <% else %>
-    <%= link_to 'sign up', new_user_path %>
-    <%= link_to 'log in', login_path %>
-  <% end %>
+        <p class="navbar-text"> Hello, <%= current_user.username %>! </p>
+        <div class="btn-group">
+          <%= link_to 'notifications', user_notifications_path(current_user),
+            {class: "btn btn-default navbar-btn"} %>
+          <%= link_to 'log out', logout_path,
+            {class: "btn btn-default navbar-btn", method: :delete} %>
+        </div>
 
+      <% else %>
+
+        <div class="btn-group">
+          <%= link_to 'sign up', new_user_path, {class: "btn btn-default navbar-btn"} %>
+          <%= link_to 'log in',  login_path,    {class: "btn btn-default navbar-btn"} %>
+        </div>
+
+      <% end %>
+    </div>
+  </nav>
 </header>
-<hr>
