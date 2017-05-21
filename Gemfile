@@ -44,6 +44,10 @@ gem 'ancestry'
 gem 'paperclip'
 # for ajax uploads
 gem 'remotipart'
+# bootstrap
+gem 'bootstrap-sass', '~> 3.3.6'
+# css vendor prefixes
+gem 'autoprefixer-rails'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
