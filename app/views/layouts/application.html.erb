@@ -8,10 +8,12 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body>
-    <%= render 'layouts/header' %>
-    <%= render 'shared/flash_messages' %>
+  <body class="bgimage">
+    <div class="bgimage">
+      <%= render 'layouts/header' %>
+      <%= render 'shared/flash_messages' %>
 
-    <%= yield %>
+      <%= yield %>
+    </div>
   </body>
 </html>

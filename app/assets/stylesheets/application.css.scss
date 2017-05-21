@@ -1,2 +1,15 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+html body .bgimage {
+  background: url('background.png');
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+
+.btn-dark-gray {
+  color: white;
+  background: #a9a9a9;
+}
