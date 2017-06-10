@@ -14,22 +14,27 @@
     </div>
     <div class="row">
       <div class="col-md-6 form-group">
-        <%= f.label 'Password', { class: "control-label" } %>
+        <%= f.label 'Password:', { class: "control-label" } %>
         <%= f.password_field :password, { class: "form-control" } %>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6 form-group">
-        <%= f.label 'confirm password', { class: "control-label" } %>
+        <%= f.label 'confirm password:', { class: "control-label" } %>
         <%= f.password_field :password_confirmation, { class: "form-control" } %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 form-group form-inline">
-        <label class="btn btn-dark-gray btn-file">
+      <div class="col-md-6">
+        <%= f.label 'choose avatar:', { class: "control-label" } %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 form-group file-input">
+        <label class="form-control btn btn-dark-gray">
           Browse <%= f.file_field :avatar %>
         </label>
-        <%= f.label 'Choose file for avatar', { class: "form-control control-label file_label"} %>
+        <%= f.label 'no file choosen', { class: "form-control file-label"} %>
       </div>
     </div>
     <div class="row">
