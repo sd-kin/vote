@@ -101,7 +101,8 @@ RSpec.describe UsersController, type: :controller do
     end
 
     context 'when user not logged in' do
-      it { is_expected.to redirect_to login_path }
+      # edit anonimous user profile in order to registering it without loosing user activites
+      it { is_expected.to redirect_to edit_user_path(session[:user_id]) }
     end
   end
 
@@ -165,8 +166,8 @@ RSpec.describe UsersController, type: :controller do
 
     context 'when user not logged in' do
       let(:user_params) { FactoryGirl.attributes_for(:user) }
-
-      it { is_expected.to redirect_to login_path }
+      # unonimous user can update himself
+      it { is_expected.to be_success }
     end
   end
 
