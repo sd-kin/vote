@@ -1,28 +1,15 @@
 <header>
-  <nav class="navbar navbar-default" role="navigation">
-    <ul class="nav navbar-nav">
-      <li class="active"> <%= link_to 'Ready polls', ready_polls_path %> </li>
-    </ul>
-
-    <div class="nav navbar-nav pull-right">
-      <% if logged_in? %>
-
-        <p class="navbar-text"> Hello, <%= current_user.username %>! </p>
-        <div class="btn-group">
-          <%= link_to 'notifications', user_notifications_path(current_user),
-            {class: "btn btn-default navbar-btn"} %>
-          <%= link_to 'log out', logout_path,
-            {class: "btn btn-default navbar-btn", method: :delete} %>
-        </div>
-
-      <% else %>
-
-        <div class="btn-group">
-          <%= link_to 'sign up', new_user_path, {class: "btn btn-default navbar-btn"} %>
-          <%= link_to 'log in',  login_path,    {class: "btn btn-default navbar-btn"} %>
-        </div>
-
-      <% end %>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <%= link_to 'Vote', root_path, { class: "navbar-brand"} %>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"> <%= link_to 'Ready polls', ready_polls_path %> </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <%= render_account_links %>
+      </ul>
     </div>
   </nav>
 </header>

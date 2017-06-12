@@ -1,0 +1,14 @@
+<p class="navbar-text"> Hello, <%= link_to current_user.username, user_path(current_user) %>! </p>
+
+<li>
+  <%= link_to user_notifications_path(current_user) do %>
+    <span class="glyphicon glyphicon-envelope"></span>
+    Notifications
+  <% end %>
+</li>
+<li>
+  <%= link_to logout_path, {method: :delete} do %>
+    <span class="glyphicon glyphicon-log-out"></span>
+    Logout
+  <% end %>
+</li>
