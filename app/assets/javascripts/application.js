@@ -18,9 +18,10 @@
 //= require bootstrap-sprockets
 //= require_tree .
 
-document.addEventListener("DOMContentLoaded",function(){
+$(document).on('turbolinks:load', function() {
   const fileSelect = document.querySelector('.file-input input[type=file]');
-
+  if(!fileSelect) return;
+  
   fileSelect.addEventListener('change', showFileName);
 });
 

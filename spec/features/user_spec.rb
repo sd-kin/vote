@@ -13,49 +13,49 @@ feature 'when build a new user' do
   end
 end
 
-feature 'when create user' do
+feature 'when Sign up' do
   context 'and input incorrect' do
     scenario 'should render error without username' do
       visit new_user_path
       fill_in 'user_email', with: 'test@test'
-      click_button 'Create User'
+      click_button 'Sign up'
       expect(page).to have_content('Username can\'t be blank')
     end
 
     scenario 'should render error without email' do
       visit new_user_path
       fill_in 'user_username', with: 'test'
-      click_button 'Create User'
+      click_button 'Sign up'
       expect(page).to have_content('Email can\'t be blank')
     end
   end
 end
 
-feature 'when update user' do
+feature 'when Update' do
   given(:user) { FactoryGirl.create(:user) }
 
   before(:each) do
     user = FactoryGirl.create(:user)
     visit root_path
-    click_link 'log in'
+    click_link 'Login'
     fill_in 'session_email', with: user.email
     fill_in 'session_password', with: user.password
     check 'session_remember_me'
-    click_button 'Log in'
+    click_button 'Login'
   end
 
   context 'and input incorrect' do
     scenario 'should render error without username' do
       visit edit_user_path user.id
       fill_in 'user_username', with: ''
-      click_button 'Update User'
+      click_button 'Update'
       expect(page).to have_content('Username can\'t be blank')
     end
 
     scenario 'should render error without email' do
       visit edit_user_path user.id
       fill_in 'user_email', with: ''
-      click_button 'Update User'
+      click_button 'Update'
       expect(page).to have_content('Email can\'t be blank')
     end
   end

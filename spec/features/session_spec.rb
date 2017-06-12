@@ -7,79 +7,79 @@ feature 'when reopen browser' do
     before(:each) do
       user = FactoryGirl.create(:user)
       visit root_path
-      click_link 'log in'
+      click_link 'Login'
       fill_in 'session_email', with: user.email
       fill_in 'session_password', with: user.password
       check 'session_remember_me'
-      click_button 'Log in'
+      click_button 'Login'
     end
 
     scenario 'should stay logged in' do
-      expect(page).to have_link('log out')
+      expect(page).to have_link('Logout')
 
       expire_cookies
       visit root_path
 
-      expect(page).to have_content('log out')
+      expect(page).to have_content('Logout')
     end
 
     scenario 'should resist cookie hijacking' do
       saved_cookie = get_cookie('user_id').first
-      click_link 'log out'
+      click_link 'Logout'
       expire_cookies
       cookies << saved_cookie
       visit root_path
 
-      expect(page).to have_link('log in')
+      expect(page).to have_link('Login')
     end
   end
 end
 
-feature 'when open log in page' do
-  scenario 'should see login form' do
+feature 'when open Login page' do
+  scenario 'should see Logout form' do
     visit login_path
     expect(page).to have_field('session_email')
     expect(page).to have_field('session_password')
   end
 end
 
-feature 'when try to log in' do
+feature 'when try to Login' do
   context 'and input incorrect' do
     scenario 'should render error message' do
       visit login_path
       fill_in 'session_email', with: 'test@test.test'
       fill_in 'session_password', with: '1234567890'
-      click_button 'Log in'
+      click_button 'Login'
 
       expect(page).to have_css('#flash_messages')
     end
   end
 end
 
-feature 'after successful login' do
+feature 'after successful Logout' do
   before(:each) do
     user = FactoryGirl.create(:user)
     visit root_path
-    click_link 'log in'
+    click_link 'Login'
     fill_in 'session_email', with: user.email
     fill_in 'session_password', with: user.password
-    click_button 'Log in'
+    click_button 'Login'
   end
 
-  scenario 'link to login changes to link to logout' do
-    expect(page).to have_no_link('log in')
-    expect(page).to have_link('log out')
+  scenario 'link to Logout changes to link to logout' do
+    expect(page).to have_no_link('Login')
+    expect(page).to have_link('Logout')
   end
 
-  scenario 'link to logout changes to link to login' do
-    click_link 'log out'
-    expect(page).to have_link('log in')
-    expect(page).to have_no_link('log out')
+  scenario 'link to logout changes to link to Logout' do
+    click_link 'Logout'
+    expect(page).to have_link('Login')
+    expect(page).to have_no_link('Logout')
   end
 end
 
 feature 'remember me function' do
-  scenario 'should have check-box on login page' do
+  scenario 'should have check-box on Logout page' do
     visit login_path
 
     expect(page).to have_css('input[type=checkbox]#session_remember_me')
@@ -89,17 +89,17 @@ feature 'remember me function' do
     it 'should remember user' do
       user = FactoryGirl.create(:user)
       visit root_path
-      click_link 'log in'
+      click_link 'Login'
       fill_in 'session_email', with: user.email
       fill_in 'session_password', with: user.password
       check 'session_remember_me'
-      click_button 'Log in'
+      click_button 'Login'
 
       expire_cookies
 
       visit root_path
 
-      expect(page).to have_link('log out')
+      expect(page).to have_link('Logout')
     end
   end
 
@@ -107,16 +107,16 @@ feature 'remember me function' do
     it 'should not remember user' do
       user = FactoryGirl.create(:user)
       visit root_path
-      click_link 'log in'
+      click_link 'Login'
       fill_in 'session_email', with: user.email
       fill_in 'session_password', with: user.password
-      click_button 'Log in'
+      click_button 'Login'
 
       expire_cookies
 
       visit root_path
 
-      expect(page).to have_link('log in')
+      expect(page).to have_link('Login')
     end
   end
 end

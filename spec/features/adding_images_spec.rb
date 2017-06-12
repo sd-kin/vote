@@ -16,14 +16,14 @@ RSpec.feature 'Adding images', type: :feature do
 
       click_link   'Edit'
       attach_file  'user_avatar', 'spec/fixtures/files/test_image.png'
-      click_button 'Update User'
+      click_button 'Update'
 
       expect(page).to_not have_xpath("//img[contains(@src, '/images/no-profile.jpg')]")
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
 
       click_link   'Edit'
       attach_file  'user_avatar', 'spec/fixtures/files/test_image2.png'
-      click_button 'Update User'
+      click_button 'Update'
 
       expect(page).to_not have_xpath("//img[contains(@src, 'medium/test_image.png')]")
       expect(page).to     have_xpath("//img[contains(@src, 'medium/test_image2.png')]")

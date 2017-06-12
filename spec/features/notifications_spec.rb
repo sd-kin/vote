@@ -12,13 +12,13 @@ RSpec.feature 'Commenting', type: :feature do
       visit poll_path(poll)
       click_button 'make choice'
       visit poll_path(poll)
-      click_link 'notifications'
+      click_link 'Notifications'
 
       expect(page).to have_content('Poll, your voted for, was closed.')
 
-      click_link 'log out'
+      click_link 'Logout'
       login_as(user)
-      click_link 'notifications'
+      click_link 'Notifications'
 
       expect(page).to have_content('Your poll was finished.')
     end
@@ -30,9 +30,9 @@ RSpec.feature 'Commenting', type: :feature do
       visit poll_path(poll)
       fill_in 'comment_body', with: 'new comment to poll'
       click_button 'Create Comment'
-      click_link 'log out'
+      click_link 'Logout'
       login_as(user)
-      click_link 'notifications'
+      click_link 'Notifications'
 
       expect(page).to have_content('You have new reply.')
     end
@@ -45,7 +45,7 @@ RSpec.feature 'Commenting', type: :feature do
       fill_in 'comment_body', with: 'new comment to poll'
       click_button 'Create Comment'
 
-      click_link 'log out'
+      click_link 'Logout'
       login_as(user)
       visit poll_path(poll)
 
@@ -55,9 +55,9 @@ RSpec.feature 'Commenting', type: :feature do
         click_button 'Create Comment'
       end
 
-      click_link 'log out'
+      click_link 'Logout'
       login_as(user2)
-      click_link 'notifications'
+      click_link 'Notifications'
 
       expect(page).to have_content('You have new reply.')
     end
