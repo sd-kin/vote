@@ -22,5 +22,9 @@ module Vote
     # config.i18n.default_locale = :de
 
     config.active_record.schema_format = :sql
+
+    # add /app itself to autoload paths to be able to use Services:: namespace
+    # without additional services/ folder
+    config.autoload_paths += [config.root.join('app')]
   end
 end
