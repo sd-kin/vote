@@ -16,12 +16,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = current_user
-    if @user.register(user_params)
-      UserMailer.account_activation(@user).deliver_later
+    @user = Services::Users::Registration.call(current_user, user_params)
+    if @user.errors.empty?
       log_in @user
       redirect_to ready_polls_path
     else
+      flash.now[:error] = @user.errors.full_messages
       render :new
     end
   end
@@ -34,7 +34,13 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find params[:id]
-    @user.anonimous ? update_anonimous(@user) : update_regular(@user)
+
+    if @user == current_user && @user.update(user_params)
+      redirect_to user_path
+    else
+      flash.now[:error] = @user.errors.full_messages
+      render :edit
+    end
   end
 
   def destroy
@@ -53,22 +59,6 @@ class UsersController < ApplicationController
     return if logged_in?
     flash[:error] = 'authentication needed'
     redirect_to login_path
-  end
-
-  def update_regular(user)
-    if user == current_user && user.update(user_params)
-      redirect_to user_path
-    else
-      render :edit
-    end
-  end
-
-  def update_anonimous(user)
-    if user == current_user && user.register(user_params)
-      redirect_to ready_polls_path
-    else
-      render :new
-    end
   end
 
   def user_params

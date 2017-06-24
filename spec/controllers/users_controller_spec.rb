@@ -31,46 +31,25 @@ RSpec.describe UsersController, type: :controller do
   context 'POST#create' do
     subject { post :create, params: { user: user_params } }
 
-    context 'when anonimous user exists' do
+    context 'valid params' do
       let(:user_params) { FactoryGirl.attributes_for(:user) }
-      before(:each) { session[:user_id] = anonimous_user.id }
 
-      it 'not create user' do
-        expect { subject }.to_not change { User.count }
-      end
+      it { is_expected.to redirect_to(ready_polls_path) }
 
-      it 'not change user id' do
+      it 'log in user' do
         subject
-        expect(assigns(:user).id).to eq(anonimous_user.id)
+
+        expect(session[:user_id]).to eq(assigns(:user).id)
       end
     end
 
-    context 'when anonimous user does not exists' do
-      context 'and correct params' do
-        let(:user_params) { FactoryGirl.attributes_for(:user) }
+    context 'invalid params' do
+      let(:user_params) { FactoryGirl.attributes_for(:user, email: '') }
 
-        it { is_expected.to redirect_to(ready_polls_path) }
+      it { is_expected.to render_template(:new) }
 
-        it 'log in user' do
-          subject
-
-          expect(session[:user_id]).to eq(assigns(:user).id)
-        end
-
-        it 'increase users count' do
-          expect { subject }.to change { User.count }.by(1)
-        end
-      end
-
-      context 'and not correct params' do
-        let(:user_params) { FactoryGirl.attributes_for(:user, email: '') }
-
-        it { is_expected.to render_template(:new) }
-
-        it 'create anonimous user' do
-          subject
-          expect(assigns(:user).reload).to be_anonimous
-        end
+      it "add error message to flash" do
+        expect( subject.request.flash[:error] ).to_not be_nil
       end
     end
   end
@@ -98,11 +77,6 @@ RSpec.describe UsersController, type: :controller do
 
         it { is_expected.to redirect_to edit_user_path(user2) }
       end
-    end
-
-    context 'when user not logged in' do
-      # edit anonimous user profile in order to registering it without loosing user activites
-      it { is_expected.to redirect_to edit_user_path(session[:user_id]) }
     end
   end
 
@@ -142,7 +116,7 @@ RSpec.describe UsersController, type: :controller do
 
           it { is_expected.to render_template :edit }
 
-          it 'not change anuthing' do
+          it 'not change anything' do
             subject
 
             expect(assigns(:user)).to eq(user)
