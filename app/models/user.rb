@@ -43,11 +43,6 @@ class User < ActiveRecord::Base
             anonimous: true
   end
 
-  def register(user_params)
-    create_activation_digest
-    update(user_params.merge(anonimous: false))
-  end
-
   def correct_token?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?

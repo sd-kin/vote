@@ -48,8 +48,8 @@ RSpec.describe UsersController, type: :controller do
 
       it { is_expected.to render_template(:new) }
 
-      it "add error message to flash" do
-        expect( subject.request.flash[:error] ).to_not be_nil
+      it 'add error message to flash' do
+        expect(subject.request.flash[:error]).to_not be_nil
       end
     end
   end

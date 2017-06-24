@@ -5,7 +5,7 @@ module Services
       include Service
 
       def call(user, user_params)
-        user = if user.anonimous?
+        user = if user&.anonimous?
                  register_anonimous(user, user_params)
                else
                  User.create(user_params)
