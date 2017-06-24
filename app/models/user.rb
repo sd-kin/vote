@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
+  # when user object added to association rails try to autosave it and password validation will fail,
+  # so do not validate presence of password on update if password_digest stay the same
+  validates :password, presence: true, confirmation: { if: -> { password.present? } }, on: :create
+  validates :password, presence: { if: -> { password_digest_changed? } }, confirmation: true, on: :update
 
   before_save   :normalize_email
   before_create :create_activation_digest
