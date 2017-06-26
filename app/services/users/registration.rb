@@ -23,6 +23,11 @@ module Services
         user.assign_attributes(anonimous: false) if user.valid?
         user.save
 
+        # because of any anonymous user is a persisted user
+        # form will be submitted to #edit action if it rendered with errors after #create
+        # that dirty hack make it look like new and not so messy as explicit url options in form
+        user.instance_variable_set(:@new_record, true) unless user.valid?
+
         user
       end
     end
