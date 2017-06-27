@@ -13,6 +13,10 @@ module Services
 
         UserMailer.account_activation(user).deliver_later if user.errors.empty?
 
+        # check password presence only during registration process because adding that to model validations
+        # lead to validation errors when user autosaved by ActiveRecord associations
+        user.errors.messages[:password] = ["can't be blank"] if user.password.blank?
+
         user
       end
 
