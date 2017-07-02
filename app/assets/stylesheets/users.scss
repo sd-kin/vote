@@ -6,3 +6,22 @@
   width: 100%;
   height: 100%;
 }
+
+.user-input {
+  background: rgba(255,255,255, .6);
+  align-items: center;
+  padding: 5%;
+  margin: 3px;
+  border: 4px solid white;
+  border-radius: 4px;
+}
+
+.row.equal {
+  display: flex;
+}
+
+.equal > div[class*='col-'] {  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
