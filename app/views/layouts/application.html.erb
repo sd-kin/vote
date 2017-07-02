@@ -9,11 +9,9 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div class="bgimage">
-      <%= render 'layouts/header' %>
-      <%= render 'shared/flash_messages' %>
+    <%= render 'layouts/header' %>
+    <%= render 'shared/flash_messages' %>
 
-      <%= yield %>
-    </div>
+    <%= yield %>
   </body>
 </html>
