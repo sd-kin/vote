@@ -1,46 +1,45 @@
 <div id="<%= dom_id(@user) %>" class="container">
   <%= form_for @user do |f| %>
-    <div class="row">
+    <div class = 'row equal form-group'>
       <div class="col-md-6 form-group">
-        <%= f.label 'Login:', { class: "control-label" } %>
-        <%= f.text_field :username, { class: "form-control" } %>
+        <div class="user-input">
+          <div class="form-group avatar">
+            <%= image_tag @user.avatar.url(:medium), { class: "img-thumbnail avatar" } %>
+          </div>
+
+          <div class="input-group file-input">
+            <span class="input-group-addon clicable" id="basic-addon1" onclick="document.querySelector('#avatar-input-field').click()">
+              <span class="glyphicon glyphicon-open">
+                <%= f.file_field :avatar, {id: 'avatar-input-field'} %>
+              </span>
+            </span>
+            <label class="form-control file-label label-primary" aria-describedby="basic-addon1"> No file chosen </label>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row">
+
       <div class="col-md-6 form-group">
-        <%= f.label 'Email:', { class: "control-label" } %>
-        <%= f.email_field :email, { class: "form-control" } %>
+        <div class="user-input">
+          <div class="form-group">
+          <%= f.label 'Login:', { class: "control-label" } %>
+          <%= f.text_field :username, { class: "form-control" } %>
+          </div>
+        </div>
+        <div class="user-input">
+          <%= f.label 'Email:', { class: "control-label" } %>
+          <%= f.email_field :email, { class: "form-control" } %>
+        </div>
+        <div class="user-input">
+          <%= f.label 'Password:', { class: "control-label" } %>
+          <%= f.password_field :password, { class: "form-control" } %>
+        </div>
+        <div class="user-input">
+          <%= f.label 'confirm password:', { class: "control-label" } %>
+          <%= f.password_field :password_confirmation, { class: "form-control" } %>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6 form-group">
-        <%= f.label 'Password:', { class: "control-label" } %>
-        <%= f.password_field :password, { class: "form-control" } %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 form-group">
-        <%= f.label 'confirm password:', { class: "control-label" } %>
-        <%= f.password_field :password_confirmation, { class: "form-control" } %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <%= f.label 'choose avatar:', { class: "control-label" } %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 form-group file-input">
-        <label class="form-control btn btn-dark-gray">
-          Browse <%= f.file_field :avatar %>
-        </label>
-        <%= f.label 'no file choosen', { class: "form-control file-label"} %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 form-group">
-        <%= f.submit button_text, { class: "btn btn-lg btn-block btn-dark-gray" } %>
-      </div>
-    </div>
+
+    <%= f.submit button_text, { class: "btn btn-primary btn-lg btn-block" } %>
   <% end %>
 </div>
