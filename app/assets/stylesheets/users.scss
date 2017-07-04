@@ -8,7 +8,7 @@
 }
 
 .user-input {
-  background: rgba(255,255,255, .6);
+  background: rgba(0,51,153, .3);
   align-items: center;
   padding: 5%;
   margin: 3px;
@@ -20,7 +20,7 @@
   display: flex;
 }
 
-.equal > div[class*='col-'] {  
+.equal > div[class*='col-'] {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

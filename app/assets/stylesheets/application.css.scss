@@ -3,47 +3,23 @@
 @import "./*";
 
 body {
-background: url('background.png') no-repeat center center fixed; 
+background: url('background.png') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
 
-.btn-dark-gray {
-  color: white;
-  background: #a9a9a9;
+.clicable:hover {
+  cursor: pointer;
 }
 
-.file-input {
-  display: flex;
-}
-
-.file-input .btn {
-  position: relative;
-  overflow: hidden;
-  margin-right: 10px;
-}
 .file-input input[type=file] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 100%;
-  min-height: 100%;
-  font-size: 100px;
-  text-align: right;
-  filter: alpha(opacity=0);
-  opacity: 0;
-  outline: none;
-  background: white;
-  cursor: inherit;
-  display: inline;
+  display: none;
 }
 
-.file-input .file-label {
-	color: white;
-	background: #a9a9a9;
-  border: 1px solid transparent;
-	min-width: 80%;
-  flex: 1;
+.file-label {
+  color: white;
+  text-align: center;
+  border: 1px solid #ccc;
 }

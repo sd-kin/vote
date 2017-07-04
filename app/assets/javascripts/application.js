@@ -21,12 +21,12 @@
 $(document).on('turbolinks:load', function() {
   const fileSelect = document.querySelector('.file-input input[type=file]');
   if(!fileSelect) return;
-  
+
   fileSelect.addEventListener('change', showFileName);
 });
 
 function showFileName(){
-  const fileLabel = document.querySelector('.file-input .file-label');
+  const fileLabel = document.querySelector('.file-input label');
   const fileName  = this.value.split(/(\\|\/)/g).pop() || 'no file choosen';
 
   fileLabel.innerText=fileName
