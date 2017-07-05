@@ -6,11 +6,17 @@ $(document).on('turbolinks:load', function() {
 });
 
 function animateOnFocus() {
-  this.closest('div.user-input').classList.add('user-input-active')
+  const wrappingDiv = this.closest('div.user-input')
+
+  wrappingDiv.classList.remove('user-input-error')
+  wrappingDiv.classList.add('user-input-active')
 }
 
 function animateOnBlur() {
-  this.closest('div.user-input').classList.remove('user-input-active')
+  const wrappingDiv = this.closest('div.user-input')
+
+  wrappingDiv.classList.remove('user-input-active')
+  if(this.value.length == 0){wrappingDiv.classList.add('user-input-error')}
 }
 
 function animateUserInput(input){

@@ -22,6 +22,11 @@
   box-shadow: 0 0 1rem #337ab7;
 }
 
+.user-input-error {
+  border-color: red;
+  box-shadow: 0 0 1rem red;
+}
+
 .row.equal {
   display: flex;
 }
