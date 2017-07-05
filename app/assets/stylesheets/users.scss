@@ -13,6 +13,13 @@
   padding: 5%;
   margin: 3px;
   border-radius: 4px;
+  transition: all 0.7s ease;
+}
+
+.user-input-active {
+  transform: scale(1.1);
+  border-color: #337ab7;
+  box-shadow: 0 0 1rem #337ab7;
 }
 
 .row.equal {
