@@ -27,6 +27,11 @@
   box-shadow: 0 0 1rem red;
 }
 
+.user-input-error::after{
+  content: '*Cannot be blank!';
+  color: #B22222;
+}
+
 .row.equal {
   display: flex;
 }
