@@ -1,18 +1,6 @@
-<h1> Poll index page </h1>
-
-<body>
 <div id='polls'>
-<ul>
   <% @polls.each do |poll| %>
-    <li>
-      <%= link_to "#{poll.title}", poll_path(poll)%>
-      <% if poll.accessible_for?(current_user) %>
-        <%= link_to "edit poll", edit_poll_path(poll)%>
-        <%= link_to "delete poll", poll_path(poll), method: :delete unless poll.deleted? %>
-      <% end %>
-    </li>
+    <%= render 'poll_item', poll: poll %>
   <% end %>
-</ul>
 </div>
-<%= link_to 'new poll', new_poll_path %>
-</body>
+<%= link_to 'new poll', new_poll_path, class: "btn btn-default btn-lg btn-block" %>

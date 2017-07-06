@@ -1,0 +1,15 @@
+  <div class="container panel panel-default poll_item">
+    <div class="row">
+	    <div class='col-xs-1' id='<%= dom_id(poll.rating) %>'>
+	      <%= render 'shared/rating', rating: poll.rating %>
+	    </div>
+
+	    <div class ='col-xs-6'>
+	      <%= link_to "#{poll.title}", poll_path(poll)%>
+	      <% if poll.accessible_for?(current_user) %>
+	        <%= link_to "edit poll", edit_poll_path(poll)%>
+	        <%= link_to "delete poll", poll_path(poll), method: :delete unless poll.deleted? %>
+	      <% end %>
+	    </div>
+	  </div>
+  </div>
