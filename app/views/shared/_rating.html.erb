@@ -1,5 +1,13 @@
 <% if logged_in? %>
-  <%= button_to '+', increase_rating_path(rating), remote: true, disabled: rating.increased_by?(current_user) %>
-  <%= rating.value %> <br>
-  <%= button_to '-', decrease_rating_path(rating), remote: true, disabled: rating.decreased_by?(current_user) %>
+  <div class="input-group">
+    <%= button_to increase_rating_path(rating), remote: true, disabled: rating.increased_by?(current_user), class: "btn-invisible btn-block" do %>
+      <i class="rating-button glyphicon glyphicon-triangle-top"></i>
+    <% end %>
+
+      <input type="text" disabled class="form-control text-center" value="<%= rating.value %>">
+
+    <%= button_to decrease_rating_path(rating), remote: true, disabled: rating.decreased_by?(current_user), class: "btn-invisible btn-block" do %>
+      <i class="rating-button glyphicon glyphicon-triangle-bottom"></i>
+    <% end %>
+  </div>
 <% end %>
