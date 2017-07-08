@@ -19,8 +19,13 @@
     </div>
     <div class="row">
       <div class="col-md-6 form-group">
-        <%= f.check_box :remember_me %>
-        <%= f.label 'remember me', { class: "control-label" } %>
+          <label class="switch">
+            <%= f.check_box :remember_me %>
+            <div class="slider"></div>
+          </label>
+          <span class=''>
+            Remember me
+          </span>
       </div>
     </div>
     <div class="row">
