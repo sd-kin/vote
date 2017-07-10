@@ -10,29 +10,42 @@
     </div>
   </div>
 
-  <div class = "col-xs-10">
-    <div id = "<%= dom_id(poll, :title_for) %>" class="poll-element">
-      <h2> <%= poll.title %> </h2>
-    </div>
-
-    <p> Poll status is <%= poll.status %>. Voters count limited up to <%= poll.max_voters %>. Votation process finished at <%= poll.expire_at.to_s %>.  </p>
-
-    <div id='<%= dom_id(poll, :images_for) %>'>
-      <%= render poll.images %>
-    </div>
-
-    <div id='about-poll'>
-      <div class="pull-left">
-        Started by <%= link_to poll.author.username, user_path(poll.author) %> at <%= poll.created_at %>
-      </div>
-
-      <% if poll.accessible_for?(current_user) %>
-        <div class="pull-right">
-          <%= link_to "edit poll", edit_poll_path(poll)%> |
-          <%= link_to "delete poll", poll_path(poll), method: :delete unless poll.deleted? %>
+  <div class = "col-xs-11">
+    <div class="row">
+        <div id = "<%= dom_id(poll, :title_for) %>" class="poll-element">
+          <h2> <%= poll.title %> </h2>
         </div>
-      <% end %>
+
+        <p> Poll status is <%= poll.status %>. Voters count limited up to <%= poll.max_voters %>. Votation process finished at <%= poll.expire_at.to_s %>.  </p>
+
+        <div id='<%= dom_id(poll, :images_for) %>'>
+          <%= render poll.images %>
+        </div>
+
+        <div id='about-poll'>
+          <div class="pull-left">
+            Started by <%= link_to poll.author.username, user_path(poll.author) %> at <%= poll.created_at %>
+          </div>
+
+          <% if poll.accessible_for?(current_user) %>
+            <div class="pull-right">
+              <%= link_to "edit poll", edit_poll_path(poll)%> |
+              <%= link_to "delete poll", poll_path(poll), method: :delete unless poll.deleted? %>
+            </div>
+          <% end %>
+        </div>
+
     </div>
 
+    <div class = "row options">
+
+      <div id="options-header" class='alert alert-info'>
+        <h4> <span class="glyphicon glyphicon-info-sign pull-left"></span> Sort options by dragging and dropping them. </h4>
+      </div>
+   
+      <div data-poll-id = "<%= poll.id %>" id = "options" class="sortable" >
+        <%= render poll.options %>
+      </div>
+    </div>
   </div>
-<div>
+</div>

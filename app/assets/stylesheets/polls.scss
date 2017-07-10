@@ -21,3 +21,20 @@
 #about-poll {
 	margin-top: 30px;
 }
+
+#options-header{
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#options-header.alert h4{
+	margin: 0;
+}
+
+#options-header .glyphicon-info-sign {
+  font-size: 45px;
+  position: relative;
+  top: -12px;
+}
