@@ -4,7 +4,7 @@
       <i class="rating-button glyphicon glyphicon-triangle-top"></i>
     <% end %>
 
-      <input type="text" disabled class="form-control text-center" value="<%= rating.value %>">
+      <input type="text" disabled class="input-group rating-counter text-center" value="<%= rating.value %>">
 
     <%= button_to decrease_rating_path(rating), remote: true, disabled: rating.decreased_by?(current_user), class: "btn-invisible btn-block" do %>
       <i class="rating-button glyphicon glyphicon-triangle-bottom"></i>
