@@ -1,3 +1,20 @@
 // Place all the styles related to the Options controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.option {
+	background-color: #e6e6e6;
+	margin: 10px;
+	border-radius: 4px;
+}
+
+.option h4 {
+	padding: 10px;
+	text-align: center;
+	background-color: #ccc;
+	border-radius: 4px;
+}
+
+.option p {
+	padding: 20px;
+}

@@ -2,7 +2,39 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.poll_item {
+.poll-item {
 	margin-left: 10%;
   padding: 3%;
+}
+
+.poll-element {
+	border-bottom: 4px solid black;
+}
+
+.poll {
+	background-color: white;
+	margin-left: 50px;
+	padding: 50px;
+	box-shadow: 3px 3px 23px;
+}
+
+#about-poll {
+	margin-top: 30px;
+}
+
+#options-header{
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#options-header.alert h4{
+	margin: 0;
+}
+
+#options-header .glyphicon-info-sign {
+  font-size: 45px;
+  position: relative;
+  top: -12px;
 }

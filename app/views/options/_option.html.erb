@@ -1,13 +1,11 @@
-<div id="<%= dom_id(option) %>">
+<div id="<%= dom_id(option) %>" class="option">
   <div id="<%= dom_id(option, :errors_for) %>">
   </div>
+    <h4> <%= option.title %> </h4>
+    <p>  <%= option.description %> </p>
 
-  <li>
-    Title: <%= option.title %> <br>
-    Description: <%= option.description %> <br>
     <% if !option.accessible_for? current_user %>
       <%= link_to 'Edit', edit_poll_option_path(option.poll, option), remote: true unless option.poll.ready? %> 
       <%= link_to 'Delete', poll_option_path(option.poll, option), method: :delete, remote: true unless option.poll.ready? %>
     <% end %>
-  </li>
 </div>
