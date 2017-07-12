@@ -19,18 +19,14 @@
     </div>
     <div class="row">
       <div class="col-md-6 form-group">
-          <label class="switch">
-            <%= f.check_box :remember_me %>
-            <div class="slider"></div>
-          </label>
-          <span class=''>
-            Remember me
-          </span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 form-group">
         <%= f.submit 'Login', { class: "btn btn-primary btn-lg btn-block"} %>
+        <label id="remember-me-button">
+          <%= f.check_box :remember_me, {checked: true} %>
+          <div id="checked-option">
+          </div>
+          <p class="pull-left"> remember me </p>
+          <p class="pull-right"> do not remember me </p>
+        </label>
       </div>
     </div>
   <% end %>
