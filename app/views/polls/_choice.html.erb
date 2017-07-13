@@ -1,6 +1,16 @@
-<% if @already_voted %>
+<% if @already_voted && false %>
     <h2> Your choice has been accepted </h2>
     <%= link_to 'see results', result_poll_path %>
 <% else %>
-  <%= button_to 'make choice', "javascript:makeChoice()" if poll.ready? %>
+  <div id="choice" class="row container">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-11">
+      <div id="make-choice">
+        <%= button_to "javascript:makeChoice()" do %>
+          <div id="make">make</div>
+          <span class="glyphicon glyphicon-ok-circle"> </span>
+          <div id="choice">choice</div>
+        <% end%>
+      </div>
+    </div>
 <% end %>

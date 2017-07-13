@@ -1,0 +1,47 @@
+#make-choice {
+  margin: auto;
+  width: 50%;
+}
+
+#make-choice button {
+	background: transparent;
+	border: none;
+	display: flex;
+  align-items: center;
+  outline:none;
+  zoom: 0%;
+  transition: all 10s;
+}
+
+#make-choice button:active div,
+#make-choice button:active span
+{
+  box-shadow: 1px 15px 17px 0px #ccc;
+}
+
+#make-choice span {
+  background-color: white;
+  display: inline-block;
+  font-size: 10vmin;
+  border-radius: 50%;
+  border: 1vmin solid white;
+  position: relative;
+  right: 1vmin;
+  z-index: 1;
+}
+
+#make-choice div {
+	color: white;
+  border-radius: 4px;
+  background-color: #337ab7;
+  display: inline-block;
+  height: 5vmin;
+  width: 10vmin;
+  line-height: 5vmin;
+  font-size: 2vmin;
+}
+
+#make-choice span + div {
+  position: relative;
+  right: 2vmin;
+}
