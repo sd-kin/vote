@@ -1,4 +1,4 @@
-<% if @already_voted && false %>
+<% if @already_voted %>
     <h2> Your choice has been accepted </h2>
     <%= link_to 'see results', result_poll_path %>
 <% else %>
@@ -13,4 +13,5 @@
         <% end%>
       </div>
     </div>
+  </div>
 <% end %>
