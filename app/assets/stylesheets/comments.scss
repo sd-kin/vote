@@ -5,14 +5,15 @@
 .comment {
   margin-top: 1em;
   margin-left: 3em;
+  background: rgba(51, 122, 183, 0.05);
 }
 
 .comment .comment {
 	margin-right: 0;
 }
 
-.comment .comment .comment .comment {
-  
+.comment .comment .comment .comment .comment .comment{
+  margin-left: 0;
 }
 
 .comment-rating {
