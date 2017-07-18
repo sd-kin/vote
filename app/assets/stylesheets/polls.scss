@@ -39,3 +39,21 @@
   position: relative;
   top: -12px;
 }
+
+#poll-back-link {
+	font-size: 3vmin;
+	margin: 2vmin;
+}
+
+#new-poll-comment {
+	margin: 3em;
+}
+
+#new-poll-comment textarea{
+	min-height: 15vmin;
+  background-color: #f1f1f1;
+}
+
+#new-poll-comment input[type='submit'] {
+	min-height: 5vmin;
+}

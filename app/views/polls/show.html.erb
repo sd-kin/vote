@@ -4,15 +4,15 @@
   <%= render 'choice', poll: @poll %>
 </div>
 
-
-
 <div id='<%= dom_id(@poll, :comments_for) %>'>
   <%= render @poll.comments %>
 </div>
-
 
 <div id="<%= dom_id( @poll.comments.build) %>">
   <%= render 'comments/form', comment: @poll.comments.build , remote: true unless current_user.anonimous? %>
 </div>
 
-<%= link_to 'back', :back %>
+<%= link_to :back, { id: "poll-back-link" } do %>
+  <span class='glyphicon glyphicon-chevron-left'> </span>
+  back
+<% end %>
