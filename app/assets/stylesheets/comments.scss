@@ -3,18 +3,42 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .comment {
-  background-color: white;
-  box-shadow: 3px 3px 23px;
   margin-top: 1em;
-  margin-left: 50px;
-  padding-left: 3em;
+  margin-left: 3em;
+}
+
+.comment .comment {
+	margin-right: 0;
 }
 
 .comment .comment .comment .comment {
-  margin-left: 0;
-  padding-left: 0;
+  
 }
 
-.bg-gray>.comment {
-  background-color: #ccc;
+.comment-rating {
+	display: inline-block;
+	vertical-align:top;
+	margin: 1vmin;
+}
+
+.comment-body {
+	background-color: white;
+  box-shadow: 3px 3px 23px;
+  display: inline-block;
+  padding: 2vmin 1vmin 3vmin 3vmin;
+  width: 90%;
+  min-height: 150px;
+  position: relative;
+}
+
+.comment-links {
+	margin-top: 2vmin;
+	position: absolute;
+  bottom: 1vmin;
+}
+
+.reply {
+	position: absolute;
+  bottom: 1vmin;
+  left: 90%;
 }

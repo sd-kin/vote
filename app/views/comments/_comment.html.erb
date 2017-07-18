@@ -4,27 +4,32 @@
 
 <div id='<%= dom_id(comment) %>' class='comment'>
 
-  <div id='<%= dom_id( comment.rating ) %>' style='display: inline-block'>
+  <div id='<%= dom_id( comment.rating ) %>' class='comment-rating'>
     <%= render 'shared/rating', rating: comment.rating %>
   </div>
 
-  <div id='<%= dom_id(comment, :body )%>'style='display: inline-block'>
+  <div id='<%= dom_id(comment, :body )%>' class='comment-body'>
     <p> <%= comment.body %> </p>
+
     <p> <%= render comment.images %> </p>
 
-    <%= link_to comment.author.username, user_path(comment.author) %>
-    commented <%= time_ago_in_words comment.created_at %> ago <br>
-    <% if comment.accessible_for?( current_user )  %>
-      <%= link_to 'delete', comment_path(comment), method: :delete, remote: true %>
-      <%= link_to 'edit', edit_comment_path(comment), remote: true %>
-    <% end %>
+    <div class='comment-links'>
+      <span>
+        <%= link_to comment.author.username, user_path(comment.author) %> commented <%= time_ago_in_words comment.created_at %> ago
+      </span>
+
+      <% if comment.accessible_for?( current_user )  %>
+        <%= link_to 'delete', comment_path(comment), method: :delete, remote: true %>
+        <%= link_to 'edit', edit_comment_path(comment), remote: true %>
+      <% end %>
+    </div>
+
+    <div id='<%= dom_id(comment, :reply_form_for) %>' class="reply">
+      <%= link_to 'Reply', new_comment_path(comment_id: comment), remote: true unless current_user.anonimous? %>
+    </div>
   </div>
 
-  <div id='<%= dom_id(comment, :reply_form_for) %>'>
-    <%= link_to 'Reply', new_comment_path(comment_id: comment), remote: true unless current_user.anonimous? %>
-  </div>
-
-  <div id='<%= dom_id(comment, :comments_for) %>' class='<%= cycle("bg-gray", "bg-white") %>'>
+  <div id='<%= dom_id(comment, :comments_for) %>'>
     <%= render comment.comments %>
   </div>
 </div>
