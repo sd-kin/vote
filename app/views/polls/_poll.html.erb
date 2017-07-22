@@ -16,7 +16,8 @@
           <h2> <%= poll.title %> </h2>
         </div>
 
-        <p> Poll status is <%= poll.status %>. Voters count limited up to <%= poll.max_voters %>. Votation process finished at <%= poll.expire_at.to_s %>.  </p>
+        <p> Poll status is <%= poll.status %>. Voters count limited up to <%= poll.max_voters %>. 
+          Votation process will be stopped in <%= distance_of_time_in_words(Time.current, poll.expire_at) %>.  </p>
 
         <div id='<%= dom_id(poll, :images_for) %>'>
           <%= render poll.images %>
@@ -24,7 +25,7 @@
 
         <div id='about-poll'>
           <div class="pull-left">
-            Started by <%= link_to poll.author.username, user_path(poll.author) %> at <%= poll.created_at %>
+            Started by <%= link_to poll.author.username, user_path(poll.author) %> <%= time_ago_in_words poll.created_at %> ago.
           </div>
 
           <% if poll.accessible_for?(current_user) %>
