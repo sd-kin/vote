@@ -3,7 +3,7 @@
 	</div>
 
 	<%= form_for comment, remote: true do |f| %>
-	  <%= f.text_area :body, { class: 'form-control'} %>
+	  <%= f.text_area :body, { class: 'form-control', id: 'dropzone'} %>
 	  <div class='form-group'> 
       <div class="input-group file-input" onclick="document.querySelector('#comment-image-input-field').click()">
             <span class="input-group-addon clicable" id="basic-addon1">
