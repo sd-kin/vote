@@ -45,6 +45,10 @@
   left: 90%;
 }
 
+#new_comment input[type='submit'] {
+  font-size: 3vmin;
+}
+
 .comment label.hide-replys {
   position: absolute;
   left: 2vmin;
