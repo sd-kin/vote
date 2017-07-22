@@ -20,7 +20,9 @@
 	  <%= f.hidden_field :commentable_id,   value: comment.commentable.id %>
 	  <%= f.hidden_field :commentable_type, value: comment.commentable.class %>
 
-	  <%= f.submit 'Add comment', { class: "btn btn-primary btn-block"} %>
+	  <div id='comment-images'></div>
+
+	  <%= f.submit 'Add comment', { class: "btn btn-primary btn-block" } %>
 	<% end %>
 
 	<%= button_to 'Cancel', comment_path(comment), method: :get, remote: true unless comment.new_record? %>

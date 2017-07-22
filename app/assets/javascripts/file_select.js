@@ -7,8 +7,8 @@ $(document).on('turbolinks:load', function() {
 
   if(dropZone){
     dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('drop', showFiles);
-  }
+    dropZone.addEventListener('drop', setDropToInput);
+  } 
 });
 
 function handleDragOver(e) {
@@ -19,39 +19,51 @@ function handleDragOver(e) {
 
 function showFiles(e){
   const fileSelect = document.querySelector('.file-input input[type=file]');
-  // debugger;
-  const filesArray = getFiles(e, fileSelect);
+  const filesArray = Array.from(fileSelect.files);
 
   showFileNames(filesArray);
-  readURL(fileSelect);
+  showPictures(filesArray);
+  showAvatar(filesArray);
 }
 
-function getFiles(e, input) {
-  if('drop' == e.type ) { //if files was dragged and dropped
-    e.stopPropagation();
-    e.preventDefault();
-    
-    const files = e.dataTransfer.files;
+function setDropToInput(e) {
+  e.stopPropagation();
+  e.preventDefault();
 
-    input.files = files;
+  const fileSelect = document.querySelector('.file-input input[type=file]');
 
-    return Array.from(files);
-  }
-  else { // if files was selected trough file input
-    return Array.from(input.files);
-  }
+  fileSelect.files = e.dataTransfer.files;;
 }
 
-function readURL(input) {
-  if (input.files && input.files[0]) {
+function showAvatar(input) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-      $('form img').attr('src', e.target.result);
+      if ($('.avatar img')) $('.avatar img').attr('src', e.target.result);
     }
 
-    reader.readAsDataURL(input.files[0]);
-  }
+    reader.readAsDataURL(input[0]);
+}
+
+function showPictures(files){
+  const imgDiv = document.querySelector('#comment-images');
+  if(!imgDiv) return;
+
+  imgDiv.innerHTML='';
+
+  files.map( file => {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = renderImage();
+  });  
+}
+
+function renderImage(){
+  return function(e) {
+          let span = document.createElement('span');
+          span.innerHTML = ['<img class="img-thumbnail img-preview" src="', e.target.result,'" title="', 'test', '"/>'].join('');
+          document.querySelector('#comment-images').insertBefore(span, null)
+        }
 }
 
 function showFileNames(files){
