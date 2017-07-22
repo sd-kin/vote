@@ -6,6 +6,7 @@
   margin-top: 1em;
   margin-left: 3em;
   background: rgba(51, 122, 183, 0.05);
+  position: relative;
 }
 
 .comment .comment {
@@ -42,4 +43,31 @@
 	position: absolute;
   bottom: 1vmin;
   left: 90%;
+}
+
+.comment label.hide-replys {
+  position: absolute;
+  left: 2vmin;
+  top: 10vmin;
+  font-size: 2vmin;
+}
+
+.comment input.hide-branch {
+  display: none;
+}
+
+.comment input.hide-branch + label .glyphicon-plus {
+  display: none;
+}
+
+.comment input.hide-branch:checked + label .glyphicon-minus {
+  display: none;
+}
+
+.comment input.hide-branch:checked + label .glyphicon-plus {
+  display: inline-block;
+}
+
+.comment input.hide-branch:checked ~ .replys {
+  display: none;
 }
