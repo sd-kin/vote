@@ -1,2 +1,0 @@
-$('div[id*=errors_for]').each(function(){$(this).html('')});
-$("#<%= dom_id(@commentable, :reply_form_for) %>").html('<%= escape_javascript render "comments/form", commentable: @commentable, comment: @comment %>')
