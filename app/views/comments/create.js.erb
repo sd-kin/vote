@@ -1,7 +1,7 @@
 <% if @created %>
   $('#<%= dom_id(@comment.commentable, :comments_for) %>').append('<%= escape_javascript render @comment %>');
   $('#<%= dom_id(@comment.commentable, :reply_form_for) %>').html("<%= escape_javascript link_to 'Reply', new_comment_path( comment_id: @comment.commentable ), remote: true %>");
-  $('.new_comment')[0].reset();
+  $('#form_for_poll_comment #new_comment')[0].reset();
   $('.file-input label')[0].innerText=' No file chosen '
   $('#comment-images')[0].innerHTML='';
 <% else %>

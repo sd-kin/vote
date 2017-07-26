@@ -29,9 +29,19 @@
       <% end %>
     </div>
 
-    <div id='<%= dom_id(comment, :reply_form_for) %>' class="reply">
-      <%= link_to 'Reply', new_comment_path(comment_id: comment), remote: true unless current_user.anonimous? %>
+    <div class='reply-links'>
+      <div class="reply-link">
+        <%= link_to 'Reply',  '#', id: dom_id(comment, :reply_link_for), data: {comment_id: comment.id} unless current_user.anonimous? %>
+      </div>
+
+      <div class="cancel-link">
+        <%= link_to 'Cancel', '#', id: dom_id(comment, :cancel_link_for), data: {comment_id: comment.id} unless current_user.anonimous? %>
+      </div>
     </div>
+  </div>
+
+  <div id='<%= dom_id(comment, :reply_form_for) %>' class='reply'>
+    <%= render 'comments/form', comment: Comment.new(commentable_id: comment.id, commentable_type: 'Comment') %>
   </div>
 
   <div id='<%= dom_id(comment, :comments_for) %>' class='replys'>
