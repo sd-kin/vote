@@ -1,5 +1,5 @@
 <div id="<%= dom_id(@user) %>" class="container">
-  <%= form_for @user do |f| %>
+  <%= form_for @user, html: {class: 'form-with-image-upload'} do |f| %>
     <div class = 'row equal form-group'>
       <div class="col-md-6 form-group">
         <div class="user-input">
@@ -7,7 +7,7 @@
             <%= image_tag @user.avatar.url(:medium), { class: "img-thumbnail avatar" } %>
           </div>
 
-          <div class="input-group file-input" onclick="document.querySelector('#avatar-input-field').click()">
+          <div class="input-group file-input">
             <span class="input-group-addon clicable" id="basic-addon1">
               <span class="glyphicon glyphicon-open">
                 <%= f.file_field :avatar, {id: 'avatar-input-field'} %>
