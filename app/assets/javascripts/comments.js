@@ -25,7 +25,18 @@ function hideReplyForm(e) {
 	const replyLink  = document.querySelector('#reply_link_for_comment_' + commentID);
 	const cancelLink = this
 
+  resetFormWithImages(replyForm.querySelector('form'));
+
 	replyForm.style.display  = 'none'
 	replyLink.style.display  = 'block'
 	cancelLink.style.display = 'none'
+}
+
+function resetFormWithImages(form){
+  const fileLabel  = form.querySelector('.file-input label');
+  const imagesDiv  = form.querySelector('.comment-images');
+
+  imagesDiv.innerHTML='';
+  fileLabel.innerText = 'No file chosen';
+  form.reset();
 }

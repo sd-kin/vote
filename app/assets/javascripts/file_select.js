@@ -3,10 +3,10 @@ $(document).on('turbolinks:load', function() {
 
   if(formsWithImageUpload.length < 1) return;
 
-  formsWithImageUpload.forEach( form => initializeImageSelectFor(form));
+  formsWithImageUpload.forEach( form => initializeFormWithImages(form));
 });
 
-function initializeImageSelectFor(form) {
+function initializeFormWithImages(form) {
   const fileButton = form.querySelector('.file-input');
   const fileInput  = form.querySelector('input[type=file]');
   const dropZone   = form.querySelector('textarea');
