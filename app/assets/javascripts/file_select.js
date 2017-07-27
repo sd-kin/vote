@@ -1,15 +1,26 @@
 $(document).on('turbolinks:load', function() {
-  const fileSelect = document.querySelector('.file-input input[type=file]');
-  const dropZone = document.getElementById('dropzone');
-  if(!fileSelect) return;
+  const formsWithImageUpload = document.querySelectorAll('.form-with-image-upload');
 
-  fileSelect.addEventListener('change', showFiles);
+  if(formsWithImageUpload.length < 1) return;
+
+  formsWithImageUpload.forEach( form => initializeImageSelectFor(form));
+});
+
+function initializeImageSelectFor(form) {
+  const fileButton = form.querySelector('.file-input');
+  const fileInput  = form.querySelector('input[type=file]');
+  const dropZone   = form.querySelector('textarea');
+  const fileLabel  = form.querySelector('.file-input label');
+  const imagesDiv  = form.querySelector('.comment-images');
+
+  fileButton.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => showFiles(fileInput, fileLabel, imagesDiv));
 
   if(dropZone){
     dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('drop', setDropToInput);
-  } 
-});
+    dropZone.addEventListener('drop', e => setDropToInput(e, fileInput));
+  }
+}
 
 function handleDragOver(e) {
   e.stopPropagation();
@@ -17,20 +28,17 @@ function handleDragOver(e) {
   e.dataTransfer.dropEffect = 'copy';
 }
 
-function showFiles(e){
-  const fileSelect = document.querySelector('.file-input input[type=file]');
+function showFiles(fileSelect, fileLabel, imagesDiv){
   const filesArray = Array.from(fileSelect.files);
 
-  showFileNames(filesArray);
-  showPictures(filesArray);
+  showFileNames(filesArray, fileLabel);
+  showPictures(filesArray, imagesDiv);
   showAvatar(filesArray);
 }
 
-function setDropToInput(e) {
+function setDropToInput(e, fileSelect) {
   e.stopPropagation();
   e.preventDefault();
-
-  const fileSelect = document.querySelector('.file-input input[type=file]');
 
   fileSelect.files = e.dataTransfer.files;;
 }
@@ -45,8 +53,7 @@ function showAvatar(input) {
     reader.readAsDataURL(input[0]);
 }
 
-function showPictures(files){
-  const imgDiv = document.querySelector('#comment-images');
+function showPictures(files, imgDiv){
   if(!imgDiv) return;
 
   imgDiv.innerHTML='';
@@ -54,21 +61,18 @@ function showPictures(files){
   files.map( file => {
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = renderImage();
-  });  
+    reader.onload = renderImage(imgDiv);
+  });
 }
 
-function renderImage(){
+function renderImage(imgDiv){
   return function(e) {
           let span = document.createElement('span');
           span.innerHTML = ['<img class="img-thumbnail img-preview" src="', e.target.result,'" title="', 'test', '"/>'].join('');
-          document.querySelector('#comment-images').insertBefore(span, null)
+          imgDiv.insertBefore(span, null)
         }
 }
 
-function showFileNames(files){
-  const fileLabel = document.querySelector('.file-input label');
-  const fileNames = files.reduce((res, file) => res + ' ' + file.name, '');
-
-  fileLabel.innerText = fileNames;
+function showFileNames(files, label){
+  label.innerText = files.reduce((res, file) => res + ' ' + file.name, '');
 }

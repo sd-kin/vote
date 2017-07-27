@@ -54,16 +54,16 @@
   display: none;
 }
 
-#new-comment input[type='submit'] {
+.new-comment input[type='submit'] {
   font-size: 3vmin;
   min-height: 5vmin;
 }
 
-#new-comment {
+.new-comment {
   margin: 3em;
 }
 
-#new-comment textarea{
+.new-comment textarea{
   min-height: 15vmin;
   background-color: #f1f1f1;
 }
