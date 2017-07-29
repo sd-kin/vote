@@ -23,7 +23,7 @@
 	  <%= f.hidden_field :commentable_id,   value: comment.commentable.id %>
 	  <%= f.hidden_field :commentable_type, value: comment.commentable.class %>
 
-	  <div class='comment-images'></div>
+	  <div class='attached-images'></div>
 
 	  <%= f.submit 'Add comment', { class: "btn btn-primary btn-block" } %>
 	<% end %>

@@ -5,3 +5,19 @@
 .img-preview {
 	max-width: 25vmin;
 }
+
+.form-with-image-upload .dropzone {
+  width: 100%;
+  height: 15vmin;
+  background-color: #f3f3f3;
+  margin-top: 2vmin;
+  outline: dashed #bcbcbc;
+  outline-offset: -2vmin;
+}
+
+.dropzone p {
+  text-align: center;
+  line-height: 15vmin;
+  font-size: 4vmin;
+  color: #bcbcbc;
+}

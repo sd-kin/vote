@@ -11,7 +11,7 @@ function initializeFormWithImages(form) {
   const fileInput  = form.querySelector('input[type=file]');
   const dropZone   = form.querySelector('textarea');
   const fileLabel  = form.querySelector('.file-input label');
-  const imagesDiv  = form.querySelector('.comment-images');
+  const imagesDiv  = form.querySelector('.attached-images');
 
   fileButton.addEventListener('click', () => fileInput.click());
   fileInput.addEventListener('change', () => showFiles(fileInput, fileLabel, imagesDiv));
