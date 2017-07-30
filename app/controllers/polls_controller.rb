@@ -95,6 +95,7 @@ class PollsController < ApplicationController
   private
 
   def poll_params
+    binding.pry
     params.require(:poll).permit(:title, :max_voters, :expire_at, images: [])
   end
 

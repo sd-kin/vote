@@ -1,33 +1,45 @@
-<div class='container-fluid' id='new-poll'>
+<div class='container' id='new-poll'>
   <%= form_for @poll, html: { :multipart => true, class: 'form-with-image-upload' }, remote: true do |f| %>
-    <div class='row form-group form-inline'>
-      <div class='col-1 input-group'>
+    <div class='row form-group'>
+      <div class='col-xs-1'>
         <%= f.label      'Title:', { class: "control-label" } %>
       </div>
-      <div class='col-11 input-group'>
+      <div class='col-xs-11'>
         <%= f.text_field :title,   { class: "form-control" } %>
       </div>
     </div>
 
-    <div class='row form-inline'>
-      <div class='col-md-5 input-group'>
-        <button type="button" class="btn btn-primary btn-block">Add voters limit</button>
+    <div class='row form-group'>
+      <div class='col-xs-6'>
+        <div class='row'>
+          <button type="button" class="btn btn-primary btn-block" id='poll-voters-limit-btn'>Add voters limit</button>
+        </div>
+
+        <div class='row hide poll-limit-input' id='voters-limit-input'>
+          <div class='input-group'>
+           <%= f.number_field :max_voters, {min: 1, class: "form-control" } %>
+           <span class="input-group-addon clicable">
+              <span class="glyphicon glyphicon-remove" id='cancel-voters-limit-input'></span>
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div class='col-md-5 input-group'>
-        <button type="button" class="btn btn-primary btn-block">Change expiration date</button>
-      </div>
-    </div>
+      <div class='col-xs-6'>
+        <div class='row'>
+          <button type="button" class="btn btn-primary btn-block" id='poll-expiration-date-btn'>Change expiration date</button>
+        </div>
 
-    <div class='row form-inline'>
-      <div class='col-md-5 input-group'>
-        <%= f.label        'Maximum voters(empty for infinity):', { class: "col-form-label" } %>
-        <%= f.number_field :max_voters,                           {min: 1, class: "form-control" } %>
-      </div>
-
-      <div class='col-md-5 input-group'>
-        <%= f.label        'Expiration date:', { class: "col-form-label" } %>
-        <%= f.date_select  :expire_at, { class: "form-control" } %>
+        <div class='input-group date hide poll-limit-input' id='poll-expiration-date-input'>
+          <%= f.text_field  :expire_at, { class: "form-control" } %>
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-remove" id='cancel-expiration-date-input'></span>
+          </span>
+        </div>
+        
       </div>
     </div>
 
@@ -38,7 +50,7 @@
     <div class='attached-images'></div>
 
     <div class='row form-group'>
-      <div class="col-md-10 input-group file-input">
+      <div class="input-group file-input">
         <span class="input-group-addon clicable" id="basic-addon1">
           <span class="glyphicon glyphicon-open">
             <%= f.file_field :images, {id: 'image_input', multiple: true }%>

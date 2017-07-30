@@ -9,7 +9,7 @@ $(document).on('turbolinks:load', function() {
 function initializeFormWithImages(form) {
   const fileButton = form.querySelector('.file-input');
   const fileInput  = form.querySelector('input[type=file]');
-  const dropZone   = form.querySelector('textarea');
+  const dropZone   = form.querySelector('.dropzone');
   const fileLabel  = form.querySelector('.file-input label');
   const imagesDiv  = form.querySelector('.attached-images');
 
