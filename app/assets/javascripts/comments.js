@@ -34,7 +34,7 @@ function hideReplyForm(e) {
 
 function resetFormWithImages(form){
   const fileLabel  = form.querySelector('.file-input label');
-  const imagesDiv  = form.querySelector('.comment-images');
+  const imagesDiv  = form.querySelector('.attached-images');
 
   imagesDiv.innerHTML='';
   fileLabel.innerText = 'No file chosen';
