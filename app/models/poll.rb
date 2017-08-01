@@ -25,7 +25,7 @@ class Poll < ActiveRecord::Base
 
   alias_attribute :author, :user
 
-  validates :title, presence: true
+  validates :title, :expire_at, presence: true
   validate  :max_voters_should_be_number
   validate  :date_should_be_in_future
 

@@ -18,8 +18,8 @@
         <div class='row hide poll-limit-input' id='voters-limit-input'>
           <div class='input-group'>
            <%= f.number_field :max_voters, {min: 1, class: "form-control" } %>
-           <span class="input-group-addon clicable">
-              <span class="glyphicon glyphicon-remove" id='cancel-voters-limit-input'></span>
+           <span class="input-group-addon clicable" id='cancel-voters-limit-input'>
+              <span class="glyphicon glyphicon-remove"></span>
             </span>
           </div>
         </div>
@@ -35,11 +35,8 @@
           <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
           </span>
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-remove" id='cancel-expiration-date-input'></span>
-          </span>
         </div>
-        
+
       </div>
     </div>
 

@@ -4,3 +4,5 @@
   $('#<%= dom_id(@poll, :errors_for) %>').html('<%= escape_javascript render "errors", poll: @poll %>');
   $('#<%= dom_id(Poll.new) %>').html('<%= escape_javascript render "form" %>');
 <% end %>
+
+initializePollForm();

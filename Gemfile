@@ -48,7 +48,7 @@ gem 'remotipart'
 gem 'bootstrap-sass', '~> 3.3.6'
 # css vendor prefixes
 gem 'autoprefixer-rails'
-# datetimepicker
+# datetimepicker https://github.com/TrevorS/bootstrap3-datetimepicker-rails
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 
