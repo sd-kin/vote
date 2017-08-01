@@ -3,6 +3,8 @@ $(document).on('turbolinks:load', function() {
 });
 
 function initializePollForm(){
+  if(!$('#new_poll')[0]) return;
+
   const dateFormat = 'YYYY/MM/DD HH:mm'
   const today      = moment();
   const tomorrow   = moment(today).add(1, 'days');
