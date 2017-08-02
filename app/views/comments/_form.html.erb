@@ -1,5 +1,5 @@
 <div class='new-comment'>
-	<div id='<%= dom_id(comment, :creation_errors_for ) %>'>
+	<div id='<%= dom_id(comment.commentable, :comment_errors_for) %>'>
 	</div>
 
 	<%= form_for comment,

@@ -1,11 +1,8 @@
 <% if comment && comment.errors.any? %>
-    <div>
-      <%= pluralize(comment.errors.count, 'error')%>  prohibited this comment from being saved 
-      <ul>
-      <% comment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+  <% comment.errors.full_messages.each do |msg| %>
+    <div class='alert alert-dismissible alert-danger fade in text-center'>
+      <big><%= msg %></big>
+      <%= button_tag 'x', class: "close", data: { dismiss: "alert"} %>
     </div>
+  <% end %>
 <% end %>
-<br>

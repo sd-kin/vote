@@ -14,4 +14,5 @@
 <% else %>
   $('#<%= dom_id(@comment.commentable, :reply_form_for) %>').html('<%= escape_javascript render "comments/form", comment: @comment %>');
 <% end %>
-$('#creation_errors_for_comment').html('<%= escape_javascript render "errors", comment: @comment %>');
+
+$('#<%= dom_id(@comment.commentable, :comment_errors_for) %>').html('<%= escape_javascript render "errors", comment: @comment %>');
