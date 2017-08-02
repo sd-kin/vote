@@ -1,11 +1,14 @@
 <% if @created %>
   $('#cancel_link_for_comment_' + '<%= @comment.commentable.id%>').hide();
   $('#reply_link_for_comment_' + '<%= @comment.commentable.id%>').show();
-  $('#reply_form_for_comment_<%= @comment.commentable.id%> #comment_<%= @comment.commentable.id%>_new_comment')[0].reset();
+
+  $('#<%= @comment.commentable.class.to_s.downcase %>_<%= @comment.commentable.id %>_new_comment')[0].reset();
   $('#reply_form_for_comment_' + '<%= @comment.commentable.id%>').hide();
+
   $('#<%= dom_id(@comment.commentable, :comments_for) %>').append('<%= escape_javascript render @comment %>');
   $('#reply_link_for_comment_' + '<%= @comment.id%>').click(showReplyForm);
   $('#cancel_link_for_comment_' + '<%= @comment.id%>').click(hideReplyForm);
+
   $('.file-input label')[0].innerText=' No file chosen '
   $('#attached-images')[0].innerHTML='';
 <% else %>
