@@ -1,25 +1,20 @@
-var ready = function() {
-            $('.sortable').hover(function() {
-                                 $(this).css('cursor','move');
-                                            });
-
-  $(function () {
-    var parent = $('.sortable');
-    var divs = parent.children();
-    while (divs.length) { parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]); }
-                });
-
+$(document).on('turbolinks:load', function() {
   $('.sortable').sortable();
-                  
-  makeChoice = function(){
-               var poll_id=$('#options').data('poll-id');
-               var choices_array =  $('.sortable').sortable('toArray');
-               $.post({url: '/polls/'+poll_id+'/choose', data: { choices_array: choices_array } });
-                         };
-                       
-                       };
+  $('#make-choice-button').click(makeChoice)
 
+  randomizeOptionsList();
+});
 
+function makeChoice(){
+  const pollId       = $('#options').data('poll-id');
+  const choicesArray = $('.sortable').sortable('toArray');
 
-$(document).ready(ready);
-$(document).on('page:load', ready);
+  $.post({url: '/polls/' + pollId + '/choose', data: { choices_array: choicesArray } });
+};
+
+function randomizeOptionsList() {
+  const parent = $('.sortable');
+  const divs   = parent.children();
+
+  while (divs.length) { parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]); }
+};
