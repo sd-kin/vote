@@ -2,6 +2,7 @@
 FactoryGirl.define do
   factory :poll do
     user
+    expire_at { 1.day.from_now }
 
     trait :with_title do
       title 'first poll'

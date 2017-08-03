@@ -110,12 +110,13 @@ feature 'remember me function' do
       click_link 'Login'
       fill_in 'session_email', with: user.email
       fill_in 'session_password', with: user.password
+      uncheck 'session_remember_me'
       click_button 'Login'
 
       expire_cookies
 
       visit root_path
-
+      
       expect(page).to have_link('Login')
     end
   end
