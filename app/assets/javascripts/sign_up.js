@@ -1,9 +1,14 @@
 $(document).on('turbolinks:load', function() {
-  const userInputs = Array.from(document.querySelectorAll('.user-input input'));
-  if(!userInputs) return;
-
-  userInputs.forEach( input => animateUserInput(input));
+  initializeUserInput();
 });
+
+function initializeUserInput(){
+  const inputNodes = document.querySelectorAll('.user-input input');
+  if(inputNodes.length<1) return;
+  const userInputs = Array.from(inputNodes);
+
+  userInputs.forEach( function(input) {animateUserInput(input)} );
+}
 
 function animateOnFocus() {
   const wrappingDiv = this.closest('div.user-input')
