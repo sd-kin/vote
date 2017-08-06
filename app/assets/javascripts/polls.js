@@ -38,8 +38,8 @@ function initializeVotersLimitButton() {
 
   if(!button) return;
 
-  button.addEventListener('click', () => toggleLimitForm(limitForm));
-  cancelButton.addEventListener('click', ()=> hideLimitForm(limitForm));
+  button.addEventListener('click', function(){ toggleLimitForm(limitForm)} );
+  cancelButton.addEventListener('click',function(){ hideLimitForm(limitForm) });
 }
 
 function initializeExpirationDateButton() {
@@ -48,7 +48,7 @@ function initializeExpirationDateButton() {
 
   if(!button) return;
 
-  button.addEventListener('click', () => toggleExpirationForm(expirationForm));
+  button.addEventListener('click',function(){ toggleExpirationForm(expirationForm) });
 }
 
 function toggleLimitForm(limitForm) {

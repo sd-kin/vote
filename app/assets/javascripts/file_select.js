@@ -1,9 +1,10 @@
 $(document).on('turbolinks:load', function() {
   const formsWithImageUpload = document.querySelectorAll('.form-with-image-upload');
+  const formsCount = formsWithImageUpload.length;
 
-  if(formsWithImageUpload.length < 1) return;
+  if(formsCount < 1) return;
 
-  formsWithImageUpload.forEach( form => initializeFormWithImages(form));
+  for(var i=0; i<formsCount; i++) { initializeFormWithImages(formsWithImageUpload[i]) };
 });
 
 function initializeFormWithImages(form) {
@@ -13,12 +14,12 @@ function initializeFormWithImages(form) {
   const fileLabel  = form.querySelector('.file-input label');
   const imagesDiv  = form.querySelector('.attached-images');
 
-  fileButton.addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', () => showFiles(fileInput, fileLabel, imagesDiv));
+  fileButton.addEventListener('click', function(){ fileInput.click() });
+  fileInput.addEventListener('change', function(){ showFiles(fileInput, fileLabel, imagesDiv) });
 
   if(dropZone){
     dropZone.addEventListener('dragover', handleDragOver);
-    dropZone.addEventListener('drop', e => setDropToInput(e, fileInput));
+    dropZone.addEventListener('drop', function(e){ setDropToInput(e, fileInput) });
   }
 }
 
@@ -29,7 +30,10 @@ function handleDragOver(e) {
 }
 
 function showFiles(fileSelect, fileLabel, imagesDiv){
-  const filesArray = Array.from(fileSelect.files);
+  var filesArray = [];
+  var nodes = fileSelect.files;
+
+  for(var i = nodes.length; i--; filesArray.unshift(nodes[i]));
 
   showFileNames(filesArray, fileLabel);
   showPictures(filesArray, imagesDiv);
@@ -58,7 +62,7 @@ function showPictures(files, imgDiv){
 
   imgDiv.innerHTML='';
 
-  files.map( file => {
+  files.map( function(file){
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = renderImage(imgDiv);
@@ -67,12 +71,12 @@ function showPictures(files, imgDiv){
 
 function renderImage(imgDiv){
   return function(e) {
-          let span = document.createElement('span');
+          var span = document.createElement('span');
           span.innerHTML = ['<img class="img-thumbnail img-preview" src="', e.target.result,'" title="', 'test', '"/>'].join('');
           imgDiv.insertBefore(span, null)
         }
 }
 
 function showFileNames(files, label){
-  label.innerText = files.reduce((res, file) => res + ' ' + file.name, '');
+  label.innerText = files.reduce( function(res, file){ return res+file.name+' '}, '')
 }
