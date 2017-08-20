@@ -22,3 +22,5 @@
 
 # Ignore pub folder
 /public/*
+/public/packs
+/node_modules

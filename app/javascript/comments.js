@@ -1,4 +1,3 @@
-
 $(document).on('turbolinks:load', function() {
 	document.querySelectorAll('.reply-link a').forEach(a => a.addEventListener('click', showReplyForm));
 	document.querySelectorAll('.cancel-link a').forEach(a => a.addEventListener('click', hideReplyForm));

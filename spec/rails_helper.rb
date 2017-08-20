@@ -53,6 +53,13 @@ RSpec.configure do |config|
       MSG
     end
     DatabaseCleaner.clean_with(:truncation)
+
+    # Run webpack compilation before suite, so assets exists in public/packs
+    # It would be better to run the webpack compilation only if at least one :js spec
+    # should be executed, but `when_first_matching_example_defined`
+    # does not work with `config.infer_spec_type_from_file_location!`
+    # see https://github.com/rspec/rspec-core/issues/2366
+    `bin/webpack`
   end
 
   config.before(:each) do
