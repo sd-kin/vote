@@ -9,26 +9,10 @@
 
 import "babel-polyfill"
 import "nodelist-foreach-polyfill"
+import "element-closest"
 
 import 'comments'
 import 'file_select'
 import 'make_sortable'
 import 'polls'
 import 'sign_up'
-
-$(document).on('turbolinks:load', function() {
-  addElement('hello from es6');
-  Array.from(['hello', 'world', 'hello from 2015']).forEach(el =>addElement(el));
-   });
-
-function addElement (text) {
-  // create a new div element
-  // and give it some content
-  var newDiv = document.createElement("div");
-  var newContent = document.createTextNode(text);
-  newDiv.appendChild(newContent); //add the text node to the newly created div.
-
-  // add the newly created element and its content into the DOM
-  //var currentDiv = document.getElementById("div1");
-  document.body.appendChild(newDiv);
-}

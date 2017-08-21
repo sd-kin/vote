@@ -15,14 +15,14 @@ RSpec.feature 'Adding images', type: :feature do
       expect(page).to have_xpath("//img[contains(@src, '/avatars/missing.png')]")
 
       click_link   'Edit'
-      attach_file  'image_input', 'spec/fixtures/files/test_image.png'
+      attach_file  'avatar-input-field', 'spec/fixtures/files/test_image.png'
       click_button 'Update'
 
       expect(page).to_not have_xpath("//img[contains(@src, '/images/no-profile.jpg')]")
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
 
       click_link   'Edit'
-      attach_file  'image_input', 'spec/fixtures/files/test_image2.png'
+      attach_file  'avatar-input-field', 'spec/fixtures/files/test_image2.png'
       click_button 'Update'
 
       expect(page).to_not have_xpath("//img[contains(@src, 'medium/test_image.png')]")
@@ -65,15 +65,15 @@ RSpec.feature 'Adding images', type: :feature do
       expect(page).to_not have_selector('img')
 
       fill_in 'comment[body]', with: 'comment text'
-      attach_file  'comment[images][]', 'spec/fixtures/files/test_image.png'
-      click_button 'Create Comment'
+      attach_file  'comment[images][]', 'spec/fixtures/files/test_image.png', visible: false
+      click_button 'Add comment'
 
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
 
       within '#' + dom_id(poll.comments.last) do
         click_link 'edit'
         click_link('delete image')
-        click_button('Update Comment')
+        click_button('Add comment')
       end
 
       expect(page).to have_no_xpath("//img[contains(@src, 'medium/test_image.png')]")
