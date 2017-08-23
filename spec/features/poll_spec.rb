@@ -12,13 +12,6 @@ feature 'when create poll' do
     expect(current_page).to be_correct_page
   end
 
-  scenario 'should visit create poll page' do
-    current_page = NewPollPage.new
-    current_page.visit_page
-
-    expect(current_page).to be_correct_page
-  end
-
   scenario 'should render form for title' do
     current_page = NewPollPage.new
     current_page.visit_page

@@ -28,8 +28,8 @@ RSpec.feature 'Commenting', type: :feature do
     scenario 'notify poll author' do
       login_as(user2)
       visit poll_path(poll)
-      fill_in 'comment_body', with: 'new comment to poll'
-      click_button 'Create Comment'
+      fill_in 'comment[body]', with: 'new comment to poll'
+      click_button 'Add comment'
       click_link 'Logout'
       login_as(user)
       click_link 'Notifications'
@@ -42,8 +42,8 @@ RSpec.feature 'Commenting', type: :feature do
     scenario 'notify comment author' do
       login_as(user2)
       visit poll_path(poll)
-      fill_in 'comment_body', with: 'new comment to poll'
-      click_button 'Create Comment'
+      fill_in 'comment[body]', with: 'new comment to poll'
+      click_button 'Add comment'
 
       click_link 'Logout'
       login_as(user)
@@ -51,8 +51,8 @@ RSpec.feature 'Commenting', type: :feature do
 
       within "#comment_#{poll.comments.first.id}" do
         click_link 'Reply'
-        fill_in 'comment_body', with: 'new comment to comment'
-        click_button 'Create Comment'
+        fill_in 'comment[body]', with: 'new comment to comment'
+        click_button 'Add comment'
       end
 
       click_link 'Logout'

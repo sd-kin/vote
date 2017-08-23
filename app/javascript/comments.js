@@ -39,3 +39,8 @@ function resetFormWithImages(form){
   fileLabel.innerText = 'No file chosen';
   form.reset();
 }
+
+// add to global context in order to be able to use from js.erb templates
+
+global.showReplyForm = showReplyForm;
+global.hideReplyForm = hideReplyForm;

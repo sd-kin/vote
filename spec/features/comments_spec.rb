@@ -7,42 +7,42 @@ RSpec.feature 'Commenting', type: :feature do
 
   before(:each) { login_as(user) }
 
-  feature 'when add comment to poll' do
+  feature 'when Add comment to poll' do
     scenario 'have field for new comment' do
       visit poll_path(poll)
 
-      expect(page).to have_field('comment_body')
+      expect(page).to have_field('comment[body]')
     end
 
-    scenario 'create comment', js: true do
+    scenario 'Add comment', js: true do
       create_comment('test comment text')
 
       expect(page).to have_content('test comment text')
     end
   end
 
-  feature 'when add comment to another comment', js: true do
+  feature 'when Add comment to another comment', js: true do
     scenario 'comment have form for reply' do
       visit poll_path(poll)
 
       within "#comment_#{poll.comments.first.id}" do
         expect(page).to have_link('Reply')
-        expect(page).to have_no_field('comment_body')
+        expect(page).to have_no_field('comment[body]')
 
         click_link 'Reply'
 
         expect(page).to have_no_link('Reply')
-        expect(page).to have_field('comment_body')
+        expect(page).to have_field('comment[body]')
       end
     end
 
-    scenario 'create comment' do
+    scenario 'Add comment' do
       visit poll_path(poll)
 
       within "#comment_#{poll.comments.first.id}" do
         click_link 'Reply'
-        fill_in 'comment_body', with: 'test comments comment text'
-        click_button 'Create Comment'
+        fill_in 'comment[body]', with: 'test comments comment text'
+        click_button 'Add comment'
       end
 
       expect(page).to have_content('test comments comment text')
@@ -58,9 +58,9 @@ RSpec.feature 'Commenting', type: :feature do
         expect(page).to have_link 'edit'
         click_link 'edit'
 
-        expect(page).to have_field('comment_body')
-        fill_in 'comment_body', with: 'edited comment text'
-        click_button 'Update Comment'
+        expect(page).to have_field('comment[body]')
+        fill_in 'comment[body]', with: 'edited comment text'
+        click_button 'Add comment'
 
         expect(page).to have_no_content 'new comment text'
         expect(page).to have_content 'edited comment text'
@@ -94,6 +94,6 @@ end
 
 def create_comment(comment_text)
   visit poll_path(poll)
-  fill_in 'comment_body', with: comment_text
-  click_button 'Create Comment'
+  fill_in 'comment[body]', with: comment_text
+  click_button 'Add comment'
 end
