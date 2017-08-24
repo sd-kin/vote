@@ -116,7 +116,7 @@ feature 'remember me function' do
       expire_cookies
 
       visit root_path
-      
+
       expect(page).to have_link('Login')
     end
   end

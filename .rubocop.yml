@@ -6,6 +6,7 @@ AllCops:
     - 'spec/fixtures/**/*'
     - 'tmp/**/*'
     - 'Gemfile'
+    - 'node_modules/**/*'
   TargetRubyVersion: 2.3
 
 Style/Encoding:
