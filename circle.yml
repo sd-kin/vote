@@ -5,6 +5,8 @@ machine:
   ruby:
     version:
      2.3.1
+  node:
+    version: 5.5.0
 
 ## Customize deployment commands
 deployment:
