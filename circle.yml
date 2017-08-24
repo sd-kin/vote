@@ -6,7 +6,7 @@ machine:
     version:
      2.3.1
   node:
-    version: 5.5.0
+    version: 5.10.0
 
 ## Customize deployment commands
 deployment:
@@ -18,6 +18,8 @@ deployment:
       - heroku run rake db:migrate --app vote-kompot
 
 test:
+  pre:
+    - chmod +x bin/webpack
   override:
     - bundle exec rspec --format progress --format RspecJunitFormatter -o $CIRCLE_TEST_REPORTS/rspec.xml
   post:
