@@ -254,11 +254,11 @@ RSpec.describe Poll, type: :model do
           poll.status = 'ready'
           poll.vote!(user, [0, 1, 2])
 
-          expect(user.voted_polls).to eq([voted_poll, poll])
+          expect(user.voted_polls).to match_array([voted_poll, poll])
 
           subject
 
-          expect(user.reload.voted_polls).to eq([poll])
+          expect(user.reload.voted_polls).to match_array([poll])
         end
       end
     end
