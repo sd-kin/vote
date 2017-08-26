@@ -1,9 +1,9 @@
-<h1> This is poll's edit page </h1>
-<div id = "<%= dom_id(@poll, :status_for) %>">
-    <%= render 'polls/status', poll: @poll %>
-</div>
 <%= render @poll %>
 <%= render 'options/form', poll: @poll %> <br>
 <div id = "<%= dom_id(@poll, :links_for) %>">
   <%= render 'links', poll: @poll %>
+</div>
+
+<div id = "<%= dom_id(@poll, :status_for) %>">
+    <%= render 'polls/status', poll: @poll %>
 </div>
