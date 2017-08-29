@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.describe Notification, type: :model do
+RSpec.describe Notification, pending: "Notifications disabled", type: :model do
   let(:poll) { FactoryGirl.create :valid_poll, :voted, status: 'ready' }
   let(:user) { FactoryGirl.create :user }
   let(:user2) { FactoryGirl.create :user }

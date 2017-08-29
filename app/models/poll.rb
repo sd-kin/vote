@@ -35,8 +35,8 @@ class Poll < ActiveRecord::Base
 
   # callbacks on status
   before_ready :check_options_presist
-  before_draft -> { notificate_voters_about :draft }, :drop_votation_progress
-  after_finish :notificate_author, -> { notificate_voters_about :finish }
+  before_draft :drop_votation_progress # , -> { notificate_voters_about :draft }
+  # after_finish :notificate_author, -> { notificate_voters_about :finish }
 
   def vote!(user, preferences)
     if ready?

@@ -16,7 +16,7 @@ class Comment < ActiveRecord::Base
 
   validates :author, presence: true
 
-  after_create :create_rating, :notify_commentable_author, :notify_mentioned_users # create_rating method added by ActiveRecord has_one
+  after_create :create_rating # , :notify_commentable_author, :notify_mentioned_users # create_rating method added by ActiveRecord has_one
 
   def accessible_for?(user)
     user_id == user.id && !user.anonimous?

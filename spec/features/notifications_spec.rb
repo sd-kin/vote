@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-RSpec.feature 'Commenting', type: :feature do
+RSpec.feature 'Commenting', pending: "Notifications disabled", type: :feature do
   given(:user)  { FactoryGirl.create :user }
   given(:user2) { FactoryGirl.create :user }
   given(:poll)  { FactoryGirl.create :valid_poll, status: :ready, max_voters: 1, user: user }
