@@ -1,0 +1,10 @@
+= fields_for 'options[][]', option do |field|
+  .row.form-group
+    .col-xs-1
+      = field.label :title, class: "control-label"
+    .col-xs-11
+      = field.text_field :title, class: "form-control"
+    .col-xs-1
+      = field.label :description, class: "control-label"
+    .col-xs-11
+      = field.text_field :description, class: "form-control"
