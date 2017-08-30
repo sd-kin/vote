@@ -35,8 +35,8 @@ class PollsController < ApplicationController
   end
 
   def create
-    @poll    = current_user.polls.new(poll_params)
-    @correct = @poll.save
+    @poll = Services::Polls::Creation.call(current_user, params)
+    @correct = @poll.persisted?
   end
 
   def update
@@ -93,10 +93,6 @@ class PollsController < ApplicationController
   end
 
   private
-
-  def poll_params
-    params.require(:poll).permit(:title, :max_voters, :expire_at, images: [])
-  end
 
   def actualize_voted_polls_cookie
     current_user.reload

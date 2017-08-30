@@ -2,6 +2,7 @@
 module Services
   module Users
     class Registration
+      # look up in concerns folder
       include Service
 
       def call(user, user_params)

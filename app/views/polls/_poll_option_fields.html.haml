@@ -1,4 +1,4 @@
-= fields_for 'poll[options][][]', option do |field|
+= fields_for 'options[][]', option do |field|
   .option-fields
     .option-inputs
       = field.text_field :title, placeholder: 'option title', class: "form-control"
