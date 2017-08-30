@@ -18,7 +18,7 @@
         <div class='row hide poll-limit-input' id='voters-limit-input'>
           <div class='input-group'>
            <%= f.number_field :max_voters, {min: 1, class: "form-control" } %>
-           <span class="input-group-addon clicable" id='cancel-voters-limit-input'>
+           <span class="input-group-addon clickable" id='cancel-voters-limit-input'>
               <span class="glyphicon glyphicon-remove"></span>
             </span>
           </div>
@@ -48,12 +48,12 @@
 
     <div class='row form-group'>
       <div class="input-group file-input">
-        <span class="input-group-addon clicable" id="basic-addon1">
+        <span class="input-group-addon clickable" id="basic-addon1">
           <span class="glyphicon glyphicon-open">
             <%= f.file_field :images, {id: 'image_input', multiple: true }%>
           </span>
         </span>
-        <label class="form-control file-label label-primary clicable" aria-describedby="basic-addon1"> No file chosen </label>
+        <label class="form-control file-label label-primary clickable" aria-describedby="basic-addon1"> No file chosen </label>
       </div>
     </div>
 

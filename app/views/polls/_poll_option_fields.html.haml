@@ -1,13 +1,7 @@
 = fields_for 'options[][]', option do |field|
-  .row.form-group
-    .col-xs-10
-      .col-xs-1
-        = field.label :title, class: "control-label"
-      .col-xs-11
-        = field.text_field :title, class: "form-control"
-      .col-xs-1
-        = field.label :description, class: "control-label"
-      .col-xs-11
-        = field.text_field :description, class: "form-control"
-    .col-xs-2
-      = button_tag 'X', type: 'button', onclick: 'this.parentElement.parentElement.remove()', class: "btn btn-default btn-block"
+  .option-fields
+    .option-inputs
+      = field.text_field :title, placeholder: 'option title', class: "form-control"
+      = field.text_area  :description, rows: 3, placeholder: 'option description', class: "form-control"
+    .option-delete-button
+      = button_tag 'X', type: 'button', onclick: 'this.parentElement.parentElement.remove()', class: "btn btn-danger btn-block"

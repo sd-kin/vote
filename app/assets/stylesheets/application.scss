@@ -11,7 +11,11 @@ background: url('background.png') no-repeat center center fixed;
   background-size: cover;
 }
 
-.clicable:hover {
+.padding-0 {
+  padding: 0;
+}
+
+.clickable:hover {
   cursor: pointer;
 }
 

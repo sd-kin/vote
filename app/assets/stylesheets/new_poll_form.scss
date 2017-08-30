@@ -1,0 +1,41 @@
+#poll-form, #options-form {
+  background-color: #f7f7f7;
+  padding: 3vmin;
+}
+
+#options-fields-header {
+  padding: 2vmin;
+  color: white;
+  font-weight: bold;
+  background-color: #cccccc;
+}
+
+.option-fields {
+  display: flex;
+  margin-top:    5vmin;
+  margin-bottom: 2vmin;
+}
+
+.option-inputs {
+  flex: 1;
+}
+
+.option-delete-button {
+  display: flex;
+}
+
+.option-delete-button button {
+  border-top-left-radius:    0;
+  border-bottom-left-radius: 0;
+}
+
+.option-inputs input, input[placeholder], textarea, textarea[placeholder]{
+  font-weight:                bold;
+  text-align:                 center;
+  border-top-right-radius:    0;
+  border-bottom-right-radius: 0;
+}
+
+#new-poll input[type='submit'] {
+  font-size: 5vmin;
+}

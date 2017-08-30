@@ -1,49 +1,49 @@
 #new-poll.container
   = form_tag(polls_path, remote: true, multipart: true, class: 'form-with-image-upload') do
+    #poll-form.row.form-group
+      .form-group.row
+        .col-xs-1
+          = label_tag 'poll[title]', 'Title:', class: "control-label"
+        .col-xs-11
+          = text_field_tag 'poll[title]', nil, class: "form-control"
 
-    .row.form-group
-      .col-xs-1
-        = label_tag 'poll[title]', 'Title:', class: "control-label"
-      .col-xs-11
-        = text_field_tag 'poll[title]', nil, class: "form-control"
+      .form-group
+        .col-xs-6
+          .row
+            %button#poll-voters-limit-btn.btn.btn-primary.btn-block{:type => "button"} Add voters limit
+          #voters-limit-input.hide.poll-limit-input
+            .input-group
+              = number_field_tag "poll[max_voters]", "Infinity" , {min: 1, class: "form-control" }
+              %span#cancel-voters-limit-input.input-group-addon.clickable
+                %span.glyphicon.glyphicon-remove
+        .col-xs-6
+          .row
+            %button#poll-expiration-date-btn.btn.btn-primary.btn-block{:type => "button"} Change expiration date
+          #poll-expiration-date-input.input-group.date.hide.poll-limit-input
+            = text_field_tag  'poll[expire_at]', nil , { class: "form-control" }
+            %span.input-group-addon
+              %span.glyphicon.glyphicon-calendar
 
-    .row.form-group
-      .col-xs-6
-        .row
-          %button#poll-voters-limit-btn.btn.btn-primary.btn-block{:type => "button"} Add voters limit
-        #voters-limit-input.row.hide.poll-limit-input
-          .input-group
-            = number_field_tag "poll[max_voters]", "Infinity" , {min: 1, class: "form-control" }
-            %span#cancel-voters-limit-input.input-group-addon.clicable
-              %span.glyphicon.glyphicon-remove
-      .col-xs-6
-        .row
-          %button#poll-expiration-date-btn.btn.btn-primary.btn-block{:type => "button"} Change expiration date
-        #poll-expiration-date-input.input-group.date.hide.poll-limit-input
-          = text_field_tag  'poll[expire_at]', nil , { class: "form-control" }
-          %span.input-group-addon
-            %span.glyphicon.glyphicon-calendar
-
-    .row.form-group
-      .dropzone
+      .dropzone.form-group.col-xs-12
         %p Drag'n'drop files here
 
-    .attached-images
+      .attached-images
 
-    .row.form-group
-      .input-group.file-input
-        %span#basic-addon1.input-group-addon.clicable
-          %span.glyphicon.glyphicon-open
-            = file_field_tag "poll[images][]", id: 'image_input', multiple: true
-        %label.form-control.file-label.label-primary.clicable{"aria-describedby" => "basic-addon1"} No file chosen
+      .form-group.col-xs-12.padding-0
+        .input-group.file-input
+          %span#basic-addon1.input-group-addon.clickable
+            %span.glyphicon.glyphicon-open
+              = file_field_tag "poll[images][]", id: 'image_input', multiple: true
+          %label.form-control.file-label.label-primary.clickable{"aria-describedby" => "basic-addon1"} No file chosen
 
-    %h1.text-center Options
+    #options-form.row.form-group
+      %h1#options-fields-header.text-center Options
 
-    #options.row.form-group
       - @poll.options.each do |option|
         = render 'poll_option_fields', option: option
-    .row.form-group
+
       = button_tag 'Add option', type: 'button', class: "btn btn-primary btn-block", id: 'add-option'
+
     .row.form-group
       = submit_tag 'Create poll', class: "btn btn-primary btn-block"
 
@@ -53,5 +53,5 @@
   addOptionFieldsButton.addEventListener('click', renderOptionFields);
 
   function renderOptionFields() {
-    $('#options').append("#{escape_javascript render 'poll_option_fields', option: @poll.options.build}")
+    $('#add-option').before("#{escape_javascript render 'poll_option_fields', option: @poll.options.build}")
   }
