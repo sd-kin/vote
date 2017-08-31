@@ -93,10 +93,11 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #create' do
-    subject { post :create, xhr: true, params: { poll: poll_params } }
+    subject { post :create, params: { poll: poll_params, options: options_params } }
 
     context 'when valid attributes' do
       let(:poll_params) { FactoryGirl.attributes_for(:valid_poll) }
+      let(:options_params) { Array.new(3) { FactoryGirl.attributes_for(:valid_option) } }
 
       context 'and user logged in' do
         before(:each) { session[:user_id] = user.id }
@@ -127,10 +128,11 @@ RSpec.describe PollsController, type: :controller do
 
     context 'when not valid attributes' do
       let(:poll_params) { FactoryGirl.attributes_for(:poll, :with_empty_title) }
+      let(:options_params) { Array.new(3) { FactoryGirl.attributes_for(:valid_option) } }
 
       it { is_expected.to be_success }
 
-      it { is_expected.to render_template(:create) }
+      it { is_expected.to render_template(:new) }
 
       it 'have error' do
         subject
