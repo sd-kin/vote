@@ -15,6 +15,15 @@ background: url('background.png') no-repeat center center fixed;
   padding: 0;
 }
 
+.margin-0 {
+  margin: 0;
+}
+
+.field-with-error {
+  border-left: 1vmin solid #d9534f;
+  background-color: rgba(217, 83, 79, 0.17);
+}
+
 .clickable:hover {
   cursor: pointer;
 }

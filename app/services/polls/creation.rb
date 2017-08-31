@@ -8,11 +8,9 @@ module Services
       def call(user, params)
         poll = prepare_poll(user, params)
 
-        return poll if poll.invalid?
-
         prepare_options(poll, params)
 
-        save_poll_with_options(poll) if options_valid(poll)
+        save_poll_with_options(poll) if options_valid?(poll) && poll.valid?
 
         poll
       end
@@ -36,8 +34,20 @@ module Services
         end
       end
 
-      def options_valid(poll)
-        poll.options.size >= Poll::MINIMUM_OPTIONS_COUNT && poll.options.all?(&:valid?)
+      def options_valid?(poll)
+        validate_options_count(poll) && validate_options(poll)
+      end
+
+      def validate_options_count(poll)
+        if poll.options.size < Poll::MINIMUM_OPTIONS_COUNT
+          poll.errors[:poll] << "should have at least #{Poll::MINIMUM_OPTIONS_COUNT} options"
+          return false
+        end
+        true
+      end
+
+      def validate_options(poll)
+        poll.options.map(&:valid?).all?
       end
 
       def save_poll_with_options(poll)

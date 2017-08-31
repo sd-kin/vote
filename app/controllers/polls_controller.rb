@@ -23,7 +23,7 @@ class PollsController < ApplicationController
   def new
     @poll = Poll.new
 
-    3.times { @poll.options.build }
+    Poll::MINIMUM_OPTIONS_COUNT.times { @poll.options.build }
   end
 
   def edit
@@ -36,7 +36,12 @@ class PollsController < ApplicationController
 
   def create
     @poll = Services::Polls::Creation.call(current_user, params)
-    @correct = @poll.persisted?
+    if @poll.persisted?
+      redirect_to @poll
+    else
+      flash[:error] = @poll.errors.full_messages
+      render :new
+    end
   end
 
   def update

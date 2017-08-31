@@ -1,7 +1,11 @@
 = fields_for 'options[][]', option do |field|
+  - if option.errors.full_messages.any?
+    .option-errors.alert.alert-danger.text-center
+      = option.errors.full_messages.join(' ')
+
   .option-fields
     .option-inputs
-      = field.text_field :title, placeholder: 'option title', class: "form-control"
-      = field.text_area  :description, rows: 3, placeholder: 'option description', class: "form-control"
+      = field.text_field :title, placeholder: 'option title', class: "form-control #{has_error_class(option, :title)}"
+      = field.text_area  :description, rows: 3, placeholder: 'option description', class: "form-control #{has_error_class(option, :description)}"
     .option-delete-button
       = button_tag 'X', type: 'button', onclick: 'this.parentElement.parentElement.remove()', class: "btn btn-danger btn-block"

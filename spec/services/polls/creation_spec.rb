@@ -37,10 +37,20 @@ RSpec.describe Services::Polls::Creation do
           expect { service_call }.to change { Option.count }.by(options_params.count - 1)
         end
       end
+
+      context 'but have not enough of them' do
+        let(:options_params) { Array.new(2) { FactoryGirl.attributes_for(:valid_option) } }
+
+        it 'have error about options count' do
+          poll = service_call
+
+          expect(poll.errors.full_messages).to include("Poll should have at least #{Poll::MINIMUM_OPTIONS_COUNT} options")
+        end
+      end
     end
 
     context 'and options parameters invalid' do
-      let(:options_params) { Array.new(3) { FactoryGirl.attributes_for(:option) } }
+      let(:options_params) { [{title: '1', description: ''}, {title: '', description: '2'},{title: '3', description: ''}] }
 
       it 'do not create poll' do
         expect { service_call }.to_not change { Poll.count }
@@ -48,6 +58,12 @@ RSpec.describe Services::Polls::Creation do
 
       it 'do not create options' do
         expect { service_call }.to_not change { Option.count }
+      end
+
+      it 'have options errors' do
+        poll = service_call
+
+        poll.options.each { |option| expect(option.errors.full_messages).to_not be_empty }
       end
     end
   end
