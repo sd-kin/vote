@@ -1,40 +1,41 @@
 #new-poll.container
   = form_tag(polls_path, multipart: true, class: 'form-with-image-upload') do
-    #poll-form.row.form-group
-      .form-group.row
-        .col-xs-1
-          = label_tag 'poll[title]', 'Title:', class: "control-label"
-        .col-xs-11
-          = text_field_tag 'poll[title]', nil, class: "form-control #{has_error_class(@poll, :title)}"
+    = fields_for 'poll', @poll do |poll_field|
+      #poll-form.row.form-group
+        .form-group.row
+          .col-xs-1
+            = poll_field.label :title, class: "control-label"
+          .col-xs-11
+            = poll_field.text_field :title, class: "form-control #{error_class?(@poll, :title)}"
 
-      .form-group
-        .col-xs-6
-          .row
-            %button#poll-voters-limit-btn.btn.btn-primary.btn-block{:type => "button"} Add voters limit
-          #voters-limit-input.hide.poll-limit-input
-            .input-group
-              = number_field_tag "poll[max_voters]", "Infinity" , {min: 1, class: "form-control" }
-              %span#cancel-voters-limit-input.input-group-addon.clickable
-                %span.glyphicon.glyphicon-remove
-        .col-xs-6
-          .row
-            %button#poll-expiration-date-btn.btn.btn-primary.btn-block{:type => "button"} Change expiration date
-          #poll-expiration-date-input.input-group.date.hide.poll-limit-input
-            = text_field_tag  'poll[expire_at]', nil , { class: "form-control" }
-            %span.input-group-addon
-              %span.glyphicon.glyphicon-calendar
+        .form-group
+          .col-xs-6
+            .row
+              %button#poll-voters-limit-btn.btn.btn-primary.btn-block{:type => "button"} Add voters limit
+            #voters-limit-input.hide.poll-limit-input
+              .input-group
+                = poll_field.number_field :max_voters, {min: 1, class: "form-control" }
+                %span#cancel-voters-limit-input.input-group-addon.clickable
+                  %span.glyphicon.glyphicon-remove
+          .col-xs-6
+            .row
+              %button#poll-expiration-date-btn.btn.btn-primary.btn-block{:type => "button"} Change expiration date
+            #poll-expiration-date-input.input-group.date.hide.poll-limit-input
+              = poll_field.text_field :expire_at, class: "form-control"
+              %span.input-group-addon
+                %span.glyphicon.glyphicon-calendar
 
-      .dropzone.form-group.col-xs-12
-        %p Drag'n'drop files here
+        .dropzone.form-group.col-xs-12
+          %p Drag'n'drop files here
 
-      .attached-images.col-xs-12.padding-0
+        .attached-images.col-xs-12.padding-0
 
-      .form-group.col-xs-12.padding-0
-        .input-group.file-input
-          %span#basic-addon1.input-group-addon.clickable
-            %span.glyphicon.glyphicon-open
-              = file_field_tag "poll[images][]", id: 'image_input', multiple: true
-          %label.form-control.file-label.label-primary.clickable{"aria-describedby" => "basic-addon1"} No file chosen
+        .form-group.col-xs-12.padding-0
+          .input-group.file-input
+            %span#basic-addon1.input-group-addon.clickable
+              %span.glyphicon.glyphicon-open
+                = poll_field.file_field :images, id: 'image_input', multiple: true
+            %label.form-control.file-label.label-primary.clickable{"aria-describedby" => "basic-addon1"} No file chosen
 
     #options-form.row.form-group
       %h1#options-fields-header.text-center Options

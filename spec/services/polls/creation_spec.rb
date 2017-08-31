@@ -50,7 +50,7 @@ RSpec.describe Services::Polls::Creation do
     end
 
     context 'and options parameters invalid' do
-      let(:options_params) { [{title: '1', description: ''}, {title: '', description: '2'},{title: '3', description: ''}] }
+      let(:options_params) { [{ title: '1', description: '' }, { title: '', description: '2' }, { title: '3', description: '' }] }
 
       it 'do not create poll' do
         expect { service_call }.to_not change { Poll.count }
