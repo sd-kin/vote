@@ -7,10 +7,14 @@ module Services
 
       def call(user, params)
         poll = prepare_poll(user, params)
-
         prepare_options(poll, params)
 
-        save_poll_with_options(poll) if poll.valid? && options_valid?(poll)
+        # TODO: additional validate used because of && short circuit and do not evaluate validation
+        # if left part evaluates to false, refactor that to look more clear. Get rid of side effects in
+        # functions - options_valid? should only return boolean and not set errors or do anything else
+        poll.validate
+
+        save_poll_with_options(poll) if options_valid?(poll) && poll.valid?
 
         poll_with_options(poll)
       end
