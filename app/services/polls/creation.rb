@@ -10,12 +10,18 @@ module Services
 
         prepare_options(poll, params)
 
-        save_poll_with_options(poll) if options_valid?(poll) && poll.valid?
+        save_poll_with_options(poll) if poll.valid? && options_valid?(poll)
 
-        poll
+        poll_with_options(poll)
       end
 
       private
+
+      def poll_with_options(poll)
+        lack_of_options = Poll::MINIMUM_OPTIONS_COUNT - poll.options.size
+        lack_of_options.times { poll.options.build }
+        poll
+      end
 
       def prepare_poll(user, params)
         poll_params = params.require(:poll).permit(:title, :max_voters, :expire_at, images: [])
