@@ -4,6 +4,8 @@ class Poll < ActiveRecord::Base
   include StatusMachine
   include Imageable
 
+  MINIMUM_OPTIONS_COUNT = 3
+
   # Source in StatusMachine concern
   availible_status_transitions draft:  { 'ready' => 'draft', 'finished' => 'draft', 'deleted' => 'draft' },
                                ready:  { 'draft' => 'ready' },
