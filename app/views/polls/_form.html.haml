@@ -37,9 +37,7 @@
           %label.form-control.file-label.label-primary.clickable{"aria-describedby" => "basic-addon1"} No file chosen
 
     #options-form.row.form-group
-      #options-fields-header
-        %h1.text-center.margin-0 Options
-        %h4.text-center.margin-0 (You poll should have at least #{Poll::MINIMUM_OPTIONS_COUNT} of them)
+      %h1#options-fields-header.text-center Options
 
       - @poll.options.each do |option|
         = render 'poll_option_fields', option: option
@@ -56,4 +54,12 @@
 
   function renderOptionFields() {
     $('#add-option').before("#{escape_javascript render 'poll_option_fields', option: @poll.options.build}")
+  }
+
+  function removeOptionsFields(btn){
+    btn.parentElement.parentElement.remove();
+
+    const optionFields = document.querySelectorAll('.option-fields').length;
+
+    if( optionFields < 3 ) renderOptionFields();
   }

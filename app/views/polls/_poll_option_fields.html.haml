@@ -8,4 +8,4 @@
       = field.text_field :title, placeholder: 'option title', class: "form-control #{has_error_class(option, :title)}"
       = field.text_area  :description, rows: 3, placeholder: 'option description', class: "form-control #{has_error_class(option, :description)}"
     .option-delete-button
-      = button_tag 'X', type: 'button', onclick: 'this.parentElement.parentElement.remove()', class: "btn btn-danger btn-block"
+      = button_tag 'X', type: 'button', onclick: 'removeOptionsFields(this)', class: "btn btn-danger btn-block"
