@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 module ExpireCookies
   def expire_cookies
-    cookies.reject! do |existing_cookie|
+    cookies.select! do |existing_cookie|
       # See http://jamesferg.com/testing/bdd/hacking-capybara-cookies/
       # catch session cookies/no expiry (nil) and past expiry (true)
-      existing_cookie.expired? != false
+      existing_cookie.expired? == false
     end
   end
 

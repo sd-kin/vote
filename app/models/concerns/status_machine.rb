@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module StatusMachine
   InvalidEvent = Class.new(NoMethodError)
   InvalidState = Class.new(ArgumentError)
@@ -53,7 +54,7 @@ module StatusMachine
     end
 
     def define_status_callbacks_methods # add class methods for setting callback.
-      %w(before_ after_ around_).each do |prefix|
+      %w[before_ after_ around_].each do |prefix|
         define_singleton_method "#{prefix}change_status" do |method|
           set_callback :change_status, prefix.chop.to_sym, method
         end

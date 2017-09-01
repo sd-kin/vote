@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 FactoryGirl.define do
   factory :option do
     trait :with_title do
@@ -9,6 +10,6 @@ FactoryGirl.define do
       sequence(:description) { |n| "This is #{n.ordinalize} option" }
     end
 
-    factory :valid_option, traits: [:with_title, :with_description]
+    factory :valid_option, traits: %i[with_title with_description]
   end
 end

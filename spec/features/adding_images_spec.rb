@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 include ActionView::RecordIdentifier
 
@@ -37,8 +38,7 @@ RSpec.feature 'Adding images', type: :feature do
       expect(page).to_not have_selector('img')
 
       fill_in 'poll_title', with: 'new poll'
-      attach_file  'image_input', 'spec/fixtures/files/test_image.png', visible: false
-      click_button 'Ok'
+      attach_file 'image_input', 'spec/fixtures/files/test_image.png', visible: false
 
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
 

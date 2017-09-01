@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module NotificationsHelper
   def link_to_subject(subject)
     return unless subject

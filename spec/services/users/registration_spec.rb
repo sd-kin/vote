@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Services::Users::Registration do
   let(:service_call) { Services::Users::Registration.call(current_user, user_params) }
 
   it 'redirect .call to #call' do
-    arguments = [:current_user, :user_params]
+    arguments = %i[current_user user_params]
     expect_any_instance_of(Services::Users::Registration).to receive(:call).with(*arguments)
     Services::Users::Registration.call(*arguments)
   end

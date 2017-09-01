@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Rails.application.routes.draw do
   get 'notifications/index'
 
@@ -78,7 +79,7 @@ Rails.application.routes.draw do
     resources :notifications, only: [:index]
   end
 
-  resources :ratings, only: [:increase, :decrease] do
+  resources :ratings, only: %i[increase decrease] do
     member do
       post 'increase'
       post 'decrease'
@@ -87,7 +88,7 @@ Rails.application.routes.draw do
 
   resources :comments
   resources :images,              only: [:destroy]
-  resources :password_resets,     only: [:new, :create, :update, :edit]
+  resources :password_resets,     only: %i[new create update edit]
   resources :account_activations, only: [:edit]
 
   get    'login',  to: 'sessions#new'

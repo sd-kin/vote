@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class BroadcastNotificationJob < ApplicationJob
   queue_as :default
 

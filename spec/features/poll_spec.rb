@@ -1,174 +1,86 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
-require 'support/page_objects/poll_pages_objects'
 
-include PollPagesObjects
+RSpec.feature 'Poll', type: :feature do
+  describe 'create form', js: true do
+    context 'when filled in correctly' do
+      let(:title)           { 'New Shiny Poll' }
+      let(:voters_limit)    { '1234' }
+      let(:expiration_date) { 1.year.from_now.strftime('%Y/%m/%d %H:%m') }
+      let(:poll_descroption) { "Poll status is draft. Voters count limited up to #{voters_limit}. Votation process will be stopped in 12 month" }
+      let(:options) do
+        {
+          first:  { title: '1st', description: 'first option' },
+          second: { title: '2nd', description: 'second option' },
+          third:  { title: '3rd', description: 'third option' },
+          fourth: { title: '4th', description: 'fourth option' }
+        }
+      end
 
-feature 'when create poll' do
-  scenario 'should visit home page' do
-    current_page = RootPage.new
-    current_page.visit_page
+      it 'create poll' do
+        visit new_poll_path
 
-    expect(current_page).to be_correct_page
-  end
+        # has inputs for 3 options
+        expect(page).to have_css '.option-fields-group', count: 3
 
-  scenario 'should render form for title' do
-    current_page = NewPollPage.new
-    current_page.visit_page
+        click_button 'Create poll'
 
-    expect(current_page).to have_form_for_title
-  end
+        expect(page).to have_content('Title can\'t be blank')
+        expect(page).to have_content('Poll should have at least 3 options')
 
-  scenario 'should create poll with title', js: true do
-    current_page = NewPollPage.new
-    current_page.visit_page
-    current_page.create_poll(title: 'new poll title')
-    wait_for_ajax
+        fill_in 'Title', with: title
 
-    expect(current_page.title).to eq('new poll title')
-  end
+        click_button 'Add voters limit'
+        fill_in 'poll[max_voters]', with: voters_limit
 
-  scenario 'should not create poll without title', js: true do
-    current_page = NewPollPage.new
-    current_page.visit_page
-    current_page.create_poll(title: '')
-    wait_for_ajax
+        click_button 'Change expiration date'
+        fill_in 'poll[expire_at]', with: expiration_date
 
-    expect(current_page).to have_validation_error
-  end
-end
+        attach_file 'image_input', 'spec/fixtures/files/test_image.png', visible: false
 
-feature 'when create options for poll', js: true do
-  scenario 'should render form for new option' do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    wait_for_ajax
+        within '#options-form' do
+          click_button 'Add option'
 
-    expect(current_page).to have_form_for_option
-  end
+          # adds one more input group for option
+          expect(page).to have_css '.option-fields-group', count: 4
+        end
 
-  scenario 'should create poll with two options', js: true do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.create_option(title = 'option 1 title', description = 'option 1 description')
-    wait_for_ajax
+        # fill in fields for first option
+        within '#options-form .option-fields-group:nth-child(2)' do
+          fill_in 'options[][title]',       with: options[:first][:title]
+          fill_in 'options[][description]', with: options[:first][:description]
+        end
 
-    expect(current_page).to have_content('option 1 title')
-    expect(current_page).to have_content('option 1 description')
+        # fill in fields for second option
+        within '#options-form .option-fields-group:nth-child(3)' do
+          fill_in 'options[][title]',       with: options[:second][:title]
+          fill_in 'options[][description]', with: options[:second][:description]
+        end
 
-    current_page.create_option(title = 'option 2 title', description = 'option 2 description')
-    wait_for_ajax
+        # fill in fields for third option
+        within '#options-form .option-fields-group:nth-child(4)' do
+          fill_in 'options[][title]',       with: options[:third][:title]
+          fill_in 'options[][description]', with: options[:third][:description]
+        end
 
-    expect(current_page).to have_content('option 2 title')
-    expect(current_page).to have_content('option 2 description')
-  end
+        # fill in fields for fourth option
+        within '#options-form .option-fields-group:nth-child(5)' do
+          fill_in 'options[][title]',       with: options[:fourth][:title]
+          fill_in 'options[][description]', with: options[:fourth][:description]
+        end
 
-  scenario 'should not create poll without option title' do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.create_option(title = '', description = 'option 1 description')
-    wait_for_ajax
+        click_button 'Create poll'
 
-    expect(current_page).to have_validation_error
-  end
+        expect(page).to have_content('New Shiny Poll')
 
-  scenario 'should not create poll without description' do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.create_option(title = 'option 1 title', description = '')
-    wait_for_ajax
+        expect(page).to have_content(options[:first][:title])
+        expect(page).to have_content(options[:second][:title])
+        expect(page).to have_content(options[:third][:title])
+        expect(page).to have_content(options[:fourth][:title])
 
-    expect(current_page).to have_validation_error
-  end
-end
-
-feature 'after create poll' do
-  scenario 'should be accessible by index page', js: true do
-    current_page = NewPollPage.new
-    current_page.visit_page
-    current_page.create_poll(title: 'test title')
-    wait_for_ajax
-    current_page = IndexPollsPage.new
-    current_page.visit_page
-    click_link('test title')
-
-    expect(current_page.title).to eq('test title')
-  end
-end
-
-feature 'when changing poll status' do
-  scenario 'poll without options cant be ready', js: true do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.make_ready
-    wait_for_ajax
-
-    expect(current_page).to have_status_validation_error
-  end
-
-  scenario 'new poll has default status(draft)', js: true do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    wait_for_ajax
-
-    expect(current_page).to have_status
-  end
-
-  scenario 'poll with options can be ready', js: true do
-    current_page = EditPollPage.new
-    current_page.visit_page
-    current_page.create_option
-    wait_for_ajax
-    current_page.make_ready
-    wait_for_ajax
-
-    expect(current_page).to have_status('ready')
-  end
-end
-
-feature 'when cast a vote' do
-  given(:poll) { FactoryGirl.create(:valid_poll, status: :ready) }
-
-  scenario 'can access vote by unique URL', js: true do
-    current_page = ShowPollPage.new
-    current_page.visit_page
-
-    expect(current_page.title).to eq('poll title')
-  end
-
-  scenario 'can cast a vote and see that his choice accepted, but only once', js: true do
-    visit poll_path(id: poll.id)
-
-    expect(page).to have_button('make choice')
-    expect(page).to have_no_link('see results')
-
-    click_button('make choice')
-
-    expect(page).to have_content('choice has been accepted')
-    expect(page).to have_link('see results')
-    expect(page).to have_no_button('make choice')
-
-    visit poll_path(id: poll.id)
-
-    expect(page).to have_content('choice has been accepted')
-    expect(page).to have_link('see results')
-    expect(page).to have_no_button('make choice')
-  end
-end
-
-feature 'when want to see poll result' do
-  given(:poll) { FactoryGirl.create(:valid_poll, status: :ready) }
-
-  scenario 'cant do it before vote' do
-    visit result_poll_path(id: poll.id)
-    expect(page).to have_content('You can see results after you make your choice.')
-  end
-
-  scenario 'after voted current poll', js: true do
-    visit poll_path(id: poll.id)
-    click_button('make choice')
-    click_link('see results')
-
-    expect(page).to have_content('weight is')
+        expect(page).to have_content(poll_descroption)
+      end
+    end
   end
 end

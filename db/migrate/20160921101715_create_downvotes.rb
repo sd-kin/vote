@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateDownvotes < ActiveRecord::Migration
   def change
     create_table :downvotes do |t|

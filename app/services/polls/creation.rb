@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Services
   module Polls
     class Creation
@@ -33,7 +34,7 @@ module Services
       end
 
       def prepare_options(poll, params)
-        options_params = params.permit(options: [:title, :description]).require(:options)
+        options_params = params.permit(options: %i[title description]).require(:options)
         options_params.reject! { |option| option[:title].blank? && option[:description].blank? }
         build_options(poll, options_params)
       end

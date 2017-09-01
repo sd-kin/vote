@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module LayoutHelper
   def render_account_links
     if logged_in?

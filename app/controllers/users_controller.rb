@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 class UsersController < ApplicationController
-  before_action :authorize_user, only: [:edit, :update]
+  before_action :authorize_user, only: %i[edit update]
 
   def index
     @users = User.named

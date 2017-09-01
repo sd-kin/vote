@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Rating < ActiveRecord::Base
   belongs_to :rateable, polymorphic: true, autosave: true
   has_many :downvotes

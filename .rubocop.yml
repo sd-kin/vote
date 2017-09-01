@@ -76,3 +76,7 @@ Lint/AssignmentInCondition:
 Style/EmptyMethod:
   Exclude:
     - 'app/controllers/password_resets_controller.rb'
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'

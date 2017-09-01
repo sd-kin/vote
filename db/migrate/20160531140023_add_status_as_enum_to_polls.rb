@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class AddStatusAsEnumToPolls < ActiveRecord::Migration
   def up
     execute <<-SQL

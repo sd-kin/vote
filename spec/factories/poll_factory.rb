@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 FactoryGirl.define do
   factory :poll do
     user
@@ -45,7 +46,7 @@ FactoryGirl.define do
       end
     end
 
-    factory :valid_poll, traits: [:with_title, :with_options]
-    factory :updated_poll, traits: [:with_updated_title, :with_updated_options]
+    factory :valid_poll, traits: %i[with_title with_options]
+    factory :updated_poll, traits: %i[with_updated_title with_updated_options]
   end
 end
