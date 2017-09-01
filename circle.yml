@@ -24,6 +24,7 @@ test:
     - bundle exec rspec --format progress --format RspecJunitFormatter -o $CIRCLE_TEST_REPORTS/rspec.xml
   post:
     - bundle exec rubocop
+    - bundle exec bundle audit check --update
 
 database:
   override:

@@ -51,7 +51,10 @@ gem 'autoprefixer-rails'
 # datetimepicker https://github.com/TrevorS/bootstrap3-datetimepicker-rails
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
+# pack and transplit js assets
 gem 'webpacker'
+# check for security risks
+gem 'bundler-audit'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
