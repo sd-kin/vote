@@ -1,5 +1,5 @@
-<%= render @poll %>
-<%= render 'options/form', poll: @poll %> <br>
+<%= render 'poll__form', poll: @poll %>
+
 <div id = "<%= dom_id(@poll, :links_for) %>">
   <%= render 'links', poll: @poll %>
 </div>

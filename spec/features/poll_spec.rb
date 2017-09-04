@@ -7,8 +7,8 @@ RSpec.feature 'Poll', type: :feature do
     context 'when filled in correctly' do
       let(:title)           { 'New Shiny Poll' }
       let(:voters_limit)    { '1234' }
-      let(:expiration_date) { 1.year.from_now.strftime('%Y/%m/%d %H:%m') }
-      let(:poll_descroption) { "Poll status is draft. Voters count limited up to #{voters_limit}. Votation process will be stopped in 12 month" }
+      let(:expiration_date) { (1.year.from_now + 1.day).strftime('%Y/%m/%d %H:%m') }
+      let(:poll_descroption) { "Poll status is draft. Voters count limited up to #{voters_limit}. Votation process will be stopped in about 1 year" }
       let(:options) do
         {
           first:  { title: '1st', description: 'first option' },
