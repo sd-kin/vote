@@ -1,9 +1,9 @@
-#new-poll.container
+#new-poll.poll_form.container
   = form_tag(polls_path, multipart: true, class: 'form-with-image-upload') do
     = render 'poll_fields', poll: @poll
 
-    #options-form.row.form-group
-      %h1#options-fields-header.text-center Options
+    #options-form.poll-form-element.row.form-group
+      %h1#options-fields-header.poll-form-element.text-center Options
 
       - @poll.options.each do |option|
         = render 'poll_option_fields', option: option

@@ -1,0 +1,12 @@
+.poll-form-element.row.form-group
+
+  - if poll.able_to_ready?
+    = button_tag 'Make ready', class: "btn btn-primary btn-block"
+
+  - if poll.able_to_draft?
+    = button_tag 'Make draft'
+
+  #votation-progress-lost.alert.alert-danger.text-center
+    %h4
+      %span.glyphicon.glyphicon-exclamation-sign.pull-left
+      All votation progress will be lost!

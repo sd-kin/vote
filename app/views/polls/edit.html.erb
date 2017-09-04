@@ -1,9 +1,0 @@
-<%= render 'poll__form', poll: @poll %>
-
-<div id = "<%= dom_id(@poll, :links_for) %>">
-  <%= render 'links', poll: @poll %>
-</div>
-
-<div id = "<%= dom_id(@poll, :status_for) %>">
-    <%= render 'polls/status', poll: @poll %>
-</div>
