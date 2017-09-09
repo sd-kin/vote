@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Services::Polls::Creation do
-  let(:service_call) { Services::Polls::Creation.call(current_user, params) }
+RSpec.describe Services::Polls::Create do
+  let(:service_call) { Services::Polls::Create.call(current_user, params) }
   let!(:current_user) { FactoryGirl.create(:user) }
   let(:params) { ActionController::Parameters.new(poll: poll_params, options: options_params) }
 

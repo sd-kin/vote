@@ -6,7 +6,7 @@ FactoryGirl.define do
     expire_at { 1.day.from_now }
 
     trait :with_title do
-      title 'first poll'
+      sequence(:title) { |n| "#{n.ordinalize} poll" }
     end
 
     trait :with_updated_title do

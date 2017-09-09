@@ -1,5 +1,5 @@
 #edit-poll.poll_form.container
-  = form_tag(polls_path, multipart: true, class: 'form-with-image-upload') do
+  = form_tag(poll_path(@poll), multipart: true, method: :put, class: 'form-with-image-upload') do
 
     = render 'status', poll: @poll
 
@@ -14,4 +14,4 @@
       = button_tag 'Add option', type: 'button', class: "btn btn-primary btn-block", id: 'add-option'
 
     .row.form-group
-      = submit_tag 'Create poll', class: "btn btn-primary btn-block"
+      = submit_tag 'Update poll', class: "btn btn-primary btn-block"

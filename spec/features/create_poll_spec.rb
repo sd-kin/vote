@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.feature 'Poll', type: :feature do
-  describe 'create form', js: true do
-    context 'when filled in correctly' do
+RSpec.feature 'Create poll', type: :feature do
+  describe 'filling create form', js: true do
+    context 'when all fields correct' do
       let(:title)           { 'New Shiny Poll' }
       let(:voters_limit)    { '1234' }
       let(:expiration_date) { (1.year.from_now + 1.day).strftime('%Y/%m/%d %H:%m') }

@@ -36,7 +36,7 @@ class PollsController < ApplicationController
   end
 
   def create
-    @poll = Services::Polls::Creation.call(current_user, params)
+    @poll = Services::Polls::Create.call(current_user, params)
     if @poll.persisted?
       redirect_to @poll
     else
@@ -46,10 +46,16 @@ class PollsController < ApplicationController
   end
 
   def update
-    @poll   = Poll.find(params[:id])
-    @rating = @poll.rating
+    @poll = Poll.includes(:images).find(params[:id])
 
-    execute_if_accessible(@poll) { |poll| poll.update poll_params }
+    execute_if_accessible(@poll) { |poll| Services::Polls::Update.call(poll, params) }
+
+    if @poll.errors.empty?
+      redirect_to @poll
+    else
+      flash[:error] = @poll.errors.full_messages
+      render :edit
+    end
   end
 
   def destroy

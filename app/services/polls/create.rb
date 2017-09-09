@@ -2,7 +2,7 @@
 
 module Services
   module Polls
-    class Creation
+    class Create
       # look up in concerns folder
       include Service
 
