@@ -8,7 +8,7 @@ RSpec.feature 'Update poll', type: :feature do
 
   before(:each) { login_as(author) }
 
-  describe 'when update title', js: true do
+  feature 'update title', js: true do
     it 'changes' do
       visit edit_poll_path(poll)
 
@@ -17,6 +17,20 @@ RSpec.feature 'Update poll', type: :feature do
       click_button 'Update poll'
 
       expect(page).to have_content('new poll title')
+    end
+  end
+
+  feature 'change status', js: true do
+    it 'changes from draft to ready' do
+      visit edit_poll_path(poll)
+
+      find('label', text: 'Make ready').click
+
+      expect(page).to have_css('label', text: 'Return to draft')
+
+      click_button 'Update poll'
+
+      expect(page).to have_content('status is ready')
     end
   end
 end

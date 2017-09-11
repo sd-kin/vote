@@ -1,3 +1,11 @@
+#status-header {
+  margin-top: 0;
+  padding: 2vmin;
+  color: white;
+  font-weight: bold;
+  background-color: #cccccc;
+}
+
 #votation-progress-lost {
   padding:    1vmin;
   margin-top: 3vmin;
@@ -9,4 +17,16 @@
 
 #votation-progress-lost h4 .glyphicon{
   font-size: 5vmin;
+}
+
+#undo-change-status, #status-check-box {
+  display: none;
+}
+
+#status-check-box:checked~#undo-change-status {
+  display: block;
+}
+
+#status-check-box:checked+#change-status {
+  display: none;
 }
