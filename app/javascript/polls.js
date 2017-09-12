@@ -5,17 +5,19 @@ $(document).on('turbolinks:load', function() {
 function initializePollForm(){
   if(!$('.poll_form')[0]) return;
 
+  initializeVotersLimitButton();
+  initializeExpirationDateButton();
+  initializeDateTimePicker();
+}
+
+function initializeDateTimePicker(){
   const dateFormat = 'YYYY/MM/DD HH:mm'
   const today      = moment();
   const tomorrow   = moment(today).add(1, 'days');
   const hourAfter  = moment(today).add(1, 'hours');
 
-
-  initializeVotersLimitButton();
-  initializeExpirationDateButton();
-
   $('#poll-expiration-date-input').datetimepicker(
-    {format: dateFormat, defaultDate: tomorrow, minDate: hourAfter, showClear: true}
+    {format: dateFormat, defaultDate: tomorrow, minDate: hourAfter, showClear: true, keepInvalid: true}
   ).on('dp.change', preventEmptyDate);
 }
 

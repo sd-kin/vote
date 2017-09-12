@@ -13,8 +13,8 @@
 
 .poll-form-element.row.form-group
   %h3#status-header.text-center Status
-  = check_box_tag 'status', status_availible_for(poll), false, id: 'status-check-box'
-  = label_tag 'status-check-box', "Make #{status_availible_for(poll)}", id: 'change-status', class: 'btn btn-primary btn-block'
+  = check_box_tag 'status', status_available_for(poll), false, id: 'status-check-box'
+  = label_tag 'status-check-box', "Make #{status_available_for(poll)}", id: 'change-status', class: 'btn btn-primary btn-block'
   = label_tag 'status-check-box', "Return to #{poll.status}", id: 'undo-change-status', class: 'btn btn-primary btn-block'
 
   #votation-progress-lost.alert.alert-danger.text-center

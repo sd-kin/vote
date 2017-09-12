@@ -7,7 +7,7 @@ module Services
       include Service
 
       def call(poll, params)
-        poll_params = params.require(:poll).permit(:title)
+        poll_params = params.require(:poll).permit(:title, :max_voters, :expire_at)
 
         poll.update poll_params
 

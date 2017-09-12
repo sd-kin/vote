@@ -7,15 +7,15 @@
         = poll_field.text_field :title, class: "form-control #{error_class?(@poll, :title)}"
 
     .form-group
-      .col-xs-6
+      #voters-limit.col-xs-6
         .row
-          %button#poll-voters-limit-btn.btn.btn-primary.btn-block{:type => "button"} Add voters limit
+          %button#poll-voters-limit-btn.btn.btn-primary.btn-block{:type => "button"} Change voters limit
         #voters-limit-input.hide.poll-limit-input
           .input-group
             = poll_field.number_field :max_voters, {min: 1, class: "form-control" }
             %span#cancel-voters-limit-input.input-group-addon.clickable
               %span.glyphicon.glyphicon-remove
-      .col-xs-6
+      #expiration-date.col-xs-6
         .row
           %button#poll-expiration-date-btn.btn.btn-primary.btn-block{:type => "button"} Change expiration date
         #poll-expiration-date-input.input-group.date.hide.poll-limit-input

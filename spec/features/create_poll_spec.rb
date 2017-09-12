@@ -31,7 +31,7 @@ RSpec.feature 'Create poll', type: :feature do
 
         fill_in 'Title', with: title
 
-        click_button 'Add voters limit'
+        click_button 'Change voters limit'
         fill_in 'poll[max_voters]', with: voters_limit
 
         click_button 'Change expiration date'
