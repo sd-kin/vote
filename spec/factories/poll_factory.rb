@@ -46,6 +46,12 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_image do
+      after :create do |poll|
+        poll.images.create(image_file: File.new('spec/fixtures/files/test_image.png'))
+      end
+    end
+
     factory :valid_poll, traits: %i[with_title with_options]
     factory :updated_poll, traits: %i[with_updated_title with_updated_options]
   end

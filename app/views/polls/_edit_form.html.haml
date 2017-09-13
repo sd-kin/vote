@@ -5,6 +5,8 @@
 
     = render 'poll_fields', poll: @poll
 
+    = render 'shared/images_form', imageable: @poll
+
     #options-form.poll-form-element.row.form-group
       %h1#options-fields-header.text-center Options
 

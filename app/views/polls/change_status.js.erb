@@ -1,6 +1,0 @@
-<% unless @poll.errors.any? %>
-$('#<%= dom_id(@poll, :status_for) %>').html('<%= escape_javascript render "status", poll: @poll %>');
-$('#<%= dom_id(@poll, :links_for ) %>').html('<%= escape_javascript render "links", poll: @poll %>');
-$('#options').html('<%= escape_javascript render @poll.options %>');
-<% end %>
-$('#<%= dom_id(@poll, :errors_for) %>').html('<%= escape_javascript render "errors", poll: @poll %>');

@@ -7,7 +7,7 @@ module Services
       include Service
 
       def call(poll, params)
-        poll_params = params.require(:poll).permit(:title, :max_voters, :expire_at)
+        poll_params = params.require(:poll).permit(:title, :max_voters, :expire_at, images: [])
 
         poll.update poll_params
 
@@ -15,6 +15,15 @@ module Services
         # to trigger all related checks and callbacks
         status = params['status']
         poll.send(status + '!') unless status.blank?
+
+        ids_of_images_for_delete = params['ids_of_images_for_delete']
+
+        if ids_of_images_for_delete
+          ids_of_images_for_delete.map(&:to_i)
+          ids_of_images_for_delete.each do |id|
+            poll.images.find(id).destroy
+          end
+        end
 
         poll
       end

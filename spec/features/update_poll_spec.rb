@@ -60,6 +60,26 @@ RSpec.feature 'Update poll', type: :feature, js: true do
   end
 
   feature 'images' do
+    let!(:poll_with_image) { FactoryGirl.create :valid_poll, :with_image, user: author }
+
+    scenario 'can be added' do
+      visit edit_poll_path(poll)
+
+      attach_file 'image_input', 'spec/fixtures/files/test_image.png', visible: false
+      click_button 'Update poll'
+
+      expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
+    end
+
+    scenario 'can be deleted' do
+      visit edit_poll_path(poll_with_image)
+
+      expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
+      check("delete_checkbox_for_image_#{poll_with_image.images.first.id}")
+      click_button 'Update poll'
+
+      expect(page).to have_no_xpath("//img[contains(@src, 'medium/test_image.png')]")
+    end
   end
 
   feature 'options' do

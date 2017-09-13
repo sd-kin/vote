@@ -76,4 +76,27 @@ RSpec.describe Services::Polls::Update do
       end
     end
   end
+
+  context 'images' do
+    context 'adding images' do
+      let(:poll_params) { FactoryGirl.attributes_for :valid_poll, images: [sample_file] }
+
+      it 'increase images count' do
+        expect { service_call }.to change { poll.images.count }.by(1)
+      end
+    end
+
+    context 'removing images' do
+      let(:poll)   { FactoryGirl.create :valid_poll, :with_image }
+      let(:params) { ActionController::Parameters.new(poll: poll_params, ids_of_images_for_delete: [poll.images.first.id.to_s]) }
+
+      it 'decrease images count' do
+        expect { service_call }.to change { poll.images.count }.by(-1)
+      end
+    end
+  end
+end
+
+def sample_file(filename = 'test_image.png')
+  File.new("spec/fixtures/files/#{filename}")
 end
