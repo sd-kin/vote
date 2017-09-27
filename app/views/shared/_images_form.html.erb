@@ -1,7 +1,0 @@
-<% imageable.images.each do |image| %>
-  <div id='<%= dom_id(image) %>'>
-    <p> <%= image_tag image.url(:medium) %> </p>
-    <p> <%= link_to 'delete image', image_path(id: image.id), method: :delete, remote: true unless image.new_record? %> </p>
-    <%= check_box_tag "ids_of_images_for_delete[]", image.id, false, id: dom_id(image, :delete_checkbox_for) unless image.new_record?%>
-  </div>
-<% end %>

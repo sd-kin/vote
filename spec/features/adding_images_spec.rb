@@ -72,7 +72,11 @@ RSpec.feature 'Adding images', type: :feature do
 
       within '#' + dom_id(poll.comments.last) do
         click_link 'edit'
-        click_link('delete image')
+
+        within("#image_#{poll.comments.last.images.first.id}") do
+          find('.delete-poll-image-btn').click
+        end
+
         click_button('Add comment')
       end
 

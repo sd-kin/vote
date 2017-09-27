@@ -15,7 +15,7 @@
   line-height: 5vmin;
 }
 
-#votation-progress-lost h4 .glyphicon{
+#votation-progress-lost h4 .glyphicon {
   font-size: 5vmin;
 }
 
@@ -28,5 +28,54 @@
 }
 
 #status-check-box:checked+#change-status {
+  display: none;
+}
+
+.delete-poll-image-btn {
+  width: 8vmin;
+  background-color: #d9534f;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 6vmin;
+}
+
+.poll-image {
+  display: flex;
+  margin: 1vmin;
+  position: relative;
+}
+
+.poll-images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.undo-icon {
+  display: none;
+  z-index: 1;
+}
+
+.deleted-image {
+  background-color: rgba(0, 0, 0, 0.5);
+  width:  100%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  display: none;
+}
+
+.delete-image-checkbox:checked ~ .deleted-image {
+  display: block;
+}
+
+.delete-image-checkbox:checked ~ .undo-icon {
+  display: block;
+}
+
+.delete-image-checkbox:checked ~ .delete-icon {
   display: none;
 }

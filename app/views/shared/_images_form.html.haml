@@ -1,0 +1,10 @@
+.poll-images
+  - imageable.images.each do |image|
+    .poll-image[image]
+      = image_tag image.url(:medium)
+
+      %label.btn.delete-poll-image-btn
+        = check_box_tag "ids_of_images_for_delete[]", image.id, false, id: dom_id(image, :delete_checkbox_for), class: 'delete-image-checkbox hidden' unless image.new_record?
+        %span.glyphicon.glyphicon-trash.delete-icon
+        %span.glyphicon.glyphicon-repeat.mirror.undo-icon
+        .deleted-image

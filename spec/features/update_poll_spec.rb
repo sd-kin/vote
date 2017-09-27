@@ -75,7 +75,10 @@ RSpec.feature 'Update poll', type: :feature, js: true do
       visit edit_poll_path(poll_with_image)
 
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
-      check("delete_checkbox_for_image_#{poll_with_image.images.first.id}")
+
+      within("#image_#{poll_with_image.images.first.id}") do
+        find('.delete-poll-image-btn').click
+      end
       click_button 'Update poll'
 
       expect(page).to have_no_xpath("//img[contains(@src, 'medium/test_image.png')]")

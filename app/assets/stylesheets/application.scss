@@ -19,6 +19,10 @@ background: url('background.png') no-repeat center center fixed;
   margin: 0;
 }
 
+.mirror {
+  transform: scale(-1, 1);
+}
+
 .field-with-error {
   border-left: 1vmin solid #d9534f;
   background-color: rgba(217, 83, 79, 0.17);
