@@ -9,8 +9,8 @@
   $('#reply_link_for_comment_' + '<%= @comment.id%>').click(showReplyForm);
   $('#cancel_link_for_comment_' + '<%= @comment.id%>').click(hideReplyForm);
 
-  $('.file-input label')[0].innerText=' No file chosen '
-  $('#attached-images')[0].innerHTML='';
+  $('#<%= @comment.commentable.class.to_s.downcase %>_<%= @comment.commentable.id %>_new_comment .file-input label')[0].innerText=' No file chosen '
+  $('#<%= @comment.commentable.class.to_s.downcase %>_<%= @comment.commentable.id %>_new_comment .attached-images')[0].innerHTML='';
 <% else %>
   $('#<%= dom_id(@comment.commentable, :reply_form_for) %>').html('<%= escape_javascript render "comments/form", comment: @comment %>');
 <% end %>
