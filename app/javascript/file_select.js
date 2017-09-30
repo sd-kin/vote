@@ -6,7 +6,7 @@ $(document).on('turbolinks:load', function() {
   formsWithImageUpload.forEach( form => initializeFormWithImages(form));
 });
 
-function initializeFormWithImages(form) {
+export function initializeFormWithImages(form) {
   const fileButton = form.querySelector('.file-input');
   const fileInput  = form.querySelector('input[type=file]');
   const dropZone   = form.querySelector('.dropzone');

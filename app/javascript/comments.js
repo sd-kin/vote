@@ -3,7 +3,7 @@ $(document).on('turbolinks:load', function() {
 	document.querySelectorAll('.cancel-link a').forEach(a => a.addEventListener('click', hideReplyForm));
 });
 
-function showReplyForm(e) {
+export function showReplyForm(e) {
 	e.preventDefault();
 
 	const commentID  = e.target.dataset.commentId;
@@ -16,7 +16,7 @@ function showReplyForm(e) {
 	cancelLink.style.display = 'block'
 }
 
-function hideReplyForm(e) {
+export function hideReplyForm(e) {
 	e.preventDefault();
 
 	const commentID  = e.target.dataset.commentId;
@@ -39,8 +39,3 @@ function resetFormWithImages(form){
   fileLabel.innerText = 'No file chosen';
   form.reset();
 }
-
-// add to global context in order to be able to use from js.erb templates
-
-global.showReplyForm = showReplyForm;
-global.hideReplyForm = hideReplyForm;

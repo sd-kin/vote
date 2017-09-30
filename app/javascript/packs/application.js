@@ -11,8 +11,14 @@ import "babel-polyfill"
 import "nodelist-foreach-polyfill"
 import "element-closest"
 
-import 'comments'
-import 'file_select'
+import { showReplyForm, hideReplyForm } from 'comments'
+import { initializeFormWithImages } from 'file_select'
 import 'make_sortable'
 import 'polls'
 import 'sign_up'
+
+module.exports = {
+  showReplyForm:            showReplyForm,
+  hideReplyForm:            hideReplyForm,
+  initializeFormWithImages: initializeFormWithImages
+};

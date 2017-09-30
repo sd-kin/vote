@@ -28,7 +28,10 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: output.path,
-    publicPath: output.publicPath
+    publicPath: output.publicPath,
+    filename: 'application.js',
+    libraryTarget: 'var',
+    library: 'AssetsPiplineJS'
   },
 
   module: {
