@@ -12,7 +12,7 @@ import "nodelist-foreach-polyfill"
 import "element-closest"
 
 import { showReplyForm, hideReplyForm } from 'comments'
-import { initializeFormWithImages } from 'file_select'
+import { initializeFormWithImages }     from 'file_select'
 import 'make_sortable'
 import 'polls'
 import 'sign_up'

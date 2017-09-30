@@ -1,1 +1,4 @@
 $('#<%= dom_id(@comment) %>').html(' <%= escape_javascript render 'form', commentable: @comment.commentable, comment: @comment %> ');
+
+const editCommentForm = document.querySelector('#<%= dom_id(@comment)%> .form-with-image-upload');
+AssetsPiplineJS.initializeFormWithImages(editCommentForm);

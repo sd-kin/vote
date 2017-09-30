@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
 
   def update
     @comment = Comment.find(params[:id])
-    @updated = execute_if_accessible(@comment, redirect: false) { |c| c.update comment_params }
+    @updated = execute_if_accessible(@comment, redirect: false) { |c| Services::Comments::Update.call(c, params) }
   end
 
   def create

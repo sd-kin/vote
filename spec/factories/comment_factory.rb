@@ -16,5 +16,11 @@ FactoryGirl.define do
     trait :belongs_to_comment do
       association :commentable, factory: :comment
     end
+
+    trait :with_image do
+      after :create do |comment|
+        comment.images.create(image_file: File.new('spec/fixtures/files/test_image.png'))
+      end
+    end
   end
 end

@@ -6,8 +6,8 @@
   $('#reply_form_for_comment_' + '<%= @comment.commentable.id%>').hide();
 
   $('#<%= dom_id(@comment.commentable, :comments_for) %>').append('<%= escape_javascript render @comment %>');
-  $('#reply_link_for_comment_' + '<%= @comment.id%>').click(showReplyForm);
-  $('#cancel_link_for_comment_' + '<%= @comment.id%>').click(hideReplyForm);
+  $('#reply_link_for_comment_' + '<%= @comment.id%>').click(AssetsPiplineJS.showReplyForm);
+  $('#cancel_link_for_comment_' + '<%= @comment.id%>').click(AssetsPiplineJS.hideReplyForm);
 
   $('#<%= @comment.commentable.class.to_s.downcase %>_<%= @comment.commentable.id %>_new_comment .file-input label')[0].innerText=' No file chosen '
   $('#<%= @comment.commentable.class.to_s.downcase %>_<%= @comment.commentable.id %>_new_comment .attached-images')[0].innerHTML='';
