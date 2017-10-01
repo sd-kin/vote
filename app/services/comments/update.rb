@@ -5,18 +5,12 @@ module Services
     class Update
       # look up in concerns folder
       include Service
+      include ImagesDestroyer
 
       def call(comment, params)
         comment_params = params.require(:comment).permit(:body, images: [])
 
-        ids_of_images_for_delete = params['ids_of_images_for_delete']
-
-        if ids_of_images_for_delete
-          ids_of_images_for_delete.map(&:to_i)
-          ids_of_images_for_delete.each do |id|
-            comment.images.find(id).destroy
-          end
-        end
+        destroy_array_of_images(comment, params['ids_of_images_for_delete'])
 
         comment.update(comment_params)
       end
