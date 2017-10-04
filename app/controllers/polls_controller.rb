@@ -50,6 +50,9 @@ class PollsController < ApplicationController
 
     execute_if_accessible(@poll) { |poll| Services::Polls::Update.call(poll, params) }
 
+    # ActionController::Metal#performed? test whether render or redirect already happened
+    return if performed?
+
     if @poll.errors.empty?
       redirect_to @poll
     else
@@ -84,24 +87,6 @@ class PollsController < ApplicationController
     id             = params[:id]
     @poll          = Poll.find(id)
     @already_voted = remembered_ids.include?(id.to_i) || @poll.voters.include?(current_user)
-  end
-
-  def make_ready
-    @poll = Poll.find(params[:id])
-
-    execute_if_accessible(@poll, redirect: false, &:ready!)
-
-    render 'change_status'
-  end
-
-  def make_draft
-    id    = params[:id]
-    @poll = Poll.find(id)
-
-    execute_if_accessible(@poll, redirect: false, &:draft!)
-    actualize_voted_polls_cookie
-
-    render 'change_status'
   end
 
   private

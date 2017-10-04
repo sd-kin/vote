@@ -103,8 +103,6 @@ RSpec.describe PollsController, type: :controller do
       context 'and user logged in' do
         before(:each) { session[:user_id] = user.id }
 
-        it { is_expected.to be_success }
-
         it 'increase count of polls' do
           expect { subject }.to change { Poll.count }.by(1)
         end
@@ -115,8 +113,6 @@ RSpec.describe PollsController, type: :controller do
       end
 
       context 'and user not logged in' do
-        it { is_expected.to be_success }
-
         it 'increase count of polls' do
           expect { subject }.to change { Poll.count }.by(1)
         end
@@ -187,8 +183,6 @@ RSpec.describe PollsController, type: :controller do
 
         it { is_expected.to be_success }
 
-        it { is_expected.to render_template(:update) }
-
         it 'change poll attributes' do
           subject
           expect(users_poll.reload.title).to eq(poll_params[:title])
@@ -212,7 +206,7 @@ RSpec.describe PollsController, type: :controller do
 
         it { is_expected.to be_success }
 
-        it { is_expected.to render_template :update }
+        it { is_expected.to render_template :edit }
 
         it 'have title validation message' do
           subject
@@ -305,55 +299,5 @@ RSpec.describe PollsController, type: :controller do
     subject { get :result, params: { id: poll.id } }
 
     it { is_expected.to be_success }
-  end
-
-  describe 'POST #make_ready' do
-    subject { post :make_ready, xhr: true, params: { id: users_poll.id } }
-
-    context 'when user owns poll' do
-      before(:each) { session[:user_id] = user.id }
-
-      it 'change status to ready' do
-        expect { subject }.to change { users_poll.reload.status }.from('draft').to('ready')
-      end
-    end
-
-    context 'when user doesnt own poll' do
-      before(:each) { session[:user_id] = user.id + 1 }
-
-      it 'not change status from draft' do
-        expect { subject }.not_to change { users_poll.reload.status }
-      end
-
-      it 'have an error' do
-        subject
-        expect(flash[:error]).to_not be_empty
-      end
-    end
-  end
-
-  describe 'POST #make_draft' do
-    subject { post :make_draft, xhr: true, params: { id: users_poll.id } }
-    before(:each) { users_poll.ready! }
-
-    context 'when user owns poll' do
-      before(:each) { session[:user_id] = user.id }
-      it 'change status to draft' do
-        expect { subject }.to change { users_poll.reload.status }.from('ready').to('draft')
-      end
-    end
-
-    context 'if user doesnt own poll' do
-      before(:each) { session[:user_id] = user.id + 1 }
-
-      it 'not change status from ready' do
-        expect { subject }.not_to change { users_poll.reload.status }
-      end
-
-      it 'have an error' do
-        subject
-        expect(flash[:error]).to_not be_empty
-      end
-    end
   end
 end
