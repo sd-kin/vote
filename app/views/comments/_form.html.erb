@@ -28,5 +28,5 @@
 	  <%= f.submit 'Add comment', { class: "btn btn-primary btn-block" } %>
 	<% end %>
 
-	<%= button_to 'Cancel', comment_path(comment), method: :get, remote: true unless comment.new_record? %>
+	<%= button_to 'Cancel', comment_path(comment), method: :get, class: "btn btn-primary btn-block", remote: true unless comment.new_record? %>
 </div>
