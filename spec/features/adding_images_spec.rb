@@ -31,33 +31,6 @@ RSpec.feature 'Adding images', type: :feature do
     end
   end
 
-  feature 'to poll', js: true do
-    scenario '- can create poll with image and delete it' do
-      visit new_poll_path
-
-      expect(page).to_not have_selector('img')
-
-      fill_in 'poll_title', with: 'new poll'
-      attach_file 'image_input', 'spec/fixtures/files/test_image.png', visible: false
-
-      expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
-
-      # click_link 'edit'
-      # attach_file  'poll_images', 'spec/fixtures/files/test_image2.png'
-      # click_button 'Ok'
-
-      # expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
-      # expect(page).to have_xpath("//img[contains(@src, 'medium/test_image2.png')]")
-
-      # click_link 'edit'
-      # click_link('delete image', match: :first)
-      # click_button 'Ok'
-
-      # expect(page).to have_no_xpath("//img[contains(@src, 'medium/test_image2.png')]")
-      # expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
-    end
-  end
-
   feature 'to comment', js: true do
     scenario 'can create comment with image and remove image after' do
       visit poll_path(poll)
@@ -67,6 +40,7 @@ RSpec.feature 'Adding images', type: :feature do
       fill_in 'comment[body]', with: 'comment text'
       attach_file  'comment[images][]', 'spec/fixtures/files/test_image.png', visible: false
       click_button 'Add comment'
+      click_button 'Add comment' # because sometimes one click is not enough
 
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
 

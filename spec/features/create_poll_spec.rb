@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.feature 'Create poll', type: :feature do
   describe 'filling create form', js: true do
     context 'when all fields correct' do
-      let(:title)           { 'New Shiny Poll' }
-      let(:voters_limit)    { '1234' }
-      let(:expiration_date) { (1.year.from_now + 1.day).strftime('%Y/%m/%d %H:%m') }
-      let(:poll_descroption) { "Poll status is draft. Voters count limited up to #{voters_limit}. Votation process will be stopped in about 1 year" }
+      let(:title)            { 'New Shiny Poll' }
+      let(:voters_limit)     { '1234' }
+      let(:expiration_date)  { (1.year.from_now + 1.day).strftime('%Y/%m/%d %H:%m') }
+      let(:poll_description) { "Poll status is draft. Voters count limited up to #{voters_limit}. Votation process will be stopped in about 1 year" }
       let(:options) do
         {
           first:  { title: '1st', description: 'first option' },
@@ -79,7 +79,8 @@ RSpec.feature 'Create poll', type: :feature do
         expect(page).to have_content(options[:third][:title])
         expect(page).to have_content(options[:fourth][:title])
 
-        expect(page).to have_content(poll_descroption)
+        expect(page).to have_content(poll_description)
+        expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")
       end
     end
   end
