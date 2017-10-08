@@ -66,6 +66,7 @@ RSpec.feature 'Update poll', type: :feature, js: true do
       visit edit_poll_path(poll)
 
       attach_file 'image_input', 'spec/fixtures/files/test_image.png', visible: false
+      expect(page).to have_css('.attached-images img') # wait until image appears, otherwise form will be not submitted
       click_button 'Update poll'
 
       expect(page).to have_xpath("//img[contains(@src, 'medium/test_image.png')]")

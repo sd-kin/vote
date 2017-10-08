@@ -31,6 +31,7 @@ RSpec.describe Notification, pending: 'Notifications disabled', type: :model do
     context 'when poll have new comment' do
       context 'when commented by poll author' do
         it 'should not notificate author' do
+          raise
           expect { poll.comments.create body: 'new comment', author: poll.user }.to_not change { poll.user.notifications.count }
         end
       end
@@ -48,6 +49,7 @@ RSpec.describe Notification, pending: 'Notifications disabled', type: :model do
 
     context 'when commented by parent comment author' do
       it 'should not notificate author' do
+        raise
         expect { comment.comments.create body: 'new comment', author: user }.to_not change { comment.author.notifications.count }
       end
     end
