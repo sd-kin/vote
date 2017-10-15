@@ -5,7 +5,11 @@ module ImagesDestroyer
     return unless imegeable && ids_array
 
     ids_array.each do |id|
-      imegeable.images.find(id).destroy
+      image = imegeable.images.find_by(id: id)
+
+      next unless image
+
+      image.destroy
     end
   end
 end
