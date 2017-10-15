@@ -16,6 +16,8 @@ module Services
 
         destroy_array_of_images(poll, params['ids_of_images_for_delete'])
 
+        create_new_options(poll, params)
+
         poll
       end
 
@@ -26,6 +28,16 @@ module Services
       def change_status(poll, params)
         status = params['status']
         poll.send(status + '!') unless status.blank?
+      end
+
+      def create_new_options(poll, params)
+        new_options_params = params.permit(new_options: %i[title description])[:new_options]
+
+        return unless new_options_params
+
+        new_options_params.each do |param|
+          poll.options.create(param)
+        end
       end
     end
   end

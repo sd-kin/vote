@@ -48,26 +48,26 @@ RSpec.feature 'Create poll', type: :feature do
 
         # fill in fields for first option
         within '#options-form .option-fields-group:nth-child(2)' do
-          fill_in 'options[][title]',       with: options[:first][:title]
-          fill_in 'options[][description]', with: options[:first][:description]
+          fill_in 'new_options[][title]',       with: options[:first][:title]
+          fill_in 'new_options[][description]', with: options[:first][:description]
         end
 
         # fill in fields for second option
         within '#options-form .option-fields-group:nth-child(3)' do
-          fill_in 'options[][title]',       with: options[:second][:title]
-          fill_in 'options[][description]', with: options[:second][:description]
+          fill_in 'new_options[][title]',       with: options[:second][:title]
+          fill_in 'new_options[][description]', with: options[:second][:description]
         end
 
         # fill in fields for third option
         within '#options-form .option-fields-group:nth-child(4)' do
-          fill_in 'options[][title]',       with: options[:third][:title]
-          fill_in 'options[][description]', with: options[:third][:description]
+          fill_in 'new_options[][title]',       with: options[:third][:title]
+          fill_in 'new_options[][description]', with: options[:third][:description]
         end
 
         # fill in fields for fourth option
         within '#options-form .option-fields-group:nth-child(5)' do
-          fill_in 'options[][title]',       with: options[:fourth][:title]
-          fill_in 'options[][description]', with: options[:fourth][:description]
+          fill_in 'new_options[][title]',       with: options[:fourth][:title]
+          fill_in 'new_options[][description]', with: options[:fourth][:description]
         end
 
         click_button 'Create poll'

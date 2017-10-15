@@ -95,6 +95,29 @@ RSpec.describe Services::Polls::Update do
       end
     end
   end
+
+  context 'options' do
+    context 'create new' do
+      context 'when params correct' do
+        let(:params) { ActionController::Parameters.new(poll: poll_params, new_options: [FactoryGirl.attributes_for(:valid_option)]) }
+
+        it 'create new option' do
+          expect { service_call }.to change { poll.options.count }.by(1)
+        end
+      end
+
+      context 'when params incorrect' do
+      end
+
+      context 'when params empty' do
+        let(:params) { ActionController::Parameters.new(poll: poll_params) }
+
+        it 'not changes poll' do
+          expect(service_call).to eq(poll)
+        end
+      end
+    end
+  end
 end
 
 def sample_file(filename = 'test_image.png')

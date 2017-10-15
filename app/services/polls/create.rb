@@ -32,7 +32,7 @@ module Services
       end
 
       def prepare_options(poll, params)
-        options_params = params.permit(options: %i[title description]).require(:options)
+        options_params = params.permit(new_options: %i[title description]).require(:new_options)
         options_params.reject! { |option| option[:title].blank? && option[:description].blank? }
         build_options(poll, options_params)
       end

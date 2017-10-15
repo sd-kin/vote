@@ -1,4 +1,4 @@
-= fields_for 'options[][]', option do |field|
+= fields_for fields_name_for(option), option do |field|
   .option-fields-group
     - if option.errors.full_messages.any?
       .option-errors.alert.alert-danger.text-center

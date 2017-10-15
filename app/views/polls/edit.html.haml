@@ -2,3 +2,20 @@
 
 %div[@poll, :links_for]
   = render 'links', poll: @poll
+
+:javascript
+  const addOptionFieldsButton = document.querySelector('#add-option');
+
+  addOptionFieldsButton.addEventListener('click', renderOptionFields);
+
+  function renderOptionFields() {
+    $('#add-option').before("#{escape_javascript render 'poll_option_fields', option: @poll.options.build}")
+  }
+
+  function removeOptionsFields(btn){
+    btn.parentElement.parentElement.parentElement.remove();
+
+    const optionFieldsCount = document.querySelectorAll('.option-fields').length;
+
+    if( optionFieldsCount < 3 ) renderOptionFields();
+  }

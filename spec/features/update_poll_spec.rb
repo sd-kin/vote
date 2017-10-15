@@ -86,6 +86,22 @@ RSpec.feature 'Update poll', type: :feature, js: true do
     end
   end
 
-  feature 'options' do
+  feature 'Options.' do
+    context 'new option' do
+      it 'can be added' do
+        visit edit_poll_path(poll)
+
+        click_button 'Add option'
+
+        expect(page).to have_css '.option-fields-group', count: poll.options.count + 1
+
+        fill_in 'new_options[][title]', with: 'new option'
+        fill_in 'new_options[][description]', with: 'new option description'
+
+        click_button 'Update poll'
+
+        expect(page).to have_content('new option')
+      end
+    end
   end
 end

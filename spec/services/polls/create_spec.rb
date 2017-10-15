@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Services::Polls::Create do
   let(:service_call) { Services::Polls::Create.call(current_user, params) }
   let!(:current_user) { FactoryGirl.create(:user) }
-  let(:params) { ActionController::Parameters.new(poll: poll_params, options: options_params) }
+  let(:params) { ActionController::Parameters.new(poll: poll_params, new_options: options_params) }
 
   context 'when poll parameters valid' do
     let(:poll_params) { FactoryGirl.attributes_for(:valid_poll) }

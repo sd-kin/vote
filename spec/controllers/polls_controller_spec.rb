@@ -94,7 +94,7 @@ RSpec.describe PollsController, type: :controller do
   end
 
   describe 'POST #create' do
-    subject { post :create, params: { poll: poll_params, options: options_params } }
+    subject { post :create, params: { poll: poll_params, new_options: options_params } }
 
     context 'when valid attributes' do
       let(:poll_params) { FactoryGirl.attributes_for(:valid_poll) }
