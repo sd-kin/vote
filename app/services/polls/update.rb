@@ -36,7 +36,8 @@ module Services
         return unless new_options_params
 
         new_options_params.each do |param|
-          poll.options.create(param)
+          poll.options.build(param)
+          poll.options.map(&:save)
         end
       end
     end

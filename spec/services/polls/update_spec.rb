@@ -107,6 +107,11 @@ RSpec.describe Services::Polls::Update do
       end
 
       context 'when params incorrect' do
+        let(:params) { ActionController::Parameters.new(poll: poll_params, new_options: [FactoryGirl.attributes_for(:option, :with_title)]) }
+
+        it 'return errors in poll\'s option object' do
+          expect(service_call.errors).to_not be_empty
+        end
       end
 
       context 'when params empty' do
