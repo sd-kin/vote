@@ -108,4 +108,22 @@ RSpec.feature 'Update poll', type: :feature, js: true do
       end
     end
   end
+
+  context 'existing option' do
+    it 'can be removed' do
+      poll.options.create(title: 'new option', description: 'new option')
+      removed_option_title = poll.options.first.title
+
+      visit edit_poll_path(poll)
+
+      # remove first option from poll
+      within first('#options-form .option-fields') do
+        click_button 'X'
+      end
+
+      click_button 'Update poll'
+
+      expect(page).to have_no_content(removed_option_title)
+    end
+  end
 end

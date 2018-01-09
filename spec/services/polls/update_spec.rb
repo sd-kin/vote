@@ -122,6 +122,14 @@ RSpec.describe Services::Polls::Update do
         end
       end
     end
+
+    context 'remove option' do
+      let(:params) { ActionController::Parameters.new(poll: poll_params, ids_of_options_for_destroy: [poll.options.first.id.to_s]) }
+
+      it 'decrease options count' do
+        expect { service_call }.to change { poll.options.count }.by(-1)
+      end
+    end
   end
 end
 

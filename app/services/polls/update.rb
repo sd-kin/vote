@@ -16,6 +16,8 @@ module Services
 
         destroy_array_of_images(poll, params['ids_of_images_for_delete'])
 
+        destroy_options(poll, params)
+
         create_new_options(poll, params)
 
         poll
@@ -39,6 +41,11 @@ module Services
           poll.options.build(param)
           poll.options.map(&:save)
         end
+      end
+
+      def destroy_options(poll, params)
+        ids_of_options_for_destroy = params.permit(ids_of_options_for_destroy: [])[:ids_of_options_for_destroy]
+        poll.options.where(id: ids_of_options_for_destroy).destroy_all
       end
     end
   end

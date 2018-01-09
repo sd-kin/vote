@@ -10,3 +10,4 @@
         = field.text_area  :description, rows: 3, placeholder: 'option description', class: "form-control #{error_class?(option, :description)}"
       .option-delete-button
         = button_tag 'X', type: 'button', onclick: 'removeOptionsFields(this)', class: "btn btn-danger btn-block"
+        = check_box_tag 'ids_of_options_for_destroy[]', option.id, false
