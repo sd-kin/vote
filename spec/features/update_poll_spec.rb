@@ -118,7 +118,7 @@ RSpec.feature 'Update poll', type: :feature, js: true do
 
       # remove first option from poll
       within first('#options-form .option-fields') do
-        click_button 'X'
+        find('.delete-poll-option-btn').click
       end
 
       click_button 'Update poll'

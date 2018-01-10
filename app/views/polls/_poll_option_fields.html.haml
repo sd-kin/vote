@@ -9,5 +9,6 @@
         = field.text_field :title, placeholder: 'option title', class: "form-control #{error_class?(option, :title)}"
         = field.text_area  :description, rows: 3, placeholder: 'option description', class: "form-control #{error_class?(option, :description)}"
       .option-delete-button
-        = button_tag 'X', type: 'button', onclick: 'removeOptionsFields(this)', class: "btn btn-danger btn-block"
-        = check_box_tag 'ids_of_options_for_destroy[]', option.id, false
+        %label.btn.btn.btn-danger.btn-block.delete-poll-option-btn
+          = check_box_tag 'ids_of_options_for_destroy[]', option.id, false, id: dom_id(option, :delete_checkbox_for), class: 'hidden', onclick: 'removeOptionsFields(this)' unless option.new_record?
+          %span.glyphicon.glyphicon-trash.delete-icon

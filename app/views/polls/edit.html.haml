@@ -13,9 +13,15 @@
   }
 
   function removeOptionsFields(btn){
-    btn.parentElement.parentElement.parentElement.remove();
+    btn.parentElement.parentElement.parentElement.style.display = "none";
 
-    const optionFieldsCount = document.querySelectorAll('.option-fields').length;
+    const optionFieldsArray = Array.prototype.slice.call(document.querySelectorAll('.option-fields'))
+    const optionFieldsCount = optionFieldsArray.reduce(countVisibleOptions,0);
 
     if( optionFieldsCount < 3 ) renderOptionFields();
+  }
+
+  function countVisibleOptions(counter, option) {
+    if( option.style.display !== 'none' ) counter = counter+1;
+    return counter;
   }

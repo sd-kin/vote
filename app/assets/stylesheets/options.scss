@@ -19,3 +19,12 @@
 .option p {
 	padding: 20px;
 }
+
+.option-delete-button {
+  display: flex;
+}
+
+.option-delete-button label {
+  border-top-left-radius:    0;
+  border-bottom-left-radius: 0;
+}
