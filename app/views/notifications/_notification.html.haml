@@ -1,0 +1,6 @@
+.notifications-list-item[notification]
+  %p
+    = notification.message + "Look at that - "
+    = link_to_subject notification.subject
+  .notification-date
+    = notification.created_at

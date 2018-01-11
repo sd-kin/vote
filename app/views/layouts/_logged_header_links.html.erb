@@ -4,6 +4,9 @@
   <%= link_to user_notifications_path(current_user) do %>
     <span class="glyphicon glyphicon-envelope"></span>
     Notifications
+    <%- if current_user.notifications.any? %>
+      <span class="badge"><%= current_user.notifications.count %></span>
+    <% end %>
   <% end %>
 </li>
 <li>

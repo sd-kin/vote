@@ -1,0 +1,6 @@
+#notifications
+  - if @notifications.blank?
+    .alert.alert-info#no-notifications
+      You have no notifications yet.
+  - else
+    = render @notifications
